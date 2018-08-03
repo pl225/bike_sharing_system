@@ -14,8 +14,8 @@ class GeradorInstanciaAbstrato ():
 		pass
 
 	def gerarGrafo(self, n):
-		from graph_tool.all import complete_graph, graph_draw
-		from numpy import array, vectorize
+		from graph_tool.all import complete_graph, graph_draw, sfdp_layout
+		from numpy import array
 
 		pontos, demandas, pis, qis = self.gerar(n)
 		
@@ -41,9 +41,16 @@ class GeradorInstanciaAbstrato ():
 		grafo.vertex_properties["qi"] = qisProperty
 		grafo.edge_properties["custo"] = custoProperty
 
-		grafo.save("n{0}c{1}.xml".format(n, 1))
+		pp = grafo.new_vertex_property("vector<float>");
+		for i in range(n):
+			pp[grafo.vertex(i)] = pontos[i]
 
-		graph_draw(grafo, vertex_text = grafo.vertex_index, vertex_font_size=18)
+		grafo.vertex_properties["ponto"] = pp
+
+		grafo.save("n{0}c{1}.xml".format(n, 1))
+		
+		graph_draw(grafo, pos = pp, vertex_text = grafo.vertex_index, vertex_font_size=18)
+		
 		
 
 class GeradorSegundaClasse (GeradorInstanciaAbstrato):
