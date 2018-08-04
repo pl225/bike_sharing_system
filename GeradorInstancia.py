@@ -20,12 +20,6 @@ class GeradorInstanciaAbstrato ():
 		pontos, demandas, pis, qis = self.gerar(n)
 		
 		grafo = complete_graph(n, directed = True) # cria um digrafo completo
-		
-		pontosXProperty = grafo.new_vertex_property("int") #cria uma propriedade para guardar a coordenada x do ponto de cada vértice
-		pontosXProperty.a = array(pontos)[:, 0]
-
-		pontosYProperty = grafo.new_vertex_property("int") #cria uma propriedade para guardar a coordenada y do ponto de cada vértice
-		pontosYProperty.a = array(pontos)[:, 1]
 
 		pisProperty = grafo.new_vertex_property("int") # cria uma propriedade para guardar o nº de bicicletas inicial de cada vértice
 		pisProperty.a = array(pis)
@@ -33,23 +27,27 @@ class GeradorInstanciaAbstrato ():
 		qisProperty = grafo.new_vertex_property("int") # cria uma propriedade para guardar o nº alvo de bicicletas de cada vértice
 		qisProperty.a = array(qis)
 
+		pontosProperty = grafo.new_vertex_property("vector<float>"); # cria uma propriedade para guardas as coordenadas do ponto de cada vértice
+		for i in range(n):
+			pontosProperty[grafo.vertex(i)] = pontos[i]
+
 		custoProperty = grafo.new_edge_property("float") # cria uma propriedade para guardar o custo de cada aresta
+		aresta = None
 		for e in grafo.edges():
-			custoProperty[e] = distanciaEuclidiana((pontosXProperty[e.source()], pontosYProperty[e.source()]), (pontosXProperty[e.target()], pontosYProperty[e.target()]))
+			aresta = grafo.edge(e.target(), e.source())
+			if not custoProperty[aresta]: 
+				custoProperty[e] = distanciaEuclidiana(pontosProperty[e.source()], pontosProperty[e.target()])
+			else:
+				custoProperty[e] = custoProperty[aresta]
 
 		grafo.vertex_properties["pi"] = pisProperty
 		grafo.vertex_properties["qi"] = qisProperty
 		grafo.edge_properties["custo"] = custoProperty
-
-		pp = grafo.new_vertex_property("vector<float>");
-		for i in range(n):
-			pp[grafo.vertex(i)] = pontos[i]
-
-		grafo.vertex_properties["ponto"] = pp
+		grafo.vertex_properties["ponto"] = pontosProperty
 
 		grafo.save("n{0}c{1}.xml".format(n, 1))
 		
-		graph_draw(grafo, pos = pp, vertex_text = grafo.vertex_index, vertex_font_size=18)
+		graph_draw(grafo, pos = pontosProperty, vertex_text = grafo.vertex_index, vertex_font_size=18)
 		
 		
 
