@@ -2,13 +2,24 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define N_COLUNAS 2
+
 typedef struct Grafo
 {
 	int n;
 	int q;
-	float *pontos;
+	int *pontos;
 	int *demandas;
 } Grafo;
+
+void liberarGrafo (Grafo g) {
+	free(g.pontos);
+	free(g.demandas);
+}
+
+int Indice (int i, int j) {
+	return i * N_COLUNAS + j;
+}
 
 Grafo carregarInstancia (char caminhoArquivo []) {
 
@@ -17,27 +28,24 @@ Grafo carregarInstancia (char caminhoArquivo []) {
 	int n, q;
 
 	fscanf(arquivo, "%d\n%d\n", &n, &q);
-	printf("%d %d\n", n, q);
-
-	float pontos [n][2];
-	int demandas [n];
-
-	for (int i = 0; i < n; i++) {
-		fscanf(arquivo, "%*d %f %f\n", &pontos[i][0], &pontos[i][1]);
-	}
-
-	for (int i = 0; i < n; i++) {
-		fscanf(arquivo, "%*d %d\n", &demandas[i]);
-	}
 
 	Grafo g;
 	g.n = n;
 	g.q = q;
 
-	g.pontos = (float *) malloc(sizeof(float) * n * n);
-	memcpy(g.pontos, pontos, sizeof(pontos));
+	g.pontos = (int *) malloc(sizeof(int) * n * N_COLUNAS);
 	g.demandas = (int *) malloc(sizeof(int) * n);
-	memcpy(g.demandas, demandas, sizeof(demandas));
+	float p1, p2;
+
+	for (int i = 0; i < n; i++) {
+		fscanf(arquivo, "%*d %f %f\n", &p1, &p2);
+		g.pontos[Indice(i, 0)] = (int) p1;
+		g.pontos[Indice(i, 1)] = (int) p2;
+	}
+
+	for (int i = 0; i < n; i++) {
+		fscanf(arquivo, "%*d %d\n", &g.demandas[i]);
+	}
 
 	fclose(arquivo);
 
