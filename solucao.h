@@ -13,11 +13,21 @@ typedef struct FabricaSolucao
 	float *custoArestas;
 } FabricaSolucao;
 
+typedef struct Solucao
+{
+	int *caminho;
+	int tamanhoCaminho;
+} Solucao;
+
 void liberarFabrica(FabricaSolucao fs) {
 	free(fs.demandas);
 	free(fs.custoArestas);
 	free(fs.verticesComDemanda);
 	free(fs.verticesSemDemanda);
+}
+
+void liberarSolucao (Solucao s) {
+	free(s.caminho);
 }
 
 int IndiceArestas(int i, int j, int n) {
@@ -29,6 +39,19 @@ float distanciaEuclidiana (int i, int j, int * pontos) {
 		q1 = pontos[IndicePontos(j, 0)], q2 = pontos[IndicePontos(j, 1)];
 
 	return sqrt(pow(q1 - p1, 2) + pow(q2 - p2, 2));
+}
+
+// https://stackoverflow.com/questions/6127503/shuffle-array-in-c
+void shuffle(int *array, size_t n) {
+    if (n > 1) {
+        size_t i;
+        for (i = 0; i < n - 1; i++) {
+          size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+          int t = array[j];
+          array[j] = array[i];
+          array[i] = t;
+        }
+    }
 }
 
 FabricaSolucao instanciarFabrica (Grafo g) {
@@ -65,9 +88,24 @@ FabricaSolucao instanciarFabrica (Grafo g) {
 			} else {
 				fs.custoArestas[IndiceArestas(i, j, fs.n)] = 0;
 			}
-			printf("%d %d %f\n", i, j, fs.custoArestas[IndiceArestas(i, j, fs.n)]);
 		}
 	}
 
 	return fs;
+}
+
+Solucao instanciarSolucao (FabricaSolucao fs) {
+
+	// -------------------- geração do vetor aleatório OV
+	shuffle(fs.verticesComDemanda, fs.numVerticesComDemanda);
+	shuffle(fs.verticesSemDemanda, fs.numVerticesSemDemanda);
+	int verticesSemDemandaEscolhidos = fs.numVerticesSemDemanda > 0 ? rand() % fs.numVerticesSemDemanda : 0;
+
+	int OV [fs.numVerticesComDemanda + verticesSemDemandaEscolhidos];
+	memcpy(OV, fs.verticesComDemanda, sizeof(int) * fs.numVerticesComDemanda);
+
+	for (int i = fs.numVerticesComDemanda, j = 0; i < sizeof(OV) / 4; i++, j++) 
+		OV[i] = fs.verticesSemDemanda[j];
+
+	// -------------------- fim da geração do vetor aleatório OV
 }
