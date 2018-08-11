@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 #define N_COLUNAS 2
@@ -17,7 +16,7 @@ void liberarGrafo (Grafo g) {
 	free(g.demandas);
 }
 
-int Indice (int i, int j) {
+int IndicePontos (int i, int j) {
 	return i * N_COLUNAS + j;
 }
 
@@ -39,8 +38,8 @@ Grafo carregarInstancia (char caminhoArquivo []) {
 
 	for (int i = 0; i < n; i++) {
 		fscanf(arquivo, "%*d %f %f\n", &p1, &p2);
-		g.pontos[Indice(i, 0)] = (int) p1;
-		g.pontos[Indice(i, 1)] = (int) p2;
+		g.pontos[IndicePontos(i, 0)] = (int) p1;
+		g.pontos[IndicePontos(i, 1)] = (int) p2;
 	}
 
 	for (int i = 0; i < n; i++) {
