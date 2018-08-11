@@ -94,6 +94,54 @@ FabricaSolucao instanciarFabrica (Grafo g) {
 	return fs;
 }
 
+/*
+	nº de vértices, vetor que possuirá as operações de valor máximo, vetor das demandas atuais, capacidade máxima, 
+	capacidade atual, vetor que guardará os maiores índices de troca
+*/
+int computeTroca (int n, int troca[], int demandas [], int Q, int q, int indicesMaiorTroca[]) {
+
+	int maiorTroca = 0, j; // j guardará a maior quantidade de trocas que são maiores
+
+	for (int i = 0; i < n; i++) {
+		if (demandas[i] == 0) {
+			troca[i] = 0;
+			continue;
+		}
+		if (demandas[i] < 0) {
+			troca[i] = q;
+		} else {
+			troca[i] = Q - q;
+		}
+
+		if (troca[i] > maiorTroca) {
+			maiorTroca = troca[i];
+			j = 0;
+			indicesMaiorTroca[j] = i;
+		} else if (troca[i] == maiorTroca) {
+			j++;
+			indicesMaiorTroca[j] = i;
+		}
+	}
+
+	/*for (int i = 0; i < n; i++) printf("%d ", troca[i]);
+	printf("\n");
+	for (int i = 0; i < j+1; i++) printf("%d ", indicesMaiorTroca[i]);
+	printf("\n");*/
+	return j + 1;
+}
+
+int verticeMaisProximo (int n, int qtdIndicesMaiorTroca, int partida, float * custoArestas, int indicesMaiorTroca[]) {
+	int maisProximo = indicesMaiorTroca[0], j;
+	float menorDistancia = custoArestas[IndiceArestas(partida, maisProximo, n)];
+	for (int i = 1; i < qtdIndicesMaiorTroca; i++) {
+		j = indicesMaiorTroca[i]; // guarda o vértice candidato atual a ser o mais próximo
+		if (custoArestas[IndiceArestas(partida, j, n)] < menorDistancia) {
+			maisProximo = j;
+		}
+	}
+	return maisProximo;
+}
+
 Solucao instanciarSolucao (FabricaSolucao fs) {
 
 	// -------------------- geração do vetor aleatório OV
@@ -111,17 +159,18 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	// -------------------- fim da geração do vetor aleatório OV
 
 	int tamanhoOVAux = tamanhoOV, q = fs.q; // iniciando q com todos os slots livres q = Q
-	int demandas [fs.n];
+	int demandas [fs.n], troca[fs.n], indicesMaiorTroca[fs.n];
 	
 	memcpy(demandas, fs.demandas, sizeof(int) * fs.n); // cópia de demandas para não sobrescrever a original
 	Solucao solucao;
 	solucao.caminho = (int *) malloc(sizeof(int) * fs.n);
 	solucao.caminho[0] = 0;
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
-	//demandas[0] = 0; por enquanto, o depósito possui a demanda prescrita por Pérez
+	demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
 		inserido = 0;
 		for (int i = 0; i < tamanhoOV; i++) {
+			if (OV[i] == 0) OV[i] = -1;
 			if (OV[i] >= 0) { // se o vértice não tiver sido fechado
 				// regra inversa de Pérez, mas de acordo com Adria
 				if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
@@ -143,7 +192,32 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 			}
 		}
 
-		if (inserido == 0) break;
+		if (inserido == 0) {
+			/*printf("ok %d\n", q);
+			for (int i = 0; i < j; i++)
+			{
+				printf("%d ", solucao.caminho[i]);
+			}
+			printf("\n");*/
+			int qtdMaioresIndices = computeTroca(fs.n, troca, demandas, fs.q, q, indicesMaiorTroca);
+			int maiorIndice;
+
+			if (qtdMaioresIndices > 1) {
+				int verticeAtual = solucao.caminho[j - 1];
+				maiorIndice = verticeMaisProximo(fs.n, qtdMaioresIndices, verticeAtual, fs.custoArestas, indicesMaiorTroca);
+			} else {
+				maiorIndice = indicesMaiorTroca[0];
+			}
+			q += demandas[maiorIndice] > 0 ? troca[maiorIndice] : (-1) * troca[maiorIndice]; 
+			demandas[maiorIndice] += demandas[maiorIndice] > 0 ? (-1) * troca[maiorIndice] : troca[maiorIndice]; 
+			
+			solucao.caminho[j] = maiorIndice;
+			j++;
+			if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
+				tamanhoAtualCaminho += fs.n;
+				solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
+			}
+		}
 	}
 	
 	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (j + 1));
