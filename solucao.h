@@ -113,18 +113,18 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	int tamanhoOVAux = tamanhoOV, q = fs.q; // iniciando q com todos os slots livres q = Q
 	int demandas [fs.n];
 	
-	memcpy(demandas, fs.demandas, sizeof(int) * fs.n);
+	memcpy(demandas, fs.demandas, sizeof(int) * fs.n); // cópia de demandas para não sobrescrever a original
 	Solucao solucao;
 	solucao.caminho = (int *) malloc(sizeof(int) * fs.n);
 	solucao.caminho[0] = 0;
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
-
+	//demandas[0] = 0; por enquanto, o depósito possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
 		inserido = 0;
 		for (int i = 0; i < tamanhoOV; i++) {
 			if (OV[i] >= 0) { // se o vértice não tiver sido fechado
 				// regra inversa de Pérez, mas de acordo com Adria
-				if ((demandas[OV[i]] < 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
+				if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
 					solucao.caminho[j] = OV[i]; // adicionando o vértice ao caminho
 					j++;
 					q += demandas[OV[i]]; // atualizando q
@@ -144,11 +144,11 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 		}
 
 		if (inserido == 0) break;
-
 	}
 	
-	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * j);
-	solucao.tamanhoCaminho = j;
-	
+	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (j + 1));
+	solucao.caminho[j] = 0;
+	solucao.tamanhoCaminho = j + 1;
+
 	return solucao;
 }
