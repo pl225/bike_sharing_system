@@ -101,11 +101,19 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	shuffle(fs.verticesSemDemanda, fs.numVerticesSemDemanda);
 	int verticesSemDemandaEscolhidos = fs.numVerticesSemDemanda > 0 ? rand() % fs.numVerticesSemDemanda : 0;
 
-	int OV [fs.numVerticesComDemanda + verticesSemDemandaEscolhidos];
+	const int tamanhoOV = fs.numVerticesComDemanda + verticesSemDemandaEscolhidos;
+	int OV [tamanhoOV];
 	memcpy(OV, fs.verticesComDemanda, sizeof(int) * fs.numVerticesComDemanda);
 
-	for (int i = fs.numVerticesComDemanda, j = 0; i < sizeof(OV) / 4; i++, j++) 
+	for (int i = fs.numVerticesComDemanda, j = 0; tamanhoOV; i++, j++) 
 		OV[i] = fs.verticesSemDemanda[j];
 
 	// -------------------- fim da geração do vetor aleatório OV
+
+	int tamanhoOVAux = tamanhoOV;
+	Solucao solucao;
+
+	while (tamanhoOVAux > 0) {
+
+	}
 }
