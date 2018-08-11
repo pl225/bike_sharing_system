@@ -105,15 +105,50 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	int OV [tamanhoOV];
 	memcpy(OV, fs.verticesComDemanda, sizeof(int) * fs.numVerticesComDemanda);
 
-	for (int i = fs.numVerticesComDemanda, j = 0; tamanhoOV; i++, j++) 
+	for (int i = fs.numVerticesComDemanda, j = 0; i < tamanhoOV; i++, j++) 
 		OV[i] = fs.verticesSemDemanda[j];
 
 	// -------------------- fim da geração do vetor aleatório OV
 
-	int tamanhoOVAux = tamanhoOV;
+	int tamanhoOVAux = tamanhoOV, q = fs.q; // iniciando q com todos os slots livres q = Q
+	int demandas [fs.n];
+	
+	memcpy(demandas, fs.demandas, sizeof(int) * fs.n);
 	Solucao solucao;
+	solucao.caminho = (int *) malloc(sizeof(int) * fs.n);
+	solucao.caminho[0] = 0;
+	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
 
 	while (tamanhoOVAux > 0) {
+		inserido = 0;
+		for (int i = 0; i < tamanhoOV; i++) {
+			if (OV[i] >= 0) { // se o vértice não tiver sido fechado
+				// regra inversa de Pérez, mas de acordo com Adria
+				if ((demandas[OV[i]] < 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
+					solucao.caminho[j] = OV[i]; // adicionando o vértice ao caminho
+					j++;
+					q += demandas[OV[i]]; // atualizando q
+					inserido = 1;
+					demandas[OV[i]] = 0; // atualizando demanda do vértice i para zero
+
+					// apagando o vértice na posição i de OV, isto é, ele foi fechado
+					OV[i] = -1;
+					tamanhoOVAux--;
+					if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
+						tamanhoAtualCaminho += fs.n;
+						solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
+					}
+					break;
+				}
+			}
+		}
+
+		if (inserido == 0) break;
 
 	}
+	
+	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * j);
+	solucao.tamanhoCaminho = j;
+	
+	return solucao;
 }
