@@ -132,6 +132,7 @@ int verticeMaisProximo (int n, int qtdIndicesMaiorTroca, int partida, float * cu
 		j = indicesMaiorTroca[i]; // guarda o vértice candidato atual a ser o mais próximo
 		if (custoArestas[IndiceArestas(partida, j, n)] < menorDistancia) {
 			maisProximo = j;
+			menorDistancia = custoArestas[IndiceArestas(partida, j, n)]; 
 		}
 	}
 	return maisProximo;
