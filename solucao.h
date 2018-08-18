@@ -16,6 +16,7 @@ typedef struct FabricaSolucao
 typedef struct Solucao
 {
 	int *caminho;
+	int *capacidades;
 	int tamanhoCaminho;
 } Solucao;
 
@@ -158,21 +159,27 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	int demandas [fs.n], troca[fs.n], indicesMaiorTroca[fs.n];
 	
 	memcpy(demandas, fs.demandas, sizeof(int) * fs.n); // cópia de demandas para não sobrescrever a original
-	Solucao solucao;
+	
+	Solucao solucao; // instanciação de uma nova solução
 	solucao.caminho = (int *) malloc(sizeof(int) * fs.n);
 	solucao.caminho[0] = 0;
+	solucao.capacidades = (int *) malloc(sizeof(int) * fs.n);
+	solucao.capacidades[0] = q;
+	
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
 	//demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
 		inserido = 0;
 		for (int i = 0; i < tamanhoOV; i++) {
-			//if (OV[i] == 0) OV[i] = -1;
 			if (OV[i] >= 0) { // se o vértice não tiver sido fechado
 				// regra inversa de Pérez, mas de acordo com Adria
 				if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
+					
 					solucao.caminho[j] = OV[i]; // adicionando o vértice ao caminho
-					j++;
 					q += demandas[OV[i]]; // atualizando q
+					solucao.capacidades[j] = q; // adicionando a capacidade entre o vertice j-1 e j
+					j++;
+					
 					inserido = 1;
 					demandas[OV[i]] = 0; // atualizando demanda do vértice i para zero
 
@@ -182,6 +189,7 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 					if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
 						tamanhoAtualCaminho += fs.n;
 						solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
+						solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * tamanhoAtualCaminho); 
 					}
 					break;
 				}
@@ -202,16 +210,20 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 			demandas[maiorIndice] += demandas[maiorIndice] > 0 ? (-1) * troca[maiorIndice] : troca[maiorIndice]; 
 			
 			solucao.caminho[j] = maiorIndice;
+			solucao.capacidades[j] = q;
 			j++;
 			if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
 				tamanhoAtualCaminho += fs.n;
 				solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
+				solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * tamanhoAtualCaminho); 
 			}
 		}
 	}
 	
 	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (j + 1));
+	solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * (j + 1));
 	solucao.caminho[j] = 0;
+	solucao.capacidades[j] = q;
 	solucao.tamanhoCaminho = j + 1;
 	return solucao;
 }
