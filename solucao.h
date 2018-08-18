@@ -19,22 +19,22 @@ typedef struct Solucao
 	int tamanhoCaminho;
 } Solucao;
 
-void liberarFabrica(FabricaSolucao fs) {
+void liberarFabrica(FabricaSolucao fs) { // mover
 	free(fs.demandas);
 	free(fs.custoArestas);
 	free(fs.verticesComDemanda);
 	free(fs.verticesSemDemanda);
 }
 
-void liberarSolucao (Solucao s) {
+void liberarSolucao (Solucao s) { // mover
 	free(s.caminho);
 }
 
-int IndiceArestas(int i, int j, int n) {
+int IndiceArestas(int i, int j, int n) { // mover
 	return i * n + j;
 }
 
-float distanciaEuclidiana (int i, int j, int * pontos) {
+float distanciaEuclidiana (int i, int j, int * pontos) { // mover
 	int p1 = pontos[IndicePontos(i, 0)], p2 = pontos[IndicePontos(i, 1)],
 		q1 = pontos[IndicePontos(j, 0)], q2 = pontos[IndicePontos(j, 1)];
 
@@ -42,7 +42,7 @@ float distanciaEuclidiana (int i, int j, int * pontos) {
 }
 
 // https://stackoverflow.com/questions/6127503/shuffle-array-in-c
-void shuffle(int *array, size_t n) {
+void shuffle(int *array, size_t n) { // mover
     if (n > 1) {
         size_t i;
         for (i = 0; i < n - 1; i++) {
@@ -100,7 +100,7 @@ FabricaSolucao instanciarFabrica (Grafo g) {
 */
 int computeTroca (int n, int troca[], int demandas [], int Q, int q, int indicesMaiorTroca[]) {
 
-	int maiorTroca = 0, j; // j guardará a maior quantidade de trocas que são maiores
+	int maiorTroca = 0, j = 0; // j guardará a maior quantidade de trocas que são maiores
 
 	for (int i = 0; i < n; i++) {
 		if (demandas[i] == 0) {
@@ -117,16 +117,11 @@ int computeTroca (int n, int troca[], int demandas [], int Q, int q, int indices
 			maiorTroca = troca[i];
 			j = 0;
 			indicesMaiorTroca[j] = i;
-		} else if (troca[i] == maiorTroca) {
+		} else if (troca[i] != 0 && troca[i] == maiorTroca) {
 			j++;
 			indicesMaiorTroca[j] = i;
 		}
 	}
-
-	/*for (int i = 0; i < n; i++) printf("%d ", troca[i]);
-	printf("\n");
-	for (int i = 0; i < j+1; i++) printf("%d ", indicesMaiorTroca[i]);
-	printf("\n");*/
 	return j + 1;
 }
 
@@ -166,11 +161,11 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.caminho = (int *) malloc(sizeof(int) * fs.n);
 	solucao.caminho[0] = 0;
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
-	demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
+	//demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
 		inserido = 0;
 		for (int i = 0; i < tamanhoOV; i++) {
-			if (OV[i] == 0) OV[i] = -1;
+			//if (OV[i] == 0) OV[i] = -1;
 			if (OV[i] >= 0) { // se o vértice não tiver sido fechado
 				// regra inversa de Pérez, mas de acordo com Adria
 				if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
@@ -193,12 +188,6 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 		}
 
 		if (inserido == 0) {
-			/*printf("ok %d\n", q);
-			for (int i = 0; i < j; i++)
-			{
-				printf("%d ", solucao.caminho[i]);
-			}
-			printf("\n");*/
 			int qtdMaioresIndices = computeTroca(fs.n, troca, demandas, fs.q, q, indicesMaiorTroca);
 			int maiorIndice;
 
@@ -223,6 +212,5 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (j + 1));
 	solucao.caminho[j] = 0;
 	solucao.tamanhoCaminho = j + 1;
-
 	return solucao;
 }

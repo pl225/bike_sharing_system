@@ -11,12 +11,12 @@ typedef struct Grafo
 	int *demandas;
 } Grafo;
 
-void liberarGrafo (Grafo g) {
+void liberarGrafo (Grafo g) { // mover
 	free(g.pontos);
 	free(g.demandas);
 }
 
-int IndicePontos (int i, int j) {
+int IndicePontos (int i, int j) { // mover
 	return i * N_COLUNAS + j;
 }
 
@@ -30,7 +30,7 @@ Grafo carregarInstancia (char caminhoArquivo []) {
 
 	Grafo g;
 	g.n = n;
-	g.q = q;
+	g.q = q;//5;
 
 	g.pontos = (int *) malloc(sizeof(int) * n * N_COLUNAS);
 	g.demandas = (int *) malloc(sizeof(int) * n);

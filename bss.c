@@ -12,5 +12,6 @@ int main(int argc, char const *argv[])
 
 	liberarGrafo(g);
 	liberarFabrica(fs);
+	liberarSolucao(s);
 	return 0;
 }
