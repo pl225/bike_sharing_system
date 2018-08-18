@@ -33,9 +33,13 @@ Solucao supressao (Solucao s, FabricaSolucao fs) {
 	}
 
 	if (posicaoSuprimida != -1) {
-		for (int i = posicaoSuprimida; i < s.tamanhoCaminho - 1; i++) nova.caminho[i] = nova.caminho[i + 1];
+		for (int i = posicaoSuprimida; i < s.tamanhoCaminho - 1; i++) {
+			nova.caminho[i] = nova.caminho[i + 1];
+			nova.capacidade[i] = nova.capacidade[i + 1];
+		}
 		nova.tamanhoCaminho--;
 		nova.caminho = (int *) realloc(nova.caminho, sizeof(int) * nova.tamanhoCaminho);
+		nova.capacidade = (int *) realloc(nova.capacidade, sizeof(int) * nova.tamanhoCaminho);
 		return nova;
 	} else {
 		return s;
