@@ -86,3 +86,86 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 		return s;
 	}
 }
+
+/*Solucao reinsercao(Solucao s, FabricaSolucao fs) {
+	printf("%d\n", s.tamanhoCaminho);
+	for (int i = 1; i < s.tamanhoCaminho - 2; i ++) {
+		if ((s.capacidades[i - 1] - abs(s.capacidades[i + 1] - s.capacidades[i])) < 0 
+			|| (s.capacidades[i - 1] + abs(s.capacidades[i + 1] - s.capacidades[i])) > fs.q)
+			continue;
+		printf("%d %d\n", i, s.capacidades[i]);
+	}
+}*/
+
+Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
+	float menorCusto = custo(s, fs), custoOriginal = menorCusto, menorCustoParcial;
+	int indiceTrocaI = -1, indiceTrocaJ = -1, passo, condicaoParada;
+
+	if (tipo == 0) passo = 2; // orOPT2
+	else if (tipo == 1) passo = 3; // orOPT3
+	else passo = 4; // orOPT4
+
+	condicaoParada = s.tamanhoCaminho - passo * 2;
+
+	for (int i = 0; i < condicaoParada; i++) { // verificar condicao de parada
+		if (s.capacidades[i] == s.capacidades[i + passo]) {
+
+			menorCustoParcial = custoOriginal - (fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[i + passo + 1], fs.n)]);
+
+			menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + passo + 1], fs.n)];
+
+			for (int j = 0; j < s.tamanhoCaminho - 2; j++) { // verificar condicao de parada
+				if (j == i) {
+					j += passo + 1;
+				}
+				if (s.capacidades[i] == s.capacidades[j]) {
+					menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i + 1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[j + 1], fs.n)];
+
+					menorCustoParcial -= fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
+					if (menorCustoParcial < menorCusto) {
+						menorCusto = menorCustoParcial;
+						indiceTrocaI = i;
+						indiceTrocaJ = j;
+					}
+				}
+			}
+		}
+	}
+	
+	if (indiceTrocaI != -1) {
+		Solucao nova = copiarSolucao(s);
+		int verticesMovidos[passo];
+		for (int i = 0, j = indiceTrocaI + 1; i < passo; i++, j++) {
+			verticesMovidos[i] = nova.caminho[j];
+		}
+		if (indiceTrocaI < indiceTrocaJ) {
+			for (int i = indiceTrocaI + 1; i <= indiceTrocaJ - passo; i++) {
+				nova.caminho[i] = nova.caminho[i + passo];
+			}
+		} else {
+			for (int i = indiceTrocaI + passo; i >= indiceTrocaJ + passo; i--) {
+				nova.caminho[i] = nova.caminho[i - passo];
+			}
+		}
+		for (int i = indiceTrocaJ + 1, j = 0; j < passo; i++, j++) {
+			nova.caminho[i] = verticesMovidos[j];
+		}
+		return nova;
+	} else {
+		return s;
+	}
+}
+
+Solucao orOPT2(Solucao s, FabricaSolucao fs) {
+	return orOPT(s, fs, 0);
+}
+
+Solucao orOPT3(Solucao s, FabricaSolucao fs) {
+	return orOPT(s, fs, 1);
+}
+
+Solucao orOPT4(Solucao s, FabricaSolucao fs) {
+	return orOPT(s, fs, 2);
+}
