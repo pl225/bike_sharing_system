@@ -137,7 +137,6 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 						menorCusto = menorCustoParcial;
 						indiceTrocaI = i;
 						indiceTrocaJ = j;
-						printf("%f\n", menorCusto);
 					}
 				}
 			}
@@ -146,24 +145,32 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 	
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
-		int verticesMovidos[passo];
+		int verticesMovidos[passo], capacidadesMovidas[passo];
 		
 		for (int i = 0, j = indiceTrocaI + 1; i < passo; i++, j++) {
 			verticesMovidos[i] = nova.caminho[j];
+			capacidadesMovidas[i] = nova.capacidades[j];
 		}
+
+		int diferencaNovaCapacidade = nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaI];
+
 		if (indiceTrocaI < indiceTrocaJ) {
-			for (int i = indiceTrocaI + 1; i < indiceTrocaJ - passo; i++) {
+			for (int i = indiceTrocaI + 1; i <= indiceTrocaJ - passo; i++) {
 				nova.caminho[i] = nova.caminho[i + passo];
+				nova.capacidades[i] = nova.capacidades[i + passo];
 			}
 			for (int i = indiceTrocaJ - passo + 1, j = 0; j < passo; i++, j++) {
 				nova.caminho[i] = verticesMovidos[j];
+				nova.capacidades[i] = capacidadesMovidas[j] + diferencaNovaCapacidade;
 			}
 		} else {
-			for (int i = indiceTrocaI + passo; i > indiceTrocaJ + passo; i--) {
+			for (int i = indiceTrocaI + passo; i >= indiceTrocaJ + passo; i--) {
 				nova.caminho[i] = nova.caminho[i - passo];
+				nova.capacidades[i] = nova.capacidades[i - passo];
 			}
 			for (int i = indiceTrocaJ + 1, j = 0; j < passo; i++, j++) {
 				nova.caminho[i] = verticesMovidos[j];
+				nova.capacidades[i] = capacidadesMovidas[j] + diferencaNovaCapacidade;
 			}
 		}
 		return nova;
