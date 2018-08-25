@@ -11,6 +11,7 @@ Solucao copiarSolucao (Solucao s) { // mover
 	copia.tamanhoCaminho = s.tamanhoCaminho;
 	copia.caminho = (int *) malloc(sizeof(int) * s.tamanhoCaminho);
 	copia.capacidades = (int *) malloc(sizeof(int) * s.tamanhoCaminho);
+	copia.viavel = s.viavel;
 	memcpy(copia.caminho, s.caminho, sizeof(int) * s.tamanhoCaminho);
 	memcpy(copia.capacidades, s.capacidades, sizeof(int) * s.tamanhoCaminho);
 	return copia;
@@ -189,4 +190,91 @@ Solucao orOPT3(Solucao s, FabricaSolucao fs) {
 
 Solucao orOPT4(Solucao s, FabricaSolucao fs) {
 	return orOPT(s, fs, 2);
+}
+
+void custoViabilidade (Solucao s, FabricaSolucao fs, int *viavelRetorno, float *custoRetorno) {
+	float custoFinal = 0;
+	int q = fs.q, d = 0, demandas[fs.n];
+	s.capacidades[0] = q;
+	memcpy(demandas, fs.demandas, sizeof(int) * fs.n);
+
+	for (int i = 1; i < s.tamanhoCaminho; i++) {
+		custoFinal += fs.custoArestas[IndiceArestas(s.caminho[i-1], s.caminho[i], fs.n)];
+		d = demandas[s.caminho[i]];
+		if (d != 0) {
+			if (d < 0) {
+				if (abs(d) <= q) {
+				 	q += d;
+				 	demandas[s.caminho[i]] = 0;
+				} else {
+					demandas[s.caminho[i]] += q;
+					q = 0;
+				}
+			}  else {
+				if (fs.q - q >= d) {
+					q += d;
+					demandas[s.caminho[i]] = 0;
+				} else {
+					demandas[s.caminho[i]] -= fs.q - q;
+					q = fs.q;
+				}
+			}
+			s.capacidades[i] = q;
+		} else {
+			s.capacidades[i] = s.capacidades[i - 1];
+		}
+	}
+	
+	*viavelRetorno = TRUE;	
+	for (int i = 0; i < fs.n; i++) {
+		if (demandas[i] != 0) {
+			*viavelRetorno = FALSE;
+			break;
+		}
+	}
+	*custoRetorno = custoFinal;
+}
+
+Solucao _2OPT (Solucao s, FabricaSolucao fs) {
+	float menorCusto = custo(s, fs), custoOriginal = menorCusto, custoParcial;
+	int aux, melhorCaminho[s.tamanhoCaminho], melhorCapacidade[s.tamanhoCaminho], viavel;
+	Solucao copia = copiarSolucao(s);
+
+	//memcpy(melhorCaminho, copia.caminho, sizeof(int) * copia.tamanhoCaminho);
+
+	for (int i = 0; i < copia.tamanhoCaminho; i++) { // caminhando pelas combinações
+		for (int j = i + 3; j < copia.tamanhoCaminho; j++) {
+			
+			for (int a = i + 1, b = j - 1; a < b; a++, b--) { // revertendo segmento entre i e j
+				aux = copia.caminho[a];
+				copia.caminho[a] = copia.caminho[b];
+				copia.caminho[b] = aux; 
+			}
+		
+			custoViabilidade(copia, fs, &viavel, &custoParcial);
+
+			if ((copia.viavel == TRUE && viavel == TRUE && custoParcial < menorCusto) || 
+				(copia.viavel == FALSE && viavel == TRUE)) {
+
+				copia.viavel = viavel;
+				menorCusto = custoParcial;
+				memcpy(melhorCaminho, copia.caminho, sizeof(int) * copia.tamanhoCaminho);
+				memcpy(melhorCapacidade, copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
+			}
+
+			for (int a = i + 1, b = j - 1; a < b; a++, b--) { // desfazendo a reversão entre i e j
+				aux = copia.caminho[a];
+				copia.caminho[a] = copia.caminho[b];
+				copia.caminho[b] = aux; 
+			}
+		}
+	}
+
+	if (menorCusto < custoOriginal) {
+		memcpy(copia.caminho, melhorCaminho, sizeof(int) * copia.tamanhoCaminho);
+		memcpy(copia.capacidades, melhorCapacidade, sizeof(int) * copia.tamanhoCaminho);
+		return copia;
+	} else {
+		return s;
+	}
 }

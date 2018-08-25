@@ -1,6 +1,9 @@
 #include <string.h>
 #include <math.h>
 
+#define TRUE 1
+#define FALSE 0
+
 typedef struct FabricaSolucao
 {
 	int n;
@@ -18,6 +21,7 @@ typedef struct Solucao
 	int *caminho;
 	int *capacidades;
 	int tamanhoCaminho;
+	int viavel;
 } Solucao;
 
 void liberarFabrica(FabricaSolucao fs) { // mover
@@ -225,5 +229,6 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.caminho[j] = 0;
 	solucao.capacidades[j] = q;
 	solucao.tamanhoCaminho = j + 1;
+	solucao.viavel = TRUE;
 	return solucao;
 }
