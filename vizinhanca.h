@@ -107,19 +107,28 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 
 	condicaoParada = s.tamanhoCaminho - passo * 2;
 
-	for (int i = 0; i < condicaoParada; i++) { // verificar condicao de parada
-		if (s.capacidades[i] == s.capacidades[i + passo]) {
+	for (int i = 0; i < condicaoParada; i++) {
+
+		if (s.capacidades[i] == s.capacidades[i + passo]) { // verifica se o segmento conserva o fluxo
+			
+			int diferencaCarga = s.capacidades[i + 1] - s.capacidades[i];
 
 			menorCustoParcial = custoOriginal - (fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)]
 						+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[i + passo + 1], fs.n)]);
 
 			menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + passo + 1], fs.n)];
 
+			int testeViolacaoCarga;
+
 			for (int j = 0; j < s.tamanhoCaminho - 2; j++) { // verificar condicao de parada
 				if (j == i) {
 					j += passo + 1;
 				}
-				if (s.capacidades[i] == s.capacidades[j]) {
+
+				testeViolacaoCarga = diferencaCarga < 0 ? 
+										s.capacidades[j] + diferencaCarga : s.capacidades[j] + abs(diferencaCarga);
+
+				if (testeViolacaoCarga >=0 && testeViolacaoCarga <= fs.q) {
 					menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i + 1], fs.n)]
 						+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[j + 1], fs.n)];
 
@@ -128,6 +137,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 						menorCusto = menorCustoParcial;
 						indiceTrocaI = i;
 						indiceTrocaJ = j;
+						printf("%f\n", menorCusto);
 					}
 				}
 			}
@@ -137,20 +147,24 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
 		int verticesMovidos[passo];
+		
 		for (int i = 0, j = indiceTrocaI + 1; i < passo; i++, j++) {
 			verticesMovidos[i] = nova.caminho[j];
 		}
 		if (indiceTrocaI < indiceTrocaJ) {
-			for (int i = indiceTrocaI + 1; i <= indiceTrocaJ - passo; i++) {
+			for (int i = indiceTrocaI + 1; i < indiceTrocaJ - passo; i++) {
 				nova.caminho[i] = nova.caminho[i + passo];
 			}
+			for (int i = indiceTrocaJ - passo + 1, j = 0; j < passo; i++, j++) {
+				nova.caminho[i] = verticesMovidos[j];
+			}
 		} else {
-			for (int i = indiceTrocaI + passo; i >= indiceTrocaJ + passo; i--) {
+			for (int i = indiceTrocaI + passo; i > indiceTrocaJ + passo; i--) {
 				nova.caminho[i] = nova.caminho[i - passo];
 			}
-		}
-		for (int i = indiceTrocaJ + 1, j = 0; j < passo; i++, j++) {
-			nova.caminho[i] = verticesMovidos[j];
+			for (int i = indiceTrocaJ + 1, j = 0; j < passo; i++, j++) {
+				nova.caminho[i] = verticesMovidos[j];
+			}
 		}
 		return nova;
 	} else {
