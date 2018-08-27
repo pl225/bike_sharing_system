@@ -299,7 +299,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 					custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
 								+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
 									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]);
-
+					
 					aux = copia.caminho[i];
 					memcpy(copia.caminho + j + 1, copia.caminho + j, sizeof(int) * (s.tamanhoCaminho - j));
 					copia.caminho[j] = aux;
@@ -329,6 +329,15 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 							break;
 						}
 						demandas[copia.caminho[a]] += (-1) * (copia.capacidades[a] - copia.capacidades[a - 1]);
+					}
+
+					if (viavel) {
+						for (int a = 0; a < fs.n; a++) {
+							if (demandas[a] != 0) {
+								viavel = FALSE;
+								break;
+							}
+						}
 					}
 
 					if ((copia.viavel == TRUE && viavel == TRUE && custoParcial < menorCusto) || 
