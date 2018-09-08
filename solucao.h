@@ -79,20 +79,28 @@ void shuffle(int *array, size_t n) { // mover
 }
 
 void atualizarADS (Solucao s, int q, int inicio, int fim) {
-	short qSumAuxiliar = 0, qSumAuxiliarCopia = 0;
+	short qSumAuxiliar, qSumAuxiliarCopia = 0, cargaMinima, cargaMaxima;
 	for (int i = inicio; i < fim; i++) {
-			if (i != 0) qSumAuxiliar = s.capacidades[i - 1] - s.capacidades[i];
+			
+			qSumAuxiliar = i != 0 ? s.capacidades[i - 1] - s.capacidades[i] : 0;
+			cargaMinima = qSumAuxiliar < 0 ? qSumAuxiliar : 0;
+			cargaMaxima = qSumAuxiliar > 0 ? qSumAuxiliar : 0;
+			
 			s.ads[i][i].qSum = qSumAuxiliar;
-			s.ads[i][i].qMin = min(0, qSumAuxiliar);
-			s.ads[i][i].qMax = max(0, qSumAuxiliar);
+			s.ads[i][i].qMin = cargaMinima;
+			s.ads[i][i].qMax = cargaMaxima;
 			s.ads[i][i].lMin = -s.ads[i][i].qMin;
 			s.ads[i][i].lMax = q - s.ads[i][i].qMax;
+		
 		for (int j = i + 1; j < fim; j++) {
-			qSumAuxiliarCopia = qSumAuxiliar;
+			
 			qSumAuxiliar += s.capacidades[j - 1] - s.capacidades[j];
+			if (qSumAuxiliar < cargaMinima) cargaMinima = qSumAuxiliar;
+			if (qSumAuxiliar > cargaMaxima) cargaMaxima = qSumAuxiliar;
+			
 			s.ads[i][j].qSum = qSumAuxiliar;
-			s.ads[i][j].qMin = min(0, min(qSumAuxiliar, qSumAuxiliarCopia));
-			s.ads[i][j].qMax = max(0, max(qSumAuxiliar, qSumAuxiliarCopia));
+			s.ads[i][j].qMin = cargaMinima;
+			s.ads[i][j].qMax = cargaMaxima;
 			s.ads[i][j].lMin = -s.ads[i][j].qMin;
 			s.ads[i][j].lMax = q - s.ads[i][j].qMax;
 		}
