@@ -4,6 +4,16 @@
 #define TRUE 1
 #define FALSE 0
 
+#define max(a, b) \
+ ({ __typeof__ (a) _a = (a); \
+    __typeof__ (b) _b = (b); \
+    _a > _b ? _a : _b; })
+
+#define min(a, b) \
+ ({ __typeof__ (a) _a = (a); \
+    __typeof__ (b) _b = (b); \
+    _a < _b ? _a : _b; })
+
 typedef struct FabricaSolucao
 {
 	int n;
@@ -16,10 +26,16 @@ typedef struct FabricaSolucao
 	float *custoArestas;
 } FabricaSolucao;
 
+typedef struct ADS
+{
+	short qSum, qMin, qMax, lMin, lMax;
+} ADS;
+
 typedef struct Solucao
 {
 	int *caminho;
 	int *capacidades;
+	ADS **ads;
 	int tamanhoCaminho;
 	int viavel;
 } Solucao;
@@ -33,6 +49,9 @@ void liberarFabrica(FabricaSolucao fs) { // mover
 
 void liberarSolucao (Solucao s) { // mover
 	free(s.caminho);
+	free(s.capacidades);
+	for (int i = 0; i < s.tamanhoCaminho; i++) free(s.ads[i]);
+	free(s.ads);
 }
 
 int IndiceArestas(int i, int j, int n) { // mover
@@ -57,6 +76,27 @@ void shuffle(int *array, size_t n) { // mover
           array[i] = t;
         }
     }
+}
+
+void atualizarADS (Solucao s, int q, int inicio, int fim) {
+	short qSumAuxiliar = 0, qSumAuxiliarCopia = 0;
+	for (int i = inicio; i < fim; i++) {
+			if (i != 0) qSumAuxiliar = s.capacidades[i - 1] - s.capacidades[i];
+			s.ads[i][i].qSum = qSumAuxiliar;
+			s.ads[i][i].qMin = min(0, qSumAuxiliar);
+			s.ads[i][i].qMax = max(0, qSumAuxiliar);
+			s.ads[i][i].lMin = -s.ads[i][i].qMin;
+			s.ads[i][i].lMax = q - s.ads[i][i].qMax;
+		for (int j = i + 1; j < fim; j++) {
+			qSumAuxiliarCopia = qSumAuxiliar;
+			qSumAuxiliar += s.capacidades[j - 1] - s.capacidades[j];
+			s.ads[i][j].qSum = qSumAuxiliar;
+			s.ads[i][j].qMin = min(0, min(qSumAuxiliar, qSumAuxiliarCopia));
+			s.ads[i][j].qMax = max(0, max(qSumAuxiliar, qSumAuxiliarCopia));
+			s.ads[i][j].lMin = -s.ads[i][j].qMin;
+			s.ads[i][j].lMax = q - s.ads[i][j].qMax;
+		}
+	}
 }
 
 FabricaSolucao instanciarFabrica (Grafo g) {
@@ -230,5 +270,11 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.capacidades[j] = q;
 	solucao.tamanhoCaminho = j + 1;
 	solucao.viavel = TRUE;
+
+	solucao.ads = (ADS**) malloc(sizeof(ADS*) * solucao.tamanhoCaminho);
+	for (int i = 0; i < solucao.tamanhoCaminho; i++) solucao.ads[i] = (ADS*) malloc(sizeof(ADS) * solucao.tamanhoCaminho);
+	
+	atualizarADS(solucao, fs.q, 0, solucao.tamanhoCaminho);
+
 	return solucao;
 }
