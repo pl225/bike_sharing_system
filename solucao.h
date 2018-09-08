@@ -4,16 +4,6 @@
 #define TRUE 1
 #define FALSE 0
 
-#define max(a, b) \
- ({ __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a > _b ? _a : _b; })
-
-#define min(a, b) \
- ({ __typeof__ (a) _a = (a); \
-    __typeof__ (b) _b = (b); \
-    _a < _b ? _a : _b; })
-
 typedef struct FabricaSolucao
 {
 	int n;
@@ -78,9 +68,9 @@ void shuffle(int *array, size_t n) { // mover
     }
 }
 
-void atualizarADS (Solucao s, int q, int inicio, int fim) {
+void construirADS (Solucao s, int q) {
 	short qSumAuxiliar, qSumAuxiliarCopia = 0, cargaMinima, cargaMaxima;
-	for (int i = inicio; i < fim; i++) {
+	for (int i = 0; i < s.tamanhoCaminho; i++) {
 			
 			qSumAuxiliar = i != 0 ? s.capacidades[i - 1] - s.capacidades[i] : 0;
 			cargaMinima = qSumAuxiliar < 0 ? qSumAuxiliar : 0;
@@ -92,7 +82,38 @@ void atualizarADS (Solucao s, int q, int inicio, int fim) {
 			s.ads[i][i].lMin = -s.ads[i][i].qMin;
 			s.ads[i][i].lMax = q - s.ads[i][i].qMax;
 		
-		for (int j = i + 1; j < fim; j++) {
+		for (int j = i + 1; j < s.tamanhoCaminho; j++) {
+			
+			qSumAuxiliar += s.capacidades[j - 1] - s.capacidades[j];
+			if (qSumAuxiliar < cargaMinima) cargaMinima = qSumAuxiliar;
+			if (qSumAuxiliar > cargaMaxima) cargaMaxima = qSumAuxiliar;
+			
+			s.ads[i][j].qSum = qSumAuxiliar;
+			s.ads[i][j].qMin = cargaMinima;
+			s.ads[i][j].qMax = cargaMaxima;
+			s.ads[i][j].lMin = -s.ads[i][j].qMin;
+			s.ads[i][j].lMax = q - s.ads[i][j].qMax;
+		}
+	}
+}
+
+void atualizarADS (Solucao s, int q, int inicio, int fim) { // inicio sempre > que zero
+	short qSumAuxiliar, qSumAuxiliarCopia = 0, cargaMinima, cargaMaxima;
+	int aux;
+	for (int i = 0; i <= fim; i++) { // o índice de fim deve ser incluído
+			
+			aux = inicio - 1;
+			qSumAuxiliar = s.ads[i][aux].qSum + (s.capacidades[aux] - s.capacidades[inicio]);
+			cargaMinima = qSumAuxiliar < s.ads[i][aux].qMin ? qSumAuxiliar : s.ads[i][aux].qMin;
+			cargaMaxima = qSumAuxiliar > s.ads[i][aux].qMax ? qSumAuxiliar : s.ads[i][aux].qMax;
+			
+			s.ads[i][inicio].qSum = qSumAuxiliar;
+			s.ads[i][inicio].qMin = cargaMinima;
+			s.ads[i][inicio].qMax = cargaMaxima;
+			s.ads[i][inicio].lMin = -s.ads[i][inicio].qMin;
+			s.ads[i][inicio].lMax = q - s.ads[i][inicio].qMax;
+		
+		for (int j = inicio + 1; j < s.tamanhoCaminho; j++) {
 			
 			qSumAuxiliar += s.capacidades[j - 1] - s.capacidades[j];
 			if (qSumAuxiliar < cargaMinima) cargaMinima = qSumAuxiliar;
@@ -282,7 +303,7 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.ads = (ADS**) malloc(sizeof(ADS*) * solucao.tamanhoCaminho);
 	for (int i = 0; i < solucao.tamanhoCaminho; i++) solucao.ads[i] = (ADS*) malloc(sizeof(ADS) * solucao.tamanhoCaminho);
 	
-	atualizarADS(solucao, fs.q, 0, solucao.tamanhoCaminho);
+	construirADS(solucao, fs.q);
 
 	return solucao;
 }

@@ -9,44 +9,23 @@ float custo (Solucao s, FabricaSolucao fs) { // mover
 Solucao copiarSolucao (Solucao s) { // mover
 	Solucao copia;
 	copia.tamanhoCaminho = s.tamanhoCaminho;
-	copia.caminho = (int *) malloc(sizeof(int) * s.tamanhoCaminho);
-	copia.capacidades = (int *) malloc(sizeof(int) * s.tamanhoCaminho);
+
+	size_t tamanhoInteiroTotal = sizeof(int) * s.tamanhoCaminho;
+
+	copia.caminho = (int *) malloc(tamanhoInteiroTotal);
+	copia.capacidades = (int *) malloc(tamanhoInteiroTotal);
 	copia.viavel = s.viavel;
-	memcpy(copia.caminho, s.caminho, sizeof(int) * s.tamanhoCaminho);
-	memcpy(copia.capacidades, s.capacidades, sizeof(int) * s.tamanhoCaminho);
+	memcpy(copia.caminho, s.caminho, tamanhoInteiroTotal);
+	memcpy(copia.capacidades, s.capacidades, tamanhoInteiroTotal);
+
+	size_t tamanhoADS = sizeof(ADS) * s.tamanhoCaminho;
+
+	copia.ads = (ADS **) malloc(sizeof(ADS *) * copia.tamanhoCaminho);
+	for (int i = 0; i < copia.tamanhoCaminho; i++) {
+		copia.ads[i] = (ADS*) malloc(tamanhoADS);
+		memcpy(copia.ads[i], s.ads[i], tamanhoADS);
+	}
 	return copia;
-}
-
-Solucao supressao (Solucao s, FabricaSolucao fs) {
-	float menorCusto = custo(s, fs), ultimoCustoRemovido = 0, menorCustoParcial, custoAux;
-	int posicaoSuprimida = -1;
-	// fazer quando a solução é inviável
-	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
-		if (fs.demandas[s.caminho[i]] == 0) { // se a solução inicial é viável, os únicos vértices que podem ser suprimidos são os que não possuem demanda
-			custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
-				+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)];
-			menorCustoParcial = menorCusto - custoAux + fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + 1], fs.n)];
-			if (menorCustoParcial + ultimoCustoRemovido <= menorCusto) {
-				posicaoSuprimida = i;
-				menorCusto = menorCustoParcial + ultimoCustoRemovido;
-				ultimoCustoRemovido = custoAux;
-			}
-		}
-	}
-
-	if (posicaoSuprimida != -1) {
-		Solucao nova = copiarSolucao(s);
-		for (int i = posicaoSuprimida; i < s.tamanhoCaminho - 1; i++) {
-			nova.caminho[i] = nova.caminho[i + 1];
-			nova.capacidades[i] = nova.capacidades[i + 1];
-		}
-		nova.tamanhoCaminho--;
-		nova.caminho = (int *) realloc(nova.caminho, sizeof(int) * nova.tamanhoCaminho);
-		nova.capacidades = (int *) realloc(nova.capacidades, sizeof(int) * nova.tamanhoCaminho);
-		return nova;
-	} else {
-		return s;
-	}
 }
 
 Solucao swap(Solucao s, FabricaSolucao fs) {
@@ -112,6 +91,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 					nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaI] : nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaJ];
 			for (int i = indiceTrocaI; i < indiceTrocaJ; i++)
 				nova.capacidades[i] += diff;
+			atualizarADS(nova, fs.q, indiceTrocaI, indiceTrocaJ);
 		}
 
 		return nova;
