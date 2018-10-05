@@ -204,7 +204,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 				qSumAuxiliar = s.ads[0][fimSeg1].qSum + s.ads[iniSeg2][fimSeg2].qSum;
 				
 				if (qSumAuxiliar >= s.ads[iniSeg3][fimSeg3].lMin && qSumAuxiliar <= s.ads[iniSeg3][fimSeg3].lMax) {
-				//	puts("cccccccccc");
+				
 					qSumAuxiliar += s.ads[iniSeg3][fimSeg3].qSum;
 
 					if (qSumAuxiliar >= s.ads[iniSeg4][fimSeg4].lMin && qSumAuxiliar <= s.ads[iniSeg4][fimSeg4].lMax) {
@@ -222,17 +222,26 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 			}
 		}
 	}
-	//printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
+	printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
-		int verticesMovidos[passo + 1];//, capacidadesMovidas[passo];
+		int verticesMovidos[passo + 1], capacidadesMovidas[passo + 1];
 
 		memcpy(verticesMovidos, nova.caminho + indiceTrocaI, sizeof(int) * (passo + 1));
+		memcpy(capacidadesMovidas, nova.capacidades + indiceTrocaI, sizeof(int) * (passo + 1));
 		if (indiceTrocaI < indiceTrocaJ) {
 			int posAux = indiceTrocaI + passo + 1;
 			int trazidosTras = indiceTrocaJ - posAux + 1;
 			memcpy(nova.caminho + indiceTrocaI, nova.caminho + posAux, sizeof(int) * trazidosTras);
 			memcpy(nova.caminho + indiceTrocaI + trazidosTras, verticesMovidos, sizeof(int) * (passo + 1));
+
+			int diff = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
+			int inicioTrocaCapacidade = indiceTrocaI + trazidosTras;
+			memcpy(nova.capacidades + indiceTrocaI, nova.capacidades + posAux, sizeof(int) * trazidosTras);
+			nova.capacidades[inicioTrocaCapacidade] = nova.capacidades[inicioTrocaCapacidade - 1] + diff;
+			for (int i = inicioTrocaCapacidade + 1, a = 1; a < passo + 1; i++, a++) {
+				nova.capacidades[i] = nova.capacidades[i - 1] + (capacidadesMovidas[a] - capacidadesMovidas[a - 1]);
+			} 
 		} else {
 			int posAux = indiceTrocaJ + passo + 1;
 			int trazidosFrente = indiceTrocaI - indiceTrocaJ;
