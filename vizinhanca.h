@@ -100,65 +100,6 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 	}
 }
 
-/*Solucao reinsercao(Solucao s, FabricaSolucao fs) {
-	float menorCusto = custo(s, fs), custoOriginal = menorCusto, custoParcial;
-	int auxEsq, auxDir, indiceFinal = s.tamanhoCaminho - 1, indiceTrocaI = -1, indiceTrocaJ = -1;
-	short qSumAuxiliar;
-
-	for (int i = 1; i < indiceFinal; i++) {
-		for (int j = 1; j < indiceFinal; j++) {
-			if (i != j) {
-				if (i < j) {
-					auxEsq = i - 1, auxDir = i + 1;
-				} else {
-					auxEsq = j - 1, auxDir = j + 1;
-				}
-				if (s.ads[0][auxEsq].qSum >= s.ads[auxDir][j].lMin && s.ads[0][auxEsq].qSum <= s.ads[auxDir][j].lMax) {
-					qSumAuxiliar = s.ads[0][auxEsq].qSum + s.ads[auxDir][j].qSum;
-
-					if (qSumAuxiliar >= s.ads[i][i].lMin && qSumAuxiliar <= s.ads[i][i].lMax) {
-						qSumAuxiliar += s.ads[i][i].qSum;
-						auxDir = j + 1;
-						if (qSumAuxiliar >= s.ads[auxDir][indiceFinal].lMin && qSumAuxiliar <= s.ads[auxDir][indiceFinal].lMax) {
-
-							custoParcial = custoOriginal - (fs.custoArestas[IndiceArestas(copia.caminho[i - 1], copia.caminho[i], fs.n)]
-								+ fs.custoArestas[IndiceArestas(copia.caminho[i], copia.caminho[i + 1], fs.n)]
-								+ fs.custoArestas[IndiceArestas(copia.caminho[j], copia.caminho[j + 1], fs.n)])
-								+ (fs.custoArestas[IndiceArestas(copia.caminho[i - 1], copia.caminho[i + 1], fs.n)]
-								+ fs.custoArestas[IndiceArestas(copia.caminho[j], copia.caminho[i], fs.n)]
-								+ fs.custoArestas[IndiceArestas(copia.caminho[i], copia.caminho[j + 1], fs.n)]);
-
-							if (custoParcial < menorCusto) {
-								indiceTrocaI = i;
-								indiceTrocaJ = j;
-								menorCusto = custoParcial;
-							}
-						}
-					}
-				}
-			}						
-		}
-	}
-
-	if (indiceTrocaI != -1) {
-		auxEsq = copia.caminho[i];
-		if (i < j) {
-			memcpy(copia.caminho + i, copia.caminho + i + 1, sizeof(int) * (j - i));
-		} else {
-			memcpy(copia.caminho + j + 1, copia.caminho + j, sizeof(int) * (i - j));
-		}
-		copia.caminho[j] = aux;
-
-		printf("\n");
-		for (int a = 0; a < copia.tamanhoCaminho; a++) printf("%d ", copia.caminho[a]);
-		printf("\n");
-
-		exit(0);
-	} else {
-		return s;
-	}
-}*/
-
 Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 
 	float menorCusto = custo(s, fs), custoOriginal = menorCusto, menorCustoParcial, menorCustoFinal;
@@ -222,7 +163,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 			}
 		}
 	}
-	printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
+	
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
 		int verticesMovidos[passo + 1], capacidadesMovidas[passo + 1];
@@ -242,39 +183,25 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 			for (int i = inicioTrocaCapacidade + 1, a = 1; a < passo + 1; i++, a++) {
 				nova.capacidades[i] = nova.capacidades[i - 1] + (capacidadesMovidas[a] - capacidadesMovidas[a - 1]);
 			} 
+			atualizarADS(nova, fs.q, indiceTrocaI, indiceTrocaJ);
 		} else {
 			int posAux = indiceTrocaJ + passo + 1;
 			int trazidosFrente = indiceTrocaI - indiceTrocaJ;
 			memcpy(nova.caminho + posAux, nova.caminho + indiceTrocaJ, sizeof(int) * trazidosFrente);
+			
 			memcpy(nova.caminho + indiceTrocaJ + 1, verticesMovidos, sizeof(int) * (passo + 1));
-		}
-		
-		/*for (int i = 0, j = indiceTrocaI + 1; i < passo; i++, j++) {
-			verticesMovidos[i] = nova.caminho[j];
-			capacidadesMovidas[i] = nova.capacidades[j];
-		}
 
-		int diferencaNovaCapacidade = nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaI];
+			int diff = nova.capacidades[indiceTrocaJ + 1] - nova.capacidades[indiceTrocaJ];
+			int inicioTrocaCapacidade = posAux + 1;
+			nova.capacidades[inicioTrocaCapacidade] = capacidadesMovidas[passo] + diff;
 
-		if (indiceTrocaI < indiceTrocaJ) {
-			for (int i = indiceTrocaI + 1; i <= indiceTrocaJ - passo; i++) {
-				nova.caminho[i] = nova.caminho[i + passo];
-				nova.capacidades[i] = nova.capacidades[i + passo];
+			for (int i = inicioTrocaCapacidade + 1, a = indiceTrocaJ + 2; a < inicioTrocaCapacidade; i++, a++) {
+				nova.capacidades[i] = nova.capacidades[i - 1] + (nova.capacidades[a] - nova.capacidades[a - 1]);
 			}
-			for (int i = indiceTrocaJ - passo + 1, j = 0; j < passo; i++, j++) {
-				nova.caminho[i] = verticesMovidos[j];
-				nova.capacidades[i] = capacidadesMovidas[j] + diferencaNovaCapacidade;
-			}
-		} else {
-			for (int i = indiceTrocaI + passo; i >= indiceTrocaJ + passo; i--) {
-				nova.caminho[i] = nova.caminho[i - passo];
-				nova.capacidades[i] = nova.capacidades[i - passo];
-			}
-			for (int i = indiceTrocaJ + 1, j = 0; j < passo; i++, j++) {
-				nova.caminho[i] = verticesMovidos[j];
-				nova.capacidades[i] = capacidadesMovidas[j] + diferencaNovaCapacidade;
-			}
-		}*/
+			memcpy(nova.capacidades + indiceTrocaJ + 1, capacidadesMovidas, sizeof(int) * (passo + 1));
+			atualizarADS(nova, fs.q, indiceTrocaJ + 1, indiceTrocaI + passo);	
+		}
+	
 		return nova;
 	} else {
 		return s;
