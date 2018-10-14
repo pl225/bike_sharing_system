@@ -281,16 +281,9 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 }
 
 Solucao split (Solucao s, FabricaSolucao fs) {
-	float menorCusto = custo(s, fs), custoOriginal = menorCusto, custoParcial;
-	int aux, melhorCaminho[s.tamanhoCaminho + 1], melhorCapacidade[s.tamanhoCaminho + 1], viavel = TRUE, demandas[fs.n];
-	Solucao copia = copiarSolucao(s);
+	float menorCusto = INFINITY, custoOriginal = custo(s, fs), custoParcial;
 	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
-	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, fimSeg5 = s.tamanhoCaminho - 1, indiceFinal = s.tamanhoCaminho - 1;
-
-	copia.tamanhoCaminho += 1;
-	copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
-	copia.capacidades = (int *) realloc(copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
-	memcpy(demandas, fs.demandas, sizeof(int) * fs.n);
+	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
 		if (fs.demandas[s.caminho[i]] < - 1 || fs.demandas[s.caminho[i]] > 1) {
@@ -301,23 +294,19 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
 					qSum = s.ads[i][i].qSum - 1;
 					if (i < j) {
-						//if (!(qSum >= s.ads[i + 1][indiceFinal].lMin && qSum <= s.ads[i + 1][indiceFinal].lMax)) continue;
-						lMin4 = 0, lMax4 = fs.q - 1, qSum4 = 1, // Q - 1 bicicleta no caminhão
+						lMin4 = 0, lMax4 = fs.q - 1, qSum4 = 1,
 							qSum2 = qSum, lMin2 = 0, lMax2 = fs.q - qSum;
 					} else {
-						//if (!(qSum >= s.ads[j][indiceFinal].lMin && qSum <= s.ads[j][indiceFinal].lMax)) continue;
-						lMin2 = 0, lMax2 = fs.q - 1, qSum2 = 1, // Q - 1 bicicleta no caminhão
+						lMin2 = 0, lMax2 = fs.q - 1, qSum2 = 1,
 							qSum4 = qSum, lMin4 = 0, lMax4 = fs.q- qSum;
 					}
 				} else { // entrega
 					qSum = s.ads[i][i].qSum + 1;
 					if (i < j) {
-						//if (!(qSum >= s.ads[i + 1][indiceFinal].lMin && qSum <= s.ads[i + 1][indiceFinal].lMax)) continue;
-						lMin4 = 1, lMax4 = fs.q, qSum4 = -1, // Q - 1 bicicleta no caminhão
+						lMin4 = 1, lMax4 = fs.q, qSum4 = -1,
 							qSum2 = qSum, lMin2 = -qSum, lMax2 = fs.q;
 					} else {
-						//if (!(qSum >= s.ads[j][indiceFinal].lMin && qSum <= s.ads[j][indiceFinal].lMax)) continue;
-						lMin2 = 1, lMax2 = fs.q, qSum2 = -1, // Q - 1 bicicleta no caminhão
+						lMin2 = 1, lMax2 = fs.q, qSum2 = -1,
 							qSum4 = qSum, lMin4 = -qSum, lMax = fs.q;
 					}
 				}
@@ -328,75 +317,59 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 					fimSeg1 = j - 1, iniSeg3 = j, fimSeg3 = i - 1, iniSeg5 = i + 1;
 				}
 
-				int inicioLoop1, fimLoop1, inicioLoop2, fimLoop2, fatorAlteracao;
-
-				if (i != j) {
-
-					custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
-								+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
+				if (s.ads[0][fimSeg1].qSum >= lMin2 && s.ads[0][fimSeg1].qSum <= lMax2) {
+					qSum = s.ads[0][fimSeg1].qSum + qSum2;
+					
+					if (qSum >= s.ads[iniSeg3][fimSeg3].lMin && qSum <= s.ads[iniSeg3][fimSeg3].lMax) {
+						qSum += s.ads[iniSeg3][fimSeg3].qSum;
+						
+						if (qSum >= lMin4 && qSum <= lMax4) {
+							qSum += qSum4;
+							if (qSum >= s.ads[iniSeg5][fimSeg5].lMin && qSum <= s.ads[iniSeg5][fimSeg5].lMax) {
+								
+								custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
+									+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
 									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]);
-					
-					aux = copia.caminho[i];
-					memcpy(copia.caminho + j + 1, copia.caminho + j, sizeof(int) * (s.tamanhoCaminho - j));
-					copia.caminho[j] = aux;
-
-					aux = copia.capacidades[i];
-					memcpy(copia.capacidades + j + 1, copia.capacidades + j, sizeof(int) * (s.tamanhoCaminho - j));
-					copia.capacidades[j] = aux;
-
-					if (i < j) {
-						inicioLoop1 = i, fimLoop1 = j;
-						inicioLoop2 = j + 1, fimLoop2 = copia.tamanhoCaminho;
-					} else {
-						inicioLoop1 = i, fimLoop1 = copia.tamanhoCaminho;
-						inicioLoop2 = j, fimLoop2 = i;
-					}
-
-					fatorAlteracao = copia.capacidades[i] - copia.capacidades[i - 1] < 0 ? 1 : -1;
-					for (int a = inicioLoop1; a < fimLoop1; a++) copia.capacidades[a] += fatorAlteracao;
-
-					fatorAlteracao *= -1;
-					copia.capacidades[j] = copia.capacidades[j - 1] + fatorAlteracao;
-					//for (int a = inicioLoop2; a < fimLoop2; a++) copia.capacidades[a] += fatorAlteracao;
-					
-					for (int a = 1; a < copia.tamanhoCaminho - 1; a++) {
-						if (copia.capacidades[a] < 0 || copia.capacidades[a] > fs.q) {
-							viavel = FALSE;
-							break;
-						}
-						demandas[copia.caminho[a]] += (-1) * (copia.capacidades[a] - copia.capacidades[a - 1]);
-					}
-
-					if (viavel) {
-						for (int a = 0; a < fs.n; a++) {
-							if (demandas[a] != 0) {
-								viavel = FALSE;
-								break;
+								if (menorCusto < custoParcial) {
+									indiceTrocaI = i;
+									indiceTrocaJ = j;
+									menorCusto = custoParcial;
+								}
 							}
 						}
 					}
-
-					if ((copia.viavel == TRUE && viavel == TRUE && custoParcial < menorCusto) || 
-						(copia.viavel == FALSE && viavel == TRUE)) {
-
-						copia.viavel = viavel;	
-						menorCusto = custoParcial;
-						memcpy(melhorCaminho, copia.caminho, sizeof(int) * copia.tamanhoCaminho);
-						memcpy(melhorCapacidade, copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
-					}
-
-					memcpy(copia.caminho + j, copia.caminho + j + 1, sizeof(int) * (s.tamanhoCaminho - j));
-					memcpy(copia.capacidades, s.capacidades, sizeof(int) * s.tamanhoCaminho);
-					memcpy(demandas, fs.demandas, sizeof(int) * fs.n);
-					viavel = TRUE;
 				}
 			}
 		}
 	}
-	
-	if (menorCusto < custoOriginal) {
-		memcpy(copia.caminho, melhorCaminho, sizeof(int) * copia.tamanhoCaminho);
-		memcpy(copia.capacidades, melhorCapacidade, sizeof(int) * copia.tamanhoCaminho);
+
+	if (indiceTrocaI != -1) {
+		Solucao copia = copiarSolucao(s);
+		copia.tamanhoCaminho += 1;
+		copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
+		copia.capacidades = (int *) realloc(copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
+
+		int aux = copia.caminho[indiceTrocaI];
+		memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
+		copia.caminho[indiceTrocaJ] = aux;
+
+		aux = copia.capacidades[indiceTrocaI];
+		memcpy(copia.capacidades + indiceTrocaJ + 1, copia.capacidades + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
+		copia.capacidades[indiceTrocaJ] = aux;
+
+		int inicioLoop, fimLoop;
+		if (indiceTrocaI < indiceTrocaJ) {
+			inicioLoop1 = i, fimLoop1 = j;
+		} else {
+			inicioLoop1 = i, fimLoop1 = copia.tamanhoCaminho;
+		}
+
+		fatorAlteracao = copia.capacidades[i] - copia.capacidades[i - 1] < 0 ? 1 : -1;
+		for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracao;
+
+		fatorAlteracao *= -1;
+		copia.capacidades[j] = copia.capacidades[j - 1] + fatorAlteracao;
+
 		return copia;
 	} else {
 		return s;
