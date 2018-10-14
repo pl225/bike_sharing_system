@@ -284,6 +284,8 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 	float menorCusto = custo(s, fs), custoOriginal = menorCusto, custoParcial;
 	int aux, melhorCaminho[s.tamanhoCaminho + 1], melhorCapacidade[s.tamanhoCaminho + 1], viavel = TRUE, demandas[fs.n];
 	Solucao copia = copiarSolucao(s);
+	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
+	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, fimSeg5 = s.tamanhoCaminho - 1, indiceFinal = s.tamanhoCaminho - 1;
 
 	copia.tamanhoCaminho += 1;
 	copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
@@ -293,6 +295,38 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
 		if (fs.demandas[s.caminho[i]] < - 1 || fs.demandas[s.caminho[i]] > 1) {
 			for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
+
+				if (i == j) continue;
+
+				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
+					qSum = s.ads[i][i].qSum - 1;
+					if (i < j) {
+						//if (!(qSum >= s.ads[i + 1][indiceFinal].lMin && qSum <= s.ads[i + 1][indiceFinal].lMax)) continue;
+						lMin4 = 0, lMax4 = fs.q - 1, qSum4 = 1, // Q - 1 bicicleta no caminhão
+							qSum2 = qSum, lMin2 = 0, lMax2 = fs.q - qSum;
+					} else {
+						//if (!(qSum >= s.ads[j][indiceFinal].lMin && qSum <= s.ads[j][indiceFinal].lMax)) continue;
+						lMin2 = 0, lMax2 = fs.q - 1, qSum2 = 1, // Q - 1 bicicleta no caminhão
+							qSum4 = qSum, lMin4 = 0, lMax4 = fs.q- qSum;
+					}
+				} else { // entrega
+					qSum = s.ads[i][i].qSum + 1;
+					if (i < j) {
+						//if (!(qSum >= s.ads[i + 1][indiceFinal].lMin && qSum <= s.ads[i + 1][indiceFinal].lMax)) continue;
+						lMin4 = 1, lMax4 = fs.q, qSum4 = -1, // Q - 1 bicicleta no caminhão
+							qSum2 = qSum, lMin2 = -qSum, lMax2 = fs.q;
+					} else {
+						//if (!(qSum >= s.ads[j][indiceFinal].lMin && qSum <= s.ads[j][indiceFinal].lMax)) continue;
+						lMin2 = 1, lMax2 = fs.q, qSum2 = -1, // Q - 1 bicicleta no caminhão
+							qSum4 = qSum, lMin4 = -qSum, lMax = fs.q;
+					}
+				}
+
+				if (i < j) {
+					fimSeg1 = i - 1, iniSeg3 = i + 1, fimSeg3 = j - 1, iniSeg5 = j;
+				} else {
+					fimSeg1 = j - 1, iniSeg3 = j, fimSeg3 = i - 1, iniSeg5 = i + 1;
+				}
 
 				int inicioLoop1, fimLoop1, inicioLoop2, fimLoop2, fatorAlteracao;
 
