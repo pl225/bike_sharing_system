@@ -290,6 +290,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 			for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
 
 				if (i == j) continue;
+				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[i] == s.caminho[j + 1]) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
 					qSum = s.ads[i][i].qSum - 1;
@@ -298,7 +299,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 							qSum2 = qSum, lMin2 = 0, lMax2 = fs.q - qSum;
 					} else {
 						lMin2 = 0, lMax2 = fs.q - 1, qSum2 = 1,
-							qSum4 = qSum, lMin4 = 0, lMax4 = fs.q- qSum;
+							qSum4 = qSum, lMin4 = 0, lMax4 = fs.q - qSum;
 					}
 				} else { // entrega
 					qSum = s.ads[i][i].qSum + 1;
@@ -307,7 +308,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 							qSum2 = qSum, lMin2 = -qSum, lMax2 = fs.q;
 					} else {
 						lMin2 = 1, lMax2 = fs.q, qSum2 = -1,
-							qSum4 = qSum, lMin4 = -qSum, lMax = fs.q;
+							qSum4 = qSum, lMin4 = -qSum, lMax4 = fs.q;
 					}
 				}
 
@@ -325,12 +326,13 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 						
 						if (qSum >= lMin4 && qSum <= lMax4) {
 							qSum += qSum4;
-							if (qSum >= s.ads[iniSeg5][fimSeg5].lMin && qSum <= s.ads[iniSeg5][fimSeg5].lMax) {
+							if (qSum >= s.ads[iniSeg5][indiceFinal].lMin && qSum <= s.ads[iniSeg5][indiceFinal].lMax) {
 								
 								custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
 									+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
 									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]);
-								if (menorCusto < custoParcial) {
+
+								if (custoParcial < menorCusto) {
 									indiceTrocaI = i;
 									indiceTrocaJ = j;
 									menorCusto = custoParcial;
@@ -342,7 +344,6 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 			}
 		}
 	}
-
 	if (indiceTrocaI != -1) {
 		Solucao copia = copiarSolucao(s);
 		copia.tamanhoCaminho += 1;
@@ -353,22 +354,37 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 		memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
 		copia.caminho[indiceTrocaJ] = aux;
 
+		int inicioLoop, fimLoop, fatorAlteracao;
+
+		if (indiceTrocaI < indiceTrocaJ) {
+			fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? 1 : -1;
+			inicioLoop = indiceTrocaI, fimLoop = indiceTrocaJ;
+		} else {
+			inicioLoop = indiceTrocaJ, fimLoop = indiceTrocaI + 1;
+			fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? -1 : 1;
+		}
+
 		aux = copia.capacidades[indiceTrocaI];
 		memcpy(copia.capacidades + indiceTrocaJ + 1, copia.capacidades + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
 		copia.capacidades[indiceTrocaJ] = aux;
 
-		int inicioLoop, fimLoop;
-		if (indiceTrocaI < indiceTrocaJ) {
-			inicioLoop1 = i, fimLoop1 = j;
-		} else {
-			inicioLoop1 = i, fimLoop1 = copia.tamanhoCaminho;
-		}
-
-		fatorAlteracao = copia.capacidades[i] - copia.capacidades[i - 1] < 0 ? 1 : -1;
 		for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracao;
 
-		fatorAlteracao *= -1;
-		copia.capacidades[j] = copia.capacidades[j - 1] + fatorAlteracao;
+		if (indiceTrocaI < indiceTrocaJ)
+			fatorAlteracao *= -1;
+		copia.capacidades[indiceTrocaJ] = copia.capacidades[indiceTrocaJ - 1] + fatorAlteracao;
+
+		copia.ads = (ADS**) realloc(copia.ads, sizeof(ADS*) * copia.tamanhoCaminho);
+		memcpy(copia.ads + indiceTrocaJ + 1, copia.ads + indiceTrocaJ, sizeof(ADS*) * (s.tamanhoCaminho - indiceTrocaJ));
+		copia.ads[indiceTrocaJ] = (ADS*) malloc(sizeof(ADS) * copia.tamanhoCaminho);
+		for (int i = 0; i < copia.tamanhoCaminho; i++) {
+			if (i != indiceTrocaJ) {
+				copia.ads[i] = (ADS*) realloc(copia.ads[i], sizeof(ADS) * copia.tamanhoCaminho);
+				memcpy(copia.ads[i] + indiceTrocaJ + 1, copia.ads[i] + indiceTrocaJ, sizeof(ADS) * (s.tamanhoCaminho - indiceTrocaJ));
+			}
+		}
+
+		atualizarADS(copia, fs.q, inicioLoop, fimLoop);
 
 		return copia;
 	} else {
