@@ -27,7 +27,7 @@ typedef struct Solucao
 	int *capacidades;
 	ADS **ads;
 	int tamanhoCaminho;
-	int viavel;
+	float custo;
 } Solucao;
 
 void liberarFabrica(FabricaSolucao fs) { // mover
@@ -238,7 +238,7 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.caminho[0] = 0;
 	solucao.capacidades = (int *) malloc(sizeof(int) * fs.n);
 	solucao.capacidades[0] = q;
-	
+	solucao.custo = 0;
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
 	//demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
@@ -249,10 +249,10 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 				if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
 					
 					solucao.caminho[j] = OV[i]; // adicionando o vértice ao caminho
+					solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], OV[i], fs.n)];
 					q += demandas[OV[i]]; // atualizando q
 					solucao.capacidades[j] = q; // adicionando a capacidade entre o vertice j-1 e j
 					j++;
-					
 					inserido = 1;
 					demandas[OV[i]] = 0; // atualizando demanda do vértice i para zero
 
@@ -283,6 +283,7 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 			demandas[maiorIndice] += demandas[maiorIndice] > 0 ? (-1) * troca[maiorIndice] : troca[maiorIndice]; 
 			
 			solucao.caminho[j] = maiorIndice;
+			solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], maiorIndice, fs.n)];
 			solucao.capacidades[j] = q;
 			j++;
 			if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
@@ -296,9 +297,9 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (j + 1));
 	solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * (j + 1));
 	solucao.caminho[j] = 0;
+	solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], 0, fs.n)];
 	solucao.capacidades[j] = q;
 	solucao.tamanhoCaminho = j + 1;
-	solucao.viavel = TRUE;
 
 	solucao.ads = (ADS**) malloc(sizeof(ADS*) * solucao.tamanhoCaminho);
 	for (int i = 0; i < solucao.tamanhoCaminho; i++) solucao.ads[i] = (ADS*) malloc(sizeof(ADS) * solucao.tamanhoCaminho);

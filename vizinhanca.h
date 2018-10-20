@@ -14,7 +14,7 @@ Solucao copiarSolucao (Solucao s) { // mover
 
 	copia.caminho = (int *) malloc(tamanhoInteiroTotal);
 	copia.capacidades = (int *) malloc(tamanhoInteiroTotal);
-	copia.viavel = s.viavel;
+	copia.custo = s.custo;
 	memcpy(copia.caminho, s.caminho, tamanhoInteiroTotal);
 	memcpy(copia.capacidades, s.capacidades, tamanhoInteiroTotal);
 
