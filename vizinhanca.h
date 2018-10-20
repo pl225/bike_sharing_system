@@ -29,8 +29,8 @@ Solucao copiarSolucao (Solucao s) { // mover
 }
 
 Solucao swap(Solucao s, FabricaSolucao fs) {
-	float menorCusto = custo(s, fs), custoOriginal = menorCusto, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
-	int indiceTrocaI = -1, indiceTrocaJ = -1;
+	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
+	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 	short qSumAuxiliar;
 
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
@@ -45,8 +45,8 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 				}
 				if (qSumAuxiliar >= s.ads[i][i].lMin && qSumAuxiliar <= s.ads[i][i].lMax) {
 					qSumAuxiliar += s.ads[i][i].qSum;
-					if (qSumAuxiliar >= s.ads[j + 1][s.tamanhoCaminho - 1].lMin 
-						&& qSumAuxiliar <= s.ads[j + 1][s.tamanhoCaminho - 1].lMax) {
+					if (qSumAuxiliar >= s.ads[j + 1][indiceFinal].lMin 
+						&& qSumAuxiliar <= s.ads[j + 1][indiceFinal].lMax) {
 
 						if (j - i > 1) {
 							custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
@@ -82,6 +82,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 		int aux = nova.caminho[indiceTrocaI];
 		nova.caminho[indiceTrocaI] = nova.caminho[indiceTrocaJ];
 		nova.caminho[indiceTrocaJ] = aux;
+		nova.custo = menorCusto;
 
 		int qI = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
 		int qJ = nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaJ - 1];
