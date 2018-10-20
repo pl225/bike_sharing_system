@@ -226,7 +226,7 @@ Solucao orOPT4(Solucao s, FabricaSolucao fs) {
 }
 
 Solucao _2OPT (Solucao s, FabricaSolucao fs) {
-	float menorCusto = custo(s, fs), custoOriginal = menorCusto, custoParcial;
+	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	int aux, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1, auxI, auxJ;
 
 	short qSomaI, qMinI, qMaxI, lMinI, lMaxI, qSomaAuxiliar;
@@ -264,7 +264,8 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 
 	if (indiceTrocaI != - 1) {
 		Solucao copia = copiarSolucao(s);
-		for (int a = indiceTrocaI + 1, b = indiceTrocaJ - 1; a < b; a++, b--) { // desfazendo a reversão entre i e j
+		copia.custo = menorCusto;
+		for (int a = indiceTrocaI + 1, b = indiceTrocaJ - 1; a < b; a++, b--) { // reversão entre i e j
 			aux = copia.caminho[a];
 			copia.caminho[a] = copia.caminho[b];
 			copia.caminho[b] = aux; 
