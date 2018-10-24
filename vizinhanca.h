@@ -103,7 +103,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 
 Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 
-	float menorCusto = custo(s, fs), custoOriginal = menorCusto, menorCustoParcial, menorCustoFinal;
+	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, menorCustoFinal;
 	int indiceTrocaI = -1, indiceTrocaJ = -1, passo, condicaoParada, fimSeg4 = s.tamanhoCaminho - 1,
 		fimSeg1, iniSeg2, fimSeg2, iniSeg3, fimSeg3, iniSeg4;
 	short qSumAuxiliar;
@@ -130,6 +130,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 		menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + passo + 1], fs.n)];
 
 		for (int j = 1; j < condicaoParada; j++) {
+			if (i == j) continue;
 			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
 			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
 
@@ -165,8 +166,9 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 		}
 	}
 	
-	if (indiceTrocaI != -1) {
+	if (indiceTrocaI != -1) {printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
 		Solucao nova = copiarSolucao(s);
+		nova.custo = menorCusto;
 		int verticesMovidos[passo + 1], capacidadesMovidas[passo + 1];
 
 		memcpy(verticesMovidos, nova.caminho + indiceTrocaI, sizeof(int) * (passo + 1));
@@ -179,7 +181,12 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 
 			int diff = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
 			int inicioTrocaCapacidade = indiceTrocaI + trazidosTras;
-			memcpy(nova.capacidades + indiceTrocaI, nova.capacidades + posAux, sizeof(int) * trazidosTras);
+
+			for (int i = indiceTrocaI, a = posAux, k = 0; k < trazidosTras; i++, a++, k++) {
+				nova.capacidades[i] = nova.capacidades[i - 1] + (nova.capacidades[a] - nova.capacidades[a - 1]);
+			}
+
+			//memcpy(nova.capacidades + indiceTrocaI, nova.capacidades + posAux, sizeof(int) * trazidosTras);
 			nova.capacidades[inicioTrocaCapacidade] = nova.capacidades[inicioTrocaCapacidade - 1] + diff;
 			for (int i = inicioTrocaCapacidade + 1, a = 1; a < passo + 1; i++, a++) {
 				nova.capacidades[i] = nova.capacidades[i - 1] + (capacidadesMovidas[a] - capacidadesMovidas[a - 1]);
@@ -188,18 +195,26 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 		} else {
 			int posAux = indiceTrocaJ + passo + 1;
 			int trazidosFrente = indiceTrocaI - indiceTrocaJ;
-			memcpy(nova.caminho + posAux, nova.caminho + indiceTrocaJ, sizeof(int) * trazidosFrente);
+			int inicioTrocaCapacidade = posAux + 1;
 			
+			memcpy(nova.caminho + posAux, nova.caminho + indiceTrocaJ, sizeof(int) * trazidosFrente); //modificação do caminho
 			memcpy(nova.caminho + indiceTrocaJ + 1, verticesMovidos, sizeof(int) * (passo + 1));
 
-			int diff = nova.capacidades[indiceTrocaJ + 1] - nova.capacidades[indiceTrocaJ];
-			int inicioTrocaCapacidade = posAux + 1;
-			nova.capacidades[inicioTrocaCapacidade] = capacidadesMovidas[passo] + diff;
+			int diffJ = nova.capacidades[indiceTrocaJ + 1] - nova.capacidades[indiceTrocaJ];
+			int diffI = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
+			int capacidadesFrente[trazidosFrente - 1];
+			capacidadesFrente[0] = nova.capacidades[indiceTrocaJ] + diffI + diffJ;
 
-			for (int i = inicioTrocaCapacidade + 1, a = indiceTrocaJ + 2; a < inicioTrocaCapacidade; i++, a++) {
-				nova.capacidades[i] = nova.capacidades[i - 1] + (nova.capacidades[a] - nova.capacidades[a - 1]);
+			for (int i = 1, a = inicioTrocaCapacidade; i < trazidosFrente - 1; i++, a++) {
+				capacidadesFrente[i] = capacidadesFrente[i - 1] + (nova.capacidades[a] - nova.capacidades[a - 1]);
 			}
-			memcpy(nova.capacidades + indiceTrocaJ + 1, capacidadesMovidas, sizeof(int) * (passo + 1));
+
+			nova.capacidades[posAux] = nova.capacidades[posAux - 1] + diffI;
+			for (int i = posAux + 1, a = 0, k = indiceTrocaI; a < passo + 1; i++, a++, k++) {
+				nova.capacidades[i] = nova.capacidades[i - 1] + (nova.capacidades[k] - nova.capacidades[k - 1]);
+			}
+			memcpy(nova.capacidades + posAux + passo + 1, capacidadesFrente, sizeof(int) * (passo + 1));
+
 			atualizarADS(nova, fs.q, indiceTrocaJ + 1, indiceTrocaI + passo);	
 		}
 	
