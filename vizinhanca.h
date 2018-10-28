@@ -166,7 +166,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 		}
 	}
 	
-	if (indiceTrocaI != -1) {printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
+	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
 		nova.custo = menorCusto;
 		int verticesMovidos[passo + 1], capacidadesMovidas[passo + 1];
@@ -406,4 +406,29 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 	} else {
 		return s;
 	}
+}
+
+Solucao RVND (Solucao s, FabricaSolucao fs) {
+	Solucao melhorSolucao = s, sLinha;
+	int indices[] = {0, 1, 2, 3, 4, 5, 6};
+	Solucao (*vizinhancas[])(Solucao, FabricaSolucao) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
+	int LN = 7, N, aux;
+
+	while (LN > 0) {
+		N = rand() % LN;
+		sLinha = (*vizinhancas[N])(melhorSolucao, fs);
+		if (sLinha.custo < melhorSolucao.custo) {
+			melhorSolucao = sLinha;
+			LN = 7;
+		} else {
+			LN--;
+			if (N < 6) {
+				aux = indices[N];
+				memcpy(indices + N, indices + N + 1, sizeof(int) * (6 - N));
+				indices[6] = aux;
+			}
+		}
+	}
+
+	return melhorSolucao;
 }
