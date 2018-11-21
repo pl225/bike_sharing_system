@@ -65,6 +65,36 @@ void shuffle(int *array, size_t n) { // mover
     }
 }
 
+float custo (Solucao s, FabricaSolucao fs) { // mover
+	float f = 0;
+	for (int i = 0; i < s.tamanhoCaminho - 1; i++) {
+		f += fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)];
+	}
+	return f;
+}
+
+Solucao copiarSolucao (Solucao s) { // mover
+	Solucao copia;
+	copia.tamanhoCaminho = s.tamanhoCaminho;
+
+	size_t tamanhoInteiroTotal = sizeof(int) * s.tamanhoCaminho;
+
+	copia.caminho = (int *) malloc(tamanhoInteiroTotal);
+	copia.capacidades = (int *) malloc(tamanhoInteiroTotal);
+	copia.custo = s.custo;
+	memcpy(copia.caminho, s.caminho, tamanhoInteiroTotal);
+	memcpy(copia.capacidades, s.capacidades, tamanhoInteiroTotal);
+
+	size_t tamanhoADS = sizeof(ADS) * s.tamanhoCaminho;
+
+	copia.ads = (ADS **) malloc(sizeof(ADS *) * copia.tamanhoCaminho);
+	for (int i = 0; i < copia.tamanhoCaminho; i++) {
+		copia.ads[i] = (ADS*) malloc(tamanhoADS);
+		memcpy(copia.ads[i], s.ads[i], tamanhoADS);
+	}
+	return copia;
+}
+
 void construirADS (Solucao s, int q) {
 	short qSumAuxiliar, qSumAuxiliarCopia = 0, cargaMinima, cargaMaxima;
 	for (int i = 0; i < s.tamanhoCaminho; i++) {
