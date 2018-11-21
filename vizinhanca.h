@@ -273,6 +273,51 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 	}
 }
 
+Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, int indiceTrocaJ) {
+	Solucao copia = copiarSolucao(s);
+	copia.tamanhoCaminho += 1;
+	copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
+	copia.capacidades = (int *) realloc(copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
+
+	int aux = copia.caminho[indiceTrocaI];
+	memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
+	copia.caminho[indiceTrocaJ] = aux;
+
+	int inicioLoop, fimLoop, fatorAlteracao;
+
+	if (indiceTrocaI < indiceTrocaJ) {
+		fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? 1 : -1;
+		inicioLoop = indiceTrocaI, fimLoop = indiceTrocaJ;
+	} else {
+		inicioLoop = indiceTrocaJ, fimLoop = indiceTrocaI + 1;
+		fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? -1 : 1;
+	}
+
+	aux = copia.capacidades[indiceTrocaI];
+	memcpy(copia.capacidades + indiceTrocaJ + 1, copia.capacidades + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
+	copia.capacidades[indiceTrocaJ] = aux;
+
+	for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracao;
+
+	if (indiceTrocaI < indiceTrocaJ)
+		fatorAlteracao *= -1;
+	copia.capacidades[indiceTrocaJ] = copia.capacidades[indiceTrocaJ - 1] + fatorAlteracao;
+
+	copia.ads = (ADS**) realloc(copia.ads, sizeof(ADS*) * copia.tamanhoCaminho);
+	memcpy(copia.ads + indiceTrocaJ + 1, copia.ads + indiceTrocaJ, sizeof(ADS*) * (s.tamanhoCaminho - indiceTrocaJ));
+	copia.ads[indiceTrocaJ] = (ADS*) malloc(sizeof(ADS) * copia.tamanhoCaminho);
+	for (int i = 0; i < copia.tamanhoCaminho; i++) {
+		if (i != indiceTrocaJ) {
+			copia.ads[i] = (ADS*) realloc(copia.ads[i], sizeof(ADS) * copia.tamanhoCaminho);
+			memcpy(copia.ads[i] + indiceTrocaJ + 1, copia.ads[i] + indiceTrocaJ, sizeof(ADS) * (s.tamanhoCaminho - indiceTrocaJ));
+		}
+	}
+
+	atualizarADS(copia, fs.q, inicioLoop, fimLoop);
+
+	return copia;
+}
+
 Solucao split (Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = custo(s, fs), custoParcial;
 	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
@@ -338,48 +383,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 		}
 	}
 	if (indiceTrocaI != -1) {
-		Solucao copia = copiarSolucao(s);
-		copia.tamanhoCaminho += 1;
-		copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
-		copia.capacidades = (int *) realloc(copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
-
-		int aux = copia.caminho[indiceTrocaI];
-		memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
-		copia.caminho[indiceTrocaJ] = aux;
-
-		int inicioLoop, fimLoop, fatorAlteracao;
-
-		if (indiceTrocaI < indiceTrocaJ) {
-			fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? 1 : -1;
-			inicioLoop = indiceTrocaI, fimLoop = indiceTrocaJ;
-		} else {
-			inicioLoop = indiceTrocaJ, fimLoop = indiceTrocaI + 1;
-			fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? -1 : 1;
-		}
-
-		aux = copia.capacidades[indiceTrocaI];
-		memcpy(copia.capacidades + indiceTrocaJ + 1, copia.capacidades + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
-		copia.capacidades[indiceTrocaJ] = aux;
-
-		for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracao;
-
-		if (indiceTrocaI < indiceTrocaJ)
-			fatorAlteracao *= -1;
-		copia.capacidades[indiceTrocaJ] = copia.capacidades[indiceTrocaJ - 1] + fatorAlteracao;
-
-		copia.ads = (ADS**) realloc(copia.ads, sizeof(ADS*) * copia.tamanhoCaminho);
-		memcpy(copia.ads + indiceTrocaJ + 1, copia.ads + indiceTrocaJ, sizeof(ADS*) * (s.tamanhoCaminho - indiceTrocaJ));
-		copia.ads[indiceTrocaJ] = (ADS*) malloc(sizeof(ADS) * copia.tamanhoCaminho);
-		for (int i = 0; i < copia.tamanhoCaminho; i++) {
-			if (i != indiceTrocaJ) {
-				copia.ads[i] = (ADS*) realloc(copia.ads[i], sizeof(ADS) * copia.tamanhoCaminho);
-				memcpy(copia.ads[i] + indiceTrocaJ + 1, copia.ads[i] + indiceTrocaJ, sizeof(ADS) * (s.tamanhoCaminho - indiceTrocaJ));
-			}
-		}
-
-		atualizarADS(copia, fs.q, inicioLoop, fimLoop);
-
-		return copia;
+		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ);
 	} else {
 		return s;
 	}
@@ -439,48 +443,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 		}
 	}
 	if (indiceTrocaI != -1) {
-		Solucao copia = copiarSolucao(s);
-		copia.tamanhoCaminho += 1;
-		copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
-		copia.capacidades = (int *) realloc(copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
-
-		int aux = copia.caminho[indiceTrocaI];
-		memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
-		copia.caminho[indiceTrocaJ] = aux;
-
-		int inicioLoop, fimLoop, fatorAlteracao;
-
-		if (indiceTrocaI < indiceTrocaJ) {
-			fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? 1 : -1;
-			inicioLoop = indiceTrocaI, fimLoop = indiceTrocaJ;
-		} else {
-			inicioLoop = indiceTrocaJ, fimLoop = indiceTrocaI + 1;
-			fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? -1 : 1;
-		}
-
-		aux = copia.capacidades[indiceTrocaI];
-		memcpy(copia.capacidades + indiceTrocaJ + 1, copia.capacidades + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
-		copia.capacidades[indiceTrocaJ] = aux;
-
-		for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracao;
-
-		if (indiceTrocaI < indiceTrocaJ)
-			fatorAlteracao *= -1;
-		copia.capacidades[indiceTrocaJ] = copia.capacidades[indiceTrocaJ - 1] + fatorAlteracao;
-
-		copia.ads = (ADS**) realloc(copia.ads, sizeof(ADS*) * copia.tamanhoCaminho);
-		memcpy(copia.ads + indiceTrocaJ + 1, copia.ads + indiceTrocaJ, sizeof(ADS*) * (s.tamanhoCaminho - indiceTrocaJ));
-		copia.ads[indiceTrocaJ] = (ADS*) malloc(sizeof(ADS) * copia.tamanhoCaminho);
-		for (int i = 0; i < copia.tamanhoCaminho; i++) {
-			if (i != indiceTrocaJ) {
-				copia.ads[i] = (ADS*) realloc(copia.ads[i], sizeof(ADS) * copia.tamanhoCaminho);
-				memcpy(copia.ads[i] + indiceTrocaJ + 1, copia.ads[i] + indiceTrocaJ, sizeof(ADS) * (s.tamanhoCaminho - indiceTrocaJ));
-			}
-		}
-
-		atualizarADS(copia, fs.q, inicioLoop, fimLoop);
-
-		return copia;
+		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ);
 	} else {
 		return s;
 	}
