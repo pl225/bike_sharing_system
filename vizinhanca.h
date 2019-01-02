@@ -225,6 +225,9 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 
 	for (int i = 0; i < s.tamanhoCaminho; i++) {
 		for (int j = i + 3; j < s.tamanhoCaminho; j++) {
+
+			if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
+
 			auxI = i + 1, auxJ = j - 1;
 			ads = s.ads[auxI][auxJ];
 			qSomaI = ads.qSum;
