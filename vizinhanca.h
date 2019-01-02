@@ -429,8 +429,6 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 		p2 = rand() % ((tamanho - 4) - p1) + p1,
 		p3 = rand() % ((tamanho - 3) - p2) + p2 + 1,
 		p4 = rand() % ((tamanho - 2 - p3)) + p3;
-
-	printf("\n%d %d %d %d\n", p1, p2, p3, p4);
 	
 	int tamSecao1 = p2 - p1 + 1, secao1[tamSecao1], tamSecao2 = (p3 - 1) - (p2 + 1) + 1, tamSecao3 = p4 - p3 + 1;
 	memcpy(secao1, copia.caminho + p1, tamSecao1 * tamInt);
@@ -450,7 +448,6 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 	int capIni1 = copia.capacidades[p1] - copia.capacidades[p1 - 1];
 	memcpy(capSecao1, copia.capacidades + p1, tamSecao1 * tamInt);
 	int *capSecao2 = NULL, capIni2 = - 1;
-	//for (int i = 0; i < tamSecao1; i++) printf("%d ", capSecao1[i]);
 	if (tamSecao2 > 0) {
 		capSecao2 = (int *) malloc(tamSecao2 * tamInt);
 		memcpy(capSecao2, copia.capacidades + p2 + 1, tamSecao2 * tamInt);
@@ -459,14 +456,12 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 	copia.capacidades[p1] = copia.capacidades[p1 - 1] + (copia.capacidades[p3] - copia.capacidades[p3 - 1]);
 	for (int i = p1 + 1, a = p3 + 1; i < p1 + tamSecao3; i++, a++)
 		copia.capacidades[i] = copia.capacidades[i - 1] + (copia.capacidades[a] - copia.capacidades[a - 1]);
-	//for (int i = 0; i < p1 + tamSecao3 + tamSecao2; i++) printf("%d ", copia.capacidades[i]);
 	if (tamSecao2 > 0) {
 		copia.capacidades[p1 + tamSecao3] = copia.capacidades[p1 + tamSecao3 - 1] + capIni2;
 		for (int i = p1 + tamSecao3 + 1, a = 1; i < p1 + tamSecao3 + tamSecao2; i++, a++)
 			copia.capacidades[i] = copia.capacidades[i - 1] + (capSecao2[a] - capSecao2[a - 1]);
 		free(capSecao2);
 	}
-	//printf("\n%d %d %d\n", p1 + tamSecao3 + tamSecao2, capIni1, copia.capacidades[p1 + tamSecao3 + tamSecao2]);
 	copia.capacidades[p1 + tamSecao3 + tamSecao2] = copia.capacidades[p1 + tamSecao3 + tamSecao2 - 1] + capIni1;
 	for (int i = p1 + tamSecao3 + tamSecao2 + 1, a = 1; i < p1 + tamSecao3 + tamSecao2 + tamSecao1; i++, a++)
 		copia.capacidades[i] = copia.capacidades[i - 1] + (capSecao1[a] - capSecao1[a - 1]);
@@ -505,4 +500,10 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 	} else {
 		return s;
 	}
+}
+
+Solucao perturbar (Solucao s, FabricaSolucao fs) {
+	int i = rand() % 2;
+	if (i == 1) return splitP(s, fs);
+	else return doubleBridge(s, fs);
 }
