@@ -119,6 +119,8 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 					fimSeg3 = i - 1, iniSeg4 = i + passo + 1;
 			}
 
+			if (s.ads[0][fimSeg1].lMin > 0 || s.ads[0][fimSeg1].lMax < 0) continue;
+
 			if (s.ads[0][fimSeg1].qSum >= s.ads[iniSeg2][fimSeg2].lMin && s.ads[0][fimSeg1].qSum <= s.ads[iniSeg2][fimSeg2].lMax) {
 			
 				qSumAuxiliar = s.ads[0][fimSeg1].qSum + s.ads[iniSeg2][fimSeg2].qSum;
