@@ -331,6 +331,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 			for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
 
 				if (i == j) continue;
+				if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[i] == s.caminho[j + 1]) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
