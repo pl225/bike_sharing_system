@@ -333,7 +333,6 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 			for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
 
 				if (i == j) continue;
-				if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[i] == s.caminho[j + 1]) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
@@ -361,6 +360,8 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 				} else {
 					fimSeg1 = j - 1, iniSeg3 = j, fimSeg3 = i - 1, iniSeg5 = i + 1;
 				}
+
+				if (s.ads[0][fimSeg1].lMin > 0 || s.ads[0][fimSeg1].lMax < 0) continue;
 
 				if (s.ads[0][fimSeg1].qSum >= lMin2 && s.ads[0][fimSeg1].qSum <= lMax2) {
 					qSum = s.ads[0][fimSeg1].qSum + qSum2;
