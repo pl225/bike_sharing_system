@@ -6,7 +6,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
 		for (int j = i + 1; j < s.tamanhoCaminho - 1; j++) {
 
-			if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
+			if (s.ads[0][i - 1].lMin > 0 || s.ads[0][i - 1].lMax < 0) continue;
 
 			if (s.ads[0][i - 1].qSum >= s.ads[j][j].lMin && s.ads[0][i - 1].qSum <= s.ads[j][j].lMax) {
 				qSumAuxiliar = s.ads[0][i - 1].qSum + s.ads[j][j].qSum;
