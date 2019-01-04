@@ -495,7 +495,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 			}
 		}
 	}
-	if (indiceTrocaI != -1) {printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
+	if (indiceTrocaI != -1) {
 		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ);
 	} else {
 		return s;
