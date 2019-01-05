@@ -49,7 +49,7 @@ float distanciaEuclidiana (int i, int j, int * pontos) { // mover
 	int p1 = pontos[IndicePontos(i, 0)], p2 = pontos[IndicePontos(i, 1)],
 		q1 = pontos[IndicePontos(j, 0)], q2 = pontos[IndicePontos(j, 1)];
 
-	return sqrt(pow(q1 - p1, 2) + pow(q2 - p2, 2));
+	return floor(sqrt(pow(q1 - p1, 2) + pow(q2 - p2, 2)));
 }
 
 // https://stackoverflow.com/questions/6127503/shuffle-array-in-c
@@ -75,7 +75,7 @@ float custo (Solucao s, FabricaSolucao fs) { // mover
 
 void imprimirSolucao (Solucao s) {
 	printf("\nImprimindo solução");
-	printf("\nCusto: %f, tamanho do caminho: %d\n", s.custo, s.tamanhoCaminho);
+	printf("\nCusto: %.f, tamanho do caminho: %d\n", s.custo, s.tamanhoCaminho);
 	printf("Caminho:\n\t");
 	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.caminho[i]);
 	printf("\nCapacidades: \n\t");
