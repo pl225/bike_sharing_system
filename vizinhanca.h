@@ -278,11 +278,12 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 	}
 }
 
-Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, int indiceTrocaJ) {
+Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, int indiceTrocaJ, float novoCusto) {
 	Solucao copia = copiarSolucao(s);
 	copia.tamanhoCaminho += 1;
 	copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
 	copia.capacidades = (int *) realloc(copia.capacidades, sizeof(int) * copia.tamanhoCaminho);
+	copia.custo = novoCusto;
 
 	int aux = copia.caminho[indiceTrocaI];
 	memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
@@ -390,7 +391,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 		}
 	}
 	if (indiceTrocaI != -1) {
-		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ);
+		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
 	} else {
 		return s;
 	}
@@ -496,7 +497,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 		}
 	}
 	if (indiceTrocaI != -1) {
-		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ);
+		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
 	} else {
 		return s;
 	}
