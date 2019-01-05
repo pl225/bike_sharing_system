@@ -433,11 +433,26 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 	
 	int tamSecao1 = p2 - p1 + 1, secao1[tamSecao1], tamSecao2 = (p3 - 1) - (p2 + 1) + 1, tamSecao3 = p4 - p3 + 1;
 	memcpy(secao1, copia.caminho + p1, tamSecao1 * tamInt);
+
+	copia.custo = s.custo - (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p1], fs.n)]
+							+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p4 + 1], fs.n)]);
+	copia.custo += (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p3], fs.n)]
+					+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p4 + 1], fs.n)]);
 	
 	if (tamSecao2 == 0) {
+
+		copia.custo -= fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p3], fs.n)];
+		copia.custo += fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p1], fs.n)];
+
 		memcpy(copia.caminho + p1, copia.caminho + p3, tamSecao3 * tamInt);
 		memcpy(copia.caminho + p1 + tamSecao3, secao1, tamSecao1 * tamInt);
 	} else {
+
+		copia.custo -= (fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p2 + 1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p3], fs.n)]);
+		copia.custo += (fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p2 + 1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p1], fs.n)]);
+
 		int secao2[tamSecao2];
 		memcpy(secao2, copia.caminho + p2 + 1, tamSecao2 * tamInt);
 		memcpy(copia.caminho + p1, copia.caminho + p3, tamSecao3 * tamInt);
