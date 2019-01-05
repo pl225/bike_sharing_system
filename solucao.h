@@ -73,9 +73,13 @@ float custo (Solucao s, FabricaSolucao fs) { // mover
 	return f;
 }
 
-void imprimirSolucao (Solucao s) {
-	printf("\nImprimindo solução");
-	printf("\nCusto: %.f, tamanho do caminho: %d\n", s.custo, s.tamanhoCaminho);
+void imprimirSolucao (Solucao s, FabricaSolucao fs) {
+	printf("\nImprimindo solução\nSituação: ");
+	if (s.ads[0][s.tamanhoCaminho - 1].lMin == 0 && s.ads[0][s.tamanhoCaminho - 1].lMax == 0) 
+		printf("viável\n");
+	else
+		printf("inviável\n");
+	printf("\nCusto: %.f, custo(s, fs): %.f, tamanho do caminho: %d\n", s.custo, custo(s, fs), s.tamanhoCaminho);
 	printf("Caminho:\n\t");
 	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.caminho[i]);
 	printf("\nCapacidades: \n\t");
@@ -335,17 +339,12 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 		}
 	}
 	
-	int caminho [] = {0, 16, 6, 1, 9, 14, 2, 14, 12, 19, 0, 11, 0, 17, 7, 4, 13, 4, 13, 15, 5, 15, 5, 18, 10, 18, 10, 0};
-	int capacidades [] = {5, 2, 5, 2, 2, 5, 2, 3, 0, 4, 0, 4, 1, 5, 0, 5, 0, 5, 4, 0, 5, 2, 3, 0, 5, 1, 5, 5};
-	
-	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (28));
-	memcpy(solucao.caminho, caminho, sizeof(int) * (28));
-	solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * (28));
-	memcpy(solucao.capacidades, capacidades, sizeof(int) * (28));
+	solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * (j + 1));
+	solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * (j + 1));
 	solucao.caminho[j] = 0;
-	solucao.custo = custo(solucao, fs);//+= fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], 0, fs.n)];
+	solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], 0, fs.n)];
 	solucao.capacidades[j] = q;
-	solucao.tamanhoCaminho = 28;
+	solucao.tamanhoCaminho = j + 1;
 
 	solucao.ads = (ADS**) malloc(sizeof(ADS*) * solucao.tamanhoCaminho);
 	for (int i = 0; i < solucao.tamanhoCaminho; i++) solucao.ads[i] = (ADS*) malloc(sizeof(ADS) * solucao.tamanhoCaminho);
