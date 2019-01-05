@@ -73,6 +73,16 @@ float custo (Solucao s, FabricaSolucao fs) { // mover
 	return f;
 }
 
+void imprimirSolucao (Solucao s) {
+	printf("\nImprimindo solução");
+	printf("\nCusto: %f, tamanho do caminho: %d\n", s.custo, s.tamanhoCaminho);
+	printf("Caminho:\n\t");
+	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.caminho[i]);
+	printf("\nCapacidades: \n\t");
+	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.capacidades[i]);
+	printf("\n");
+}
+
 Solucao copiarSolucao (Solucao s) { // mover
 	Solucao copia;
 	copia.tamanhoCaminho = s.tamanhoCaminho;
