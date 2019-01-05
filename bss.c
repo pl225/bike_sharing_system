@@ -5,13 +5,13 @@
 
 int main(int argc, char *argv[])
 {
-	int IR = atoi(argv[2]);
-	int iILS = atoi(argv[3]);
-	int alpha = atof(argv[4]);
-	float T0 = atof(argv[5]);
+	Grafo g = carregarInstancia("n20q10A.tsp");
+	int IR = 100;
+	int iILS = 10 * g.n;
+	float alpha = 0.75;
+	float T0 = 1000;
 	
 	srand(time(NULL));
-	Grafo g = carregarInstancia(argv[1]); //"n20q10A.tsp"
 	FabricaSolucao fs = instanciarFabrica(g);
 	Solucao s, sLinha, sAsterisco;
 	float T, delta, x, fAsterisco = INFINITY;
@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	imprimirSolucao(sAsterisco);
+	imprimirSolucao(sAsterisco, fs);
 
 	liberarGrafo(g);
 	liberarFabrica(fs);
