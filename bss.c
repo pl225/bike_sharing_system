@@ -3,7 +3,7 @@
 #include "vizinhanca.h"
 #include <time.h>
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 	int IR = atoi(argv[2]);
 	int iILS = atoi(argv[3]);
@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
 					sLinha = s; //antes, liberar sLinha se delta nao for zero
 				}
 			}
-			s = perturbar(sLinha);
+			s = perturbar(sLinha, fs);
 			iterILS += 1;
 			T *= alpha;
 		}
