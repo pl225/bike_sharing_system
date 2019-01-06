@@ -110,18 +110,18 @@ Solucao copiarSolucao (Solucao s) { // mover
 }
 
 void construirADS (Solucao s, int q) {
-	short qSumAuxiliar, qSumAuxiliarCopia = 0, cargaMinima, cargaMaxima;
+	short qSumAuxiliar, cargaMinima, cargaMaxima;
 	for (int i = 0; i < s.tamanhoCaminho; i++) {
 			
-			qSumAuxiliar = i != 0 ? s.capacidades[i - 1] - s.capacidades[i] : 0;
-			cargaMinima = qSumAuxiliar < 0 ? qSumAuxiliar : 0;
-			cargaMaxima = qSumAuxiliar > 0 ? qSumAuxiliar : 0;
-			
-			s.ads[i][i].qSum = qSumAuxiliar;
-			s.ads[i][i].qMin = cargaMinima;
-			s.ads[i][i].qMax = cargaMaxima;
-			s.ads[i][i].lMin = -s.ads[i][i].qMin;
-			s.ads[i][i].lMax = q - s.ads[i][i].qMax;
+		qSumAuxiliar = i != 0 ? s.capacidades[i - 1] - s.capacidades[i] : 0;
+		cargaMinima = qSumAuxiliar < 0 ? qSumAuxiliar : 0;
+		cargaMaxima = qSumAuxiliar > 0 ? qSumAuxiliar : 0;
+		
+		s.ads[i][i].qSum = qSumAuxiliar;
+		s.ads[i][i].qMin = cargaMinima;
+		s.ads[i][i].qMax = cargaMaxima;
+		s.ads[i][i].lMin = -s.ads[i][i].qMin;
+		s.ads[i][i].lMax = q - s.ads[i][i].qMax;
 		
 		for (int j = i + 1; j < s.tamanhoCaminho; j++) {
 			
@@ -139,26 +139,28 @@ void construirADS (Solucao s, int q) {
 }
 
 void atualizarADS (Solucao s, int q, int inicio, int fim) { // inicio sempre > que zero
-	short qSumAuxiliar, qSumAuxiliarCopia = 0, cargaMinima, cargaMaxima;
-	int aux = inicio - 1;
+	short qSumAuxiliar, cargaMinima, cargaMaxima;
+	int aux = inicio - 1, inicioLoop2;
 	for (int i = 0; i <= fim; i++) { // o índice de fim deve ser incluído
 		
 		if (aux >= i) {	
 			qSumAuxiliar = s.ads[i][aux].qSum + (s.capacidades[aux] - s.capacidades[inicio]);
 			cargaMinima = qSumAuxiliar < s.ads[i][aux].qMin ? qSumAuxiliar : s.ads[i][aux].qMin;
 			cargaMaxima = qSumAuxiliar > s.ads[i][aux].qMax ? qSumAuxiliar : s.ads[i][aux].qMax;
+			inicioLoop2 = inicio;
 		} else {
 			qSumAuxiliar = s.capacidades[i - 1] - s.capacidades[i];
 			cargaMinima = qSumAuxiliar < 0 ? qSumAuxiliar : 0;
 			cargaMaxima = qSumAuxiliar > 0 ? qSumAuxiliar : 0;
+			inicioLoop2 = i;
 		}
-		s.ads[i][inicio].qSum = qSumAuxiliar;
-		s.ads[i][inicio].qMin = cargaMinima;
-		s.ads[i][inicio].qMax = cargaMaxima;
-		s.ads[i][inicio].lMin = -s.ads[i][inicio].qMin;
-		s.ads[i][inicio].lMax = q - s.ads[i][inicio].qMax;
+		s.ads[i][inicioLoop2].qSum = qSumAuxiliar;
+		s.ads[i][inicioLoop2].qMin = cargaMinima;
+		s.ads[i][inicioLoop2].qMax = cargaMaxima;
+		s.ads[i][inicioLoop2].lMin = -s.ads[i][inicioLoop2].qMin;
+		s.ads[i][inicioLoop2].lMax = q - s.ads[i][inicioLoop2].qMax;
 			
-		for (int j = inicio + 1; j < s.tamanhoCaminho; j++) {
+		for (int j = inicioLoop2 + 1; j < s.tamanhoCaminho; j++) {
 			
 			qSumAuxiliar += s.capacidades[j - 1] - s.capacidades[j];
 			if (qSumAuxiliar < cargaMinima) cargaMinima = qSumAuxiliar;
