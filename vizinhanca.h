@@ -325,7 +325,7 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 }
 
 Solucao split (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = custo(s, fs), custoParcial;
+	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
 	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 
@@ -487,7 +487,7 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 }
 
 Solucao splitP (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = custo(s, fs), custoParcial;
+	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
 	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 
