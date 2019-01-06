@@ -10,7 +10,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 
 			if (s.ads[0][i - 1].qSum >= s.ads[j][j].lMin && s.ads[0][i - 1].qSum <= s.ads[j][j].lMax) {
 				qSumAuxiliar = s.ads[0][i - 1].qSum + s.ads[j][j].qSum;
-				if ((j - 1) - (i + 1) > 0) {
+				if ((j - 1) - (i + 1) >= 0) {
 					int a = i + 1, b = j - 1;
 					if (qSumAuxiliar >= s.ads[a][b].lMin && qSumAuxiliar <= s.ads[a][b].lMax)
 						qSumAuxiliar += s.ads[a][b].qSum;
@@ -402,7 +402,6 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 	int indices[] = {0, 1, 2, 3, 4, 5, 6};
 	Solucao (*vizinhancas[])(Solucao, FabricaSolucao) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
 	int LN = 7, N, aux;
-
 	while (LN > 0) {
 		N = rand() % LN;
 		sLinha = (*vizinhancas[N])(melhorSolucao, fs);
