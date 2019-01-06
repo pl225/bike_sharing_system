@@ -404,7 +404,7 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 	int LN = 7, N, aux;
 	while (LN > 0) {
 		N = rand() % LN;
-		sLinha = (*vizinhancas[N])(melhorSolucao, fs);
+		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs);
 		if (sLinha.custo < melhorSolucao.custo) {
 			melhorSolucao = sLinha;
 			LN = 7;
