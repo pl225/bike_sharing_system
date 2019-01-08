@@ -398,7 +398,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 }
 
 Solucao RVND (Solucao s, FabricaSolucao fs) {
-	Solucao melhorSolucao = s, sLinha;
+	Solucao melhorSolucao = copiarSolucao(s), sLinha;
 	int indices[] = {0, 1, 2, 3, 4, 5, 6};
 	Solucao (*vizinhancas[])(Solucao, FabricaSolucao) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
 	int LN = 7, N, aux;
@@ -406,9 +406,11 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 		N = rand() % LN;
 		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs);
 		if (sLinha.custo < melhorSolucao.custo) {
+			liberarSolucao(melhorSolucao);
 			melhorSolucao = sLinha;
 			LN = 7;
 		} else {
+			if (sLinha.custo != melhorSolucao.custo) liberarSolucao(sLinha);
 			LN--;
 			if (N < 6) {
 				aux = indices[N];
@@ -417,7 +419,10 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 			}
 		}
 	}
-
+	if (melhorSolucao.custo == s.custo) {
+		liberarSolucao(melhorSolucao);
+		return s;
+	}
 	return melhorSolucao;
 }
 
@@ -518,7 +523,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 }
 
 Solucao perturbar (Solucao s, FabricaSolucao fs) {
-	int i = rand() % 2;
+	/*int i = rand() % 2;
 	if (i == 1) return splitP(s, fs);
-	else return doubleBridge(s, fs);
+	else*/ return doubleBridge(s, fs);
 }
