@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 	
 	srand(time(NULL));
 	FabricaSolucao fs = instanciarFabrica(g);
-	Solucao s, sLinha, sAsterisco;
+	Solucao s, sLinha, sAsterisco, sAux;
 	float T, delta, x, fAsterisco = INFINITY;
 	int iterILS, lib_sLinha = 0;
 
@@ -33,20 +33,23 @@ int main(int argc, char *argv[])
 			} else {
 				x = ((double) rand() / (RAND_MAX));
 				if (T > 0 && x < exp(-(delta / T))) {
-					if (delta != 0) {
-						liberarSolucao(sLinha);
-					}
+					if (delta != 0) liberarSolucao(sLinha);
 					sLinha = s;
+				} else {
+					liberarSolucao(s);
 				}
 			}
 			s = perturbar(sLinha, fs);
 			iterILS += 1;
 			T *= alpha;
 		}
+		liberarSolucao(s);
 		if (sLinha.custo < fAsterisco) {
 			if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
 			fAsterisco = sLinha.custo;
 			sAsterisco = sLinha;
+		} else {
+			liberarSolucao(sLinha);			
 		}
 	}
 
@@ -54,7 +57,6 @@ int main(int argc, char *argv[])
 
 	liberarGrafo(g);
 	liberarFabrica(fs);
-	liberarSolucao(s);
 	liberarSolucao(sAsterisco);
 	return 0;
 }
