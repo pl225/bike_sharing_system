@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	FabricaSolucao fs = instanciarFabrica(g);
 	Solucao s, sLinha, sAsterisco;
 	float T, delta, x, fAsterisco = INFINITY;
-	int iterILS;
+	int iterILS, lib_sLinha = 0;
 
 	for (int i = 0; i < IR; i++) {
 		s = instanciarSolucao(fs);
@@ -27,12 +27,16 @@ int main(int argc, char *argv[])
 			s = RVND(s, fs);// antes de executar o RVND, s == sLinha
 			delta = s.custo - sLinha.custo;
 			if (delta < 0) {
-				sLinha = s;//antes, liberar sLinha
+				liberarSolucao(sLinha);
+				sLinha = s;
 				iterILS = 0;
 			} else {
 				x = ((double) rand() / (RAND_MAX));
 				if (T > 0 && x < exp(-(delta / T))) {
-					sLinha = s; //antes, liberar sLinha se delta nao for zero
+					if (delta != 0) {
+						liberarSolucao(sLinha);
+					}
+					sLinha = s;
 				}
 			}
 			s = perturbar(sLinha, fs);
@@ -40,8 +44,9 @@ int main(int argc, char *argv[])
 			T *= alpha;
 		}
 		if (sLinha.custo < fAsterisco) {
+			if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
 			fAsterisco = sLinha.custo;
-			sAsterisco = sLinha; //apos, liberar sLinha 
+			sAsterisco = sLinha;
 		}
 	}
 
