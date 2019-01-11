@@ -333,6 +333,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 
 				if (i == j) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
+				if (abs(s.caminho[i] - s.caminho[i - 1]) <= 1) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
 					qSum = s.ads[i][i].qSum - 1;
@@ -499,6 +500,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 
 				if (i == j) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
+				if (abs(s.caminho[i] - s.caminho[i - 1]) <= 1) continue;
 
 				custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
 					+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
