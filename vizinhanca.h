@@ -40,7 +40,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 						}
 
 						menorCustoParcial = custoOriginal + custoAux - custoAuxAntigo;
-						if (menorCustoParcial <= menorCusto) {
+						if (menorCustoParcial < menorCusto) {
 							indiceTrocaI = i;
 							indiceTrocaJ = j;
 							menorCusto = menorCustoParcial;
@@ -222,7 +222,7 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	int aux, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1, auxI, auxJ;
 
-	short qSomaI, qMinI, qMaxI, lMinI, lMaxI, qSomaAuxiliar;
+	short qSomaI, lMinI, lMaxI, qSomaAuxiliar;
 	ADS ads;
 
 	for (int i = 0; i < s.tamanhoCaminho; i++) {
@@ -233,8 +233,6 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 			auxI = i + 1, auxJ = j - 1;
 			ads = s.ads[auxI][auxJ];
 			qSomaI = ads.qSum;
-			qMinI = ads.qSum - ads.qMax;
-			qMaxI = ads.qSum - ads.qMin;
 			lMinI = -ads.qSum + ads.qMax;
 			lMaxI = fs.q - ads.qSum + ads.qMin;
 
@@ -373,7 +371,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 						if (qSum >= lMin4 && qSum <= lMax4) {
 							qSum += qSum4;
 							if (qSum >= s.ads[iniSeg5][indiceFinal].lMin && qSum <= s.ads[iniSeg5][indiceFinal].lMax) {
-								
+
 								custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
 									+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
 									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]);
@@ -410,7 +408,7 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 			melhorSolucao = sLinha;
 			LN = 7;
 		} else {
-			if (sLinha.custo != melhorSolucao.custo) liberarSolucao(sLinha);
+			if (sLinha.caminho != melhorSolucao.caminho) liberarSolucao(sLinha);
 			LN--;
 			if (N < 6) {
 				aux = indices[N];
@@ -493,8 +491,7 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 
 Solucao splitP (Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
-	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
-	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
+	int indiceTrocaI = -1, indiceTrocaJ = -1;
 
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
 		if (fs.demandas[s.caminho[i]] < - 1 || fs.demandas[s.caminho[i]] > 1) {
@@ -523,7 +520,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 }
 
 Solucao perturbar (Solucao s, FabricaSolucao fs) {
-	/*int i = rand() % 2;
+	int i = rand() % 2;
 	if (i == 1) return splitP(s, fs);
-	else*/ return doubleBridge(s, fs);
+	else return doubleBridge(s, fs);
 }
