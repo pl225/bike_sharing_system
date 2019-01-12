@@ -1,3 +1,47 @@
+void mergeAux (Solucao *s, int destino, int origem, int tamanhoCaminho) {
+	size_t tamPedacoMovido = tamanhoCaminho - origem, tamanhoADS = sizeof(ADS) * tamPedacoMovido;
+
+	memcpy(s->caminho + destino, s->caminho + origem, sizeof(int) * tamPedacoMovido);
+	memcpy(s->capacidades + destino, s->capacidades + origem, sizeof(int) * tamPedacoMovido);
+	free(s->ads[destino]);
+	memcpy(s->ads + destino, s->ads + origem, sizeof(ADS*) * tamPedacoMovido);
+	
+	for (int j = 0; j < tamanhoCaminho; j++) {
+		memcpy(s->ads[j] + destino, s->ads[j] + origem, tamanhoADS);
+	}
+}
+
+
+void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
+	int i = indiceTrocaI, j = indiceTrocaJ, tamanhoCaminho = s->tamanhoCaminho;
+	
+	if (indiceTrocaI > 1 && s->caminho[i - 1] == s->caminho[i]) {
+		mergeAux(s, i - 1, i, tamanhoCaminho);
+		i -= 1, j -= 1, tamanhoCaminho -= 1;
+	}
+	if (s->caminho[i] == s->caminho[i + 1]) {
+		mergeAux(s, i, i + 1, tamanhoCaminho);
+		i -= 1, j -= 1, tamanhoCaminho -= 1;
+	}
+	if (s->caminho[j - 1] == s->caminho[j]) {
+		mergeAux(s, j - 1, j, tamanhoCaminho);
+		j -= 1, tamanhoCaminho -= 1; // REVER
+	}
+	if (indiceTrocaJ < s->tamanhoCaminho - 1 && s->caminho[j] == s->caminho[j + 1]) {
+		mergeAux(s, j, j + 1, tamanhoCaminho);
+		j -= 1, tamanhoCaminho -= 1; // REVER
+	}
+
+	size_t tamanhoADS = sizeof(ADS) * tamanhoCaminho;
+	s->caminho = (int *) realloc(s->caminho, sizeof(int) * tamanhoCaminho);
+	s->capacidades = (int *) realloc(s->capacidades, sizeof(int) * tamanhoCaminho);
+	s->ads = (ADS**) realloc(s->ads, sizeof(ADS*) * tamanhoCaminho);
+	
+	for (int k = 0; k < tamanhoCaminho; k++) s->ads[k] = (ADS*) realloc(s->ads[k], tamanhoADS);
+	s->tamanhoCaminho = tamanhoCaminho; // atualizarADS
+	atualizarADS(*s, Q, i, j);
+}
+
 Solucao swap(Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
 	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
