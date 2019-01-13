@@ -4,7 +4,11 @@
 #include <time.h>
 int main(int argc, char *argv[])
 {
-	Grafo g = carregarInstancia("n20q10A.tsp");
+	char caminho[25];
+	strcpy(caminho, "instancias/");
+	strcat(caminho, argv[1]);
+	
+	Grafo g = carregarInstancia(caminho);
 	int IR = 100;
 	int iILS = 10 * g.n;
 	float alpha = 0.75;
