@@ -75,7 +75,7 @@ float custo (Solucao s, FabricaSolucao fs) { // mover
 
 void imprimirSolucao (Solucao s, FabricaSolucao fs) {
 	printf("\nImprimindo solução\nSituação: ");
-	if (s.ads[0][s.tamanhoCaminho - 1].lMin == 0 && s.ads[0][s.tamanhoCaminho - 1].lMax == 0) 
+	if (s.ads[0][s.tamanhoCaminho - 1].lMin == 0 && s.ads[0][s.tamanhoCaminho - 1].lMax >= 0) 
 		printf("viável\n");
 	else
 		printf("inviável\n");
