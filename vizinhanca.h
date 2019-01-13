@@ -354,10 +354,12 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 	copia.ads = (ADS**) realloc(copia.ads, sizeof(ADS*) * copia.tamanhoCaminho);
 	memcpy(copia.ads + indiceTrocaJ + 1, copia.ads + indiceTrocaJ, sizeof(ADS*) * (s.tamanhoCaminho - indiceTrocaJ));
 	copia.ads[indiceTrocaJ] = (ADS*) malloc(sizeof(ADS) * copia.tamanhoCaminho);
+
+	size_t tamanhoADS = sizeof(ADS) * (s.tamanhoCaminho - indiceTrocaJ);
 	for (int i = 0; i < copia.tamanhoCaminho; i++) {
 		if (i != indiceTrocaJ) {
 			copia.ads[i] = (ADS*) realloc(copia.ads[i], sizeof(ADS) * copia.tamanhoCaminho);
-			memcpy(copia.ads[i] + indiceTrocaJ + 1, copia.ads[i] + indiceTrocaJ, sizeof(ADS) * (s.tamanhoCaminho - indiceTrocaJ));
+			memcpy(copia.ads[i] + indiceTrocaJ + 1, copia.ads[i] + indiceTrocaJ, tamanhoADS);
 		}
 	}
 
