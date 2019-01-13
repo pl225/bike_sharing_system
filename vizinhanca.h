@@ -25,11 +25,11 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (s->caminho[j - 1] == s->caminho[j]) {
 		mergeAux(s, j - 1, j, tamanhoCaminho);
-		j -= 1, tamanhoCaminho -= 1; // REVER
+		j -= 1, tamanhoCaminho -= 1;
 	}
 	if (indiceTrocaJ < s->tamanhoCaminho - 1 && s->caminho[j] == s->caminho[j + 1]) {
 		mergeAux(s, j, j + 1, tamanhoCaminho);
-		j -= 1, tamanhoCaminho -= 1; // REVER
+		j -= 1, tamanhoCaminho -= 1;
 	}
 
 	size_t tamanhoADS = sizeof(ADS) * tamanhoCaminho;
@@ -38,7 +38,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	s->ads = (ADS**) realloc(s->ads, sizeof(ADS*) * tamanhoCaminho);
 	
 	for (int k = 0; k < tamanhoCaminho; k++) s->ads[k] = (ADS*) realloc(s->ads[k], tamanhoADS);
-	s->tamanhoCaminho = tamanhoCaminho; // atualizarADS
+	s->tamanhoCaminho = tamanhoCaminho;
 	atualizarADS(*s, Q, i, j);
 }
 
@@ -113,7 +113,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 				qImais1 = nova.capacidades[i + 1] - nova.capacidades[i];
 				nova.capacidades[i] = nova.capacidades[i - 1] + aux;
 			}
-			atualizarADS(nova, fs.q, indiceTrocaI, indiceTrocaJ);
+			merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
 		}
 
 		return nova;
@@ -213,7 +213,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 			for (int i = inicioTrocaCapacidade + 1, a = 1; a < passo + 1; i++, a++) {
 				nova.capacidades[i] = nova.capacidades[i - 1] + (capacidadesMovidas[a] - capacidadesMovidas[a - 1]);
 			} 
-			atualizarADS(nova, fs.q, indiceTrocaI, indiceTrocaJ);
+			merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
 		} else {
 			int posAux = indiceTrocaJ + passo + 1;
 			int trazidosFrente = indiceTrocaI - indiceTrocaJ;
@@ -237,7 +237,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 				nova.capacidades[i] = nova.capacidades[i - 1] + operacoesFrente[a];
 			}
 
-			atualizarADS(nova, fs.q, indiceTrocaJ + 1, indiceTrocaI + passo);	
+			merge(&nova, fs.q, indiceTrocaJ + 1, indiceTrocaI + passo);	
 		}
 	
 		return nova;
@@ -313,7 +313,7 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 			diff = s.capacidades[b] - s.capacidades[b - 1];
 			copia.capacidades[a] = copia.capacidades[a - 1] + diff;
 		}
-		atualizarADS(copia, fs.q, indiceTrocaI + 1, indiceTrocaJ - 1);		
+		merge(&copia, fs.q, indiceTrocaI + 1, indiceTrocaJ - 1);		
 		return copia;
 	} else {
 		return s;
@@ -529,7 +529,7 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 	for (int i = p1 + tamSecao3 + tamSecao2 + 1, a = 1; i < p1 + tamSecao3 + tamSecao2 + tamSecao1; i++, a++)
 		copia.capacidades[i] = copia.capacidades[i - 1] + (capSecao1[a] - capSecao1[a - 1]);
 
-	atualizarADS(copia, fs.q, p1, p4);
+	merge(&copia, fs.q, p1, p4);
 
 	return copia;
 }
