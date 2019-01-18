@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 			iterILS += 1;
 			T *= alpha;
 		}
-		if (sLinha.custo < fAsterisco && sLinha.ads[0][sLinha.tamanhoCaminho - 1].lMin == 0 && sLinha.ads[0][sLinha.tamanhoCaminho - 1].lMax >= 0) {
+		if (sLinha.custo < fAsterisco && isViavel(sLinha)) {
 			if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
 			fAsterisco = sLinha.custo;
 			sAsterisco = sLinha;
