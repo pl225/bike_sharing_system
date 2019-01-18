@@ -73,15 +73,19 @@ float custo (Solucao s, FabricaSolucao fs) { // mover
 	return f;
 }
 
+int isViavel (Solucao s) {
+	return s.ads[0][s.tamanhoCaminho - 1].lMin == 0 && s.ads[0][s.tamanhoCaminho - 1].lMax >= 0;
+}
+
 void imprimirSolucao (Solucao s, FabricaSolucao fs) {
 	printf("\nImprimindo solução\nSituação: ");
-	if (s.ads[0][s.tamanhoCaminho - 1].lMin == 0 && s.ads[0][s.tamanhoCaminho - 1].lMax >= 0) 
+	if (isViavel(s)) 
 		printf("viável\n");
 	else
 		printf("inviável\n");
 	printf("\nCusto: %.f, custo(s, fs): %.f, tamanho do caminho: %d\n", s.custo, custo(s, fs), s.tamanhoCaminho);
 	printf("Caminho:\n\t");
-	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.caminho[i]);
+	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.caminho[i] + 1);
 	printf("\nCapacidades: \n\t");
 	for (int i = 0; i < s.tamanhoCaminho; i++) printf("%d ", s.capacidades[i]);
 	printf("\n");
