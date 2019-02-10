@@ -113,8 +113,8 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 				qImais1 = nova.capacidades[i + 1] - nova.capacidades[i];
 				nova.capacidades[i] = nova.capacidades[i - 1] + aux;
 			}
-			merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
 		}
+		merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
 
 		return nova;
 	} else {
