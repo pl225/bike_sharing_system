@@ -263,22 +263,34 @@ int verticeMaisProximo (int n, int qtdIndicesMaiorTroca, int partida, float * cu
 	return maisProximo;
 }
 
-Solucao instanciarSolucao (FabricaSolucao fs) {
-
-	// -------------------- geração do vetor aleatório OV
+int* construirOV_ILS_RVND (FabricaSolucao fs, int* tamanhoOV) {
 	shuffle(fs.verticesComDemanda, fs.numVerticesComDemanda);
 	shuffle(fs.verticesSemDemanda, fs.numVerticesSemDemanda);
 	int verticesSemDemandaEscolhidos = fs.numVerticesSemDemanda > 0 ? rand() % fs.numVerticesSemDemanda : 0;
 
-	const int tamanhoOV = fs.numVerticesComDemanda + verticesSemDemandaEscolhidos;
-	int OV [tamanhoOV];
-	memcpy(OV, fs.verticesComDemanda, sizeof(int) * fs.numVerticesComDemanda);
+	*tamanhoOV = fs.numVerticesComDemanda + verticesSemDemandaEscolhidos;
+	int k = *tamanhoOV;
+	int* OV = malloc(sizeof(int) * k);
+	memcpy(OV, fs.verticesComDemanda, sizeof(int) * k);
 
-	for (int i = fs.numVerticesComDemanda, j = 0; i < tamanhoOV; i++, j++) 
+	for (int i = fs.numVerticesComDemanda, j = 0; i < *tamanhoOV; i++, j++) 
 		OV[i] = fs.verticesSemDemanda[j];
 
-	// -------------------- fim da geração do vetor aleatório OV
+	return OV;
+}
 
+int* construirOV_Greedy (FabricaSolucao fs, int* tamanhoOV) {
+	*tamanhoOV = fs.numVerticesComDemanda;
+	int k = *tamanhoOV;
+	int* OV = malloc(sizeof(int) * k);
+	memcpy(OV, fs.verticesComDemanda, sizeof(int) * k);
+	return OV;
+}
+
+Solucao instanciarSolucao (FabricaSolucao fs) {
+
+	int tamanhoOV = 0;
+	int *OV = construirOV_ILS_RVND(fs, &tamanhoOV);
 	int tamanhoOVAux = tamanhoOV, q = fs.q; // iniciando q com todos os slots livres q = Q
 	int demandas [fs.n], troca[fs.n], indicesMaiorTroca[fs.n];
 	
@@ -356,6 +368,7 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	for (int i = 0; i < solucao.tamanhoCaminho; i++) solucao.ads[i] = (ADS*) malloc(sizeof(ADS) * solucao.tamanhoCaminho);
 	
 	construirADS(solucao, fs.q);
+	free(OV);
 
 	return solucao;
 }
