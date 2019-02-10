@@ -287,10 +287,35 @@ int* construirOV_Greedy (FabricaSolucao fs, int* tamanhoOV) {
 	return OV;
 }
 
+int escolherProximoVertice_ILS_RVND (int OV[], int demandas[], int tamanhoOV, FabricaSolucao fs, int q, int estacaoAnterior) {
+	for (int i = 0; i < tamanhoOV; i++)
+		if (OV[i] >= 0)  // se o vértice não tiver sido fechado
+			if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) // regra inversa de Pérez, mas de acordo com Adria
+				return i;
+	return -1;
+}
+
+int escolherProximoVertice_Greedy (int OV[], int demandas[], int tamanhoOV, FabricaSolucao fs, int q, int estacaoAnterior) {
+	int proximo = -1;
+	float menorDistancia = INFINITY, distancia;
+	for (int i = 0; i < tamanhoOV; i++) {
+		if (OV[i] >= 0) { // se o vértice não tiver sido fechado
+			if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) { // regra inversa de Pérez, mas de acordo com Adria
+				distancia = fs.custoArestas[IndiceArestas(estacaoAnterior, OV[i], fs.n)];
+				if (distancia < menorDistancia) {
+					proximo = i;
+					menorDistancia = distancia;
+				}
+			}
+		}
+	}
+	return proximo;
+}
+
 Solucao instanciarSolucao (FabricaSolucao fs) {
 
 	int tamanhoOV = 0;
-	int *OV = construirOV_ILS_RVND(fs, &tamanhoOV);
+	int *OV = construirOV_Greedy(fs, &tamanhoOV);
 	int tamanhoOVAux = tamanhoOV, q = fs.q; // iniciando q com todos os slots livres q = Q
 	int demandas [fs.n], troca[fs.n], indicesMaiorTroca[fs.n];
 	
@@ -305,34 +330,27 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
 	//demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
-		inserido = 0;
-		for (int i = 0; i < tamanhoOV; i++) {
-			if (OV[i] >= 0) { // se o vértice não tiver sido fechado
-				// regra inversa de Pérez, mas de acordo com Adria
-				if ((demandas[OV[i]] <= 0 && abs(demandas[OV[i]]) <= q) || (demandas[OV[i]] > 0 && fs.q - q >= demandas[OV[i]])) {
-					
-					solucao.caminho[j] = OV[i]; // adicionando o vértice ao caminho
-					solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], OV[i], fs.n)];
-					q += demandas[OV[i]]; // atualizando q
-					solucao.capacidades[j] = q; // adicionando a capacidade entre o vertice j-1 e j
-					j++;
-					inserido = 1;
-					demandas[OV[i]] = 0; // atualizando demanda do vértice i para zero
+		inserido = escolherProximoVertice_Greedy(OV, demandas, tamanhoOV, fs, q, solucao.caminho[j-1]);
 
-					// apagando o vértice na posição i de OV, isto é, ele foi fechado
-					OV[i] = -1;
-					tamanhoOVAux--;
-					if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
-						tamanhoAtualCaminho += fs.n;
-						solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
-						solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * tamanhoAtualCaminho); 
-					}
-					break;
-				}
+		if (inserido != -1) {
+			int i = inserido;
+			solucao.caminho[j] = OV[i]; // adicionando o vértice ao caminho
+			solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], OV[i], fs.n)];
+			q += demandas[OV[i]]; // atualizando q
+			solucao.capacidades[j] = q; // adicionando a capacidade entre o vertice j-1 e j
+			j++;
+			inserido = 1;
+			demandas[OV[i]] = 0; // atualizando demanda do vértice i para zero
+
+			// apagando o vértice na posição i de OV, isto é, ele foi fechado
+			OV[i] = -1;
+			tamanhoOVAux--;
+			if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
+				tamanhoAtualCaminho += fs.n;
+				solucao.caminho = (int*) realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
+				solucao.capacidades = (int*) realloc(solucao.capacidades, sizeof(int) * tamanhoAtualCaminho); 
 			}
-		}
-
-		if (inserido == 0) {
+		} else {
 			int qtdMaioresIndices = computeTroca(fs.n, troca, demandas, fs.q, q, indicesMaiorTroca);
 			int maiorIndice;
 
