@@ -312,10 +312,10 @@ int escolherProximoVertice_Greedy (int OV[], int demandas[], int tamanhoOV, Fabr
 	return proximo;
 }
 
-Solucao instanciarSolucao (FabricaSolucao fs) {
+Solucao instanciarSolucao (FabricaSolucao fs, int* (*construcaoOV)(FabricaSolucao, int*), int (*escolherProximoVertice)(int [], int [], int, FabricaSolucao, int, int)) {
 
 	int tamanhoOV = 0;
-	int *OV = construirOV_Greedy(fs, &tamanhoOV);
+	int *OV = (*construcaoOV)(fs, &tamanhoOV);
 	int tamanhoOVAux = tamanhoOV, q = fs.q; // iniciando q com todos os slots livres q = Q
 	int demandas [fs.n], troca[fs.n], indicesMaiorTroca[fs.n];
 	
@@ -330,7 +330,7 @@ Solucao instanciarSolucao (FabricaSolucao fs) {
 	int j = 1, inserido, tamanhoAtualCaminho = fs.n;
 	//demandas[0] = 0; //por enquanto, o depósito não possui a demanda prescrita por Pérez
 	while (tamanhoOVAux > 0) {
-		inserido = escolherProximoVertice_Greedy(OV, demandas, tamanhoOV, fs, q, solucao.caminho[j-1]);
+		inserido = escolherProximoVertice(OV, demandas, tamanhoOV, fs, q, solucao.caminho[j-1]);
 
 		if (inserido != -1) {
 			int i = inserido;
