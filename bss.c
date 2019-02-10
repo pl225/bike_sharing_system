@@ -21,41 +21,37 @@ int main(int argc, char *argv[])
 	int iterILS;
 	sAux.custo = INFINITY;
 
-	for (int i = 0; i < IR; i++) {
-		s = instanciarSolucao(fs);
-		sLinha = s;
-		T = T0;
-		iterILS = 0;
+	s = instanciarSolucao(fs, construirOV_Greedy, escolherProximoVertice_Greedy);
+	sLinha = s;
+	T = T0;
+	iterILS = 0;
 		
-		while (iterILS < iILS) {
-			s = RVND(s, fs);
-			delta = s.custo - sLinha.custo;
-			if (sAux.custo != INFINITY && s.caminho != sAux.caminho){ liberarSolucao(sAux);}
-			if (delta < 0) {
-				liberarSolucao(sLinha);
-				sLinha = s;
-				iterILS = 0;
-			} else {
-				x = ((double) rand() / (RAND_MAX));
-				if (T > 0 && x < exp(-(delta / T))) {
-					if (s.caminho != sLinha.caminho) liberarSolucao(sLinha);
-					sLinha = s;
-				} else if (s.caminho != sLinha.caminho) {
-					liberarSolucao(s);
-				}
+	while (iterILS < iILS) {
+		s = RVND(s, fs);
+		delta = s.custo - sLinha.custo;
+		if (sAux.custo != INFINITY && s.caminho != sAux.caminho){ liberarSolucao(sAux);}
+		if (delta < 0) {
+			liberarSolucao(sLinha);
+			sLinha = s;
+			iterILS = 0;
+			if (s.custo < fAsterisco && isViavel(s)) {
+				if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
+				fAsterisco = s.custo;
+				sAsterisco = copiarSolucao(s);
 			}
-			s = perturbar(sLinha, fs);
-			sAux = s;
-			iterILS += 1;
-			T *= alpha;
-		}
-		if (sLinha.custo < fAsterisco && isViavel(sLinha)) {
-			if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
-			fAsterisco = sLinha.custo;
-			sAsterisco = sLinha;
 		} else {
-			liberarSolucao(sLinha);			
+			x = ((double) rand() / (RAND_MAX));
+			if (T > 0 && x < exp(-(delta / T))) {
+				if (s.caminho != sLinha.caminho) liberarSolucao(sLinha);
+				sLinha = s;
+			} else if (s.caminho != sLinha.caminho) {
+				liberarSolucao(s);
+			}
 		}
+		s = perturbar(sLinha, fs);
+		sAux = s;
+		iterILS += 1;
+		T *= alpha;
 	}
 
 	imprimirSolucao(sAsterisco, fs);
