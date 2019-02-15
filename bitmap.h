@@ -14,10 +14,10 @@ typedef struct
 
 void set (Conjunto *c, int i);
 
-void clear (Conjunto c, int i);
+void clear (Conjunto *c, int i);
 
-int get (Conjunto c, int i);
+int get (Conjunto *c, int i);
 
-Conjunto criarConjunto (int amplitude);
+Conjunto* criarConjunto (int amplitude);
 
-void liberarConjunto (Conjunto c);
+void liberarConjunto (Conjunto* c);
