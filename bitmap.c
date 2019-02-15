@@ -1,18 +1,6 @@
-#include <limits.h>
-#include <stdint.h>
+#include "bitmap.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-typedef uint32_t naco;
-enum { BITS_PER_WORD = sizeof(naco) * CHAR_BIT};
-#define WORD_OFFSET(b) ((b) / BITS_PER_WORD)
-#define BIT_OFFSET(b) ((b) % BITS_PER_WORD)
-
-typedef struct 
-{
-	naco* mapa;
-	int n;
-} Conjunto;
 
 void set (Conjunto *c, int i) {
 	int j = WORD_OFFSET(i);
@@ -46,16 +34,4 @@ Conjunto criarConjunto (int amplitude) {
 
 void liberarConjunto (Conjunto c) {
 	free(c.mapa);
-}
-
-int main(int argc, char const *argv[])
-{
-	Conjunto c = criarConjunto(30);
-	set(&c, 2000);
-	printf("%d\n", get(c, 2000));
-	clear(c, 25);
-	printf("%d\n", get(c, 25));
-
-	liberarConjunto(c);
-	return 0;
 }
