@@ -1,5 +1,6 @@
 #include "bitmap.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct
 {
@@ -33,7 +34,19 @@ ListaTabu criarListaTabu (int n, int nVertices) {
 	lista.movimentos = malloc(sizeof(Movimento) * n);
 	for (int i = 0; i < n; i++) lista.movimentos[i].n = 0;
 	lista.arcos = malloc(sizeof(Conjunto*) * nVertices * nVertices);
+	for (int i = 0; i < nVertices * nVertices; i++) lista.arcos[i] = NULL;
 	return lista;
+}
+
+void liberarListaTabu (ListaTabu lista) {
+	for (int i = 0; i < lista.tamanho; i++)
+		if (lista.movimentos[i].n > 0)
+			free(lista.movimentos[i].feitos);
+	free(lista.movimentos);
+	for (int i = 0; i < lista.nVertices * lista.nVertices; i++) 
+		if (lista.arcos[i] != NULL)
+			liberarConjunto(lista.arcos[i]);
+	free(lista.arcos);
 }
 
 ArcoPosicao criarArcoPosicao (int i, int j, int k) {
@@ -88,6 +101,13 @@ void AtualizarListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho) {
 
 int main(int argc, char const *argv[])
 {
-	
+	ListaTabu l = criarListaTabu(3, 20);
+
+	int caminho [] = {0, 0, 16, 5, 1, 8, 12, 11, 10, 17, 17, 17, 15, 6, 18, 14, 19, 13, 2, 7, 4, 0};
+	preencherListaTabu(&l, caminho, 22);
+	for (int i = 0; i < l.movimentos[0].n; i++)
+		printf("%d %d %d\n", l.movimentos[0].feitos[i].i, l.movimentos[0].feitos[i].j, l.movimentos[0].feitos[i].k);
+
+	liberarListaTabu(l);
 	return 0;
 }

@@ -36,19 +36,3 @@ void liberarConjunto (Conjunto* c) {
 	free(c->mapa);
 	free(c);
 }
-
-
-int main(int argc, char const *argv[])
-{
-	Conjunto* c = criarConjunto(30);
-	set(c, 15);
-	printf("%d\n", get(c, 15));
-	set(c, 16);
-	printf("%d\n", get(c, 16));
-	clear(c, 16);
-	printf("%d\n", get(c, 16));
-	set(c, 58);
-	printf("%d\n", get(c, 58));
-	liberarConjunto(c);
-	return 0;
-}
