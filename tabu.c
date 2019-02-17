@@ -1,26 +1,7 @@
 #include "bitmap.h"
+#include "tabu.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-typedef struct
-{
-	int i, j, k; // a(i, j) e posicao k
-} ArcoPosicao;
-
-typedef struct 
-{
-	ArcoPosicao* feitos;
-	int n;
-} Movimento;
-
-typedef struct
-{
-	Conjunto** arcos;
-	Movimento* movimentos;
-	int tamanho;
-	int nVertices;
-	int indiceAtual;
-} ListaTabu;
 
 int indConj(int i, int j, int n) {
 	return i * n + j;
@@ -34,7 +15,6 @@ ListaTabu criarListaTabu (int n, int nVertices) {
 	lista.movimentos = malloc(sizeof(Movimento) * n);
 	for (int i = 0; i < n; i++) lista.movimentos[i].n = 0;
 	lista.arcos = malloc(sizeof(Conjunto*) * nVertices * nVertices);
-	for (int i = 0; i < nVertices * nVertices; i++) lista.arcos[i] = NULL;
 	return lista;
 }
 
@@ -73,7 +53,7 @@ void preencherListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho) {
 	}
 }
 
-void AtualizarListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho) {
+void atualizarListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho) {
 	Movimento* move = &lista->movimentos[lista->indiceAtual];
 	if (move->n > 0) {
 		for (int a = 0; a < move->n; a++) {
@@ -94,20 +74,10 @@ void AtualizarListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho) {
 			a++;
 		}
 	}
-	move->feitos = realloc(move->feitos, sizeof(ArcoPosicao) * a);
+	
+	if (a > move->n) move->feitos = realloc(move->feitos, sizeof(ArcoPosicao) * a);
+	else if (a == 0) free(move->feitos);
+	
 	move->n = a;
 	lista->indiceAtual = lista->indiceAtual + 1 >= lista->tamanho ? 0 : lista->indiceAtual + 1;
-}
-
-int main(int argc, char const *argv[])
-{
-	ListaTabu l = criarListaTabu(3, 20);
-
-	int caminho [] = {0, 0, 16, 5, 1, 8, 12, 11, 10, 17, 17, 17, 15, 6, 18, 14, 19, 13, 2, 7, 4, 0};
-	preencherListaTabu(&l, caminho, 22);
-	for (int i = 0; i < l.movimentos[0].n; i++)
-		printf("%d %d %d\n", l.movimentos[0].feitos[i].i, l.movimentos[0].feitos[i].j, l.movimentos[0].feitos[i].k);
-
-	liberarListaTabu(l);
-	return 0;
 }
