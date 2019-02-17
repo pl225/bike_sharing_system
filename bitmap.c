@@ -29,6 +29,7 @@ Conjunto* criarConjunto (int amplitude) {
 	int n = WORD_OFFSET(amplitude) + 1;
 	c->n = n;
 	c->mapa = malloc(sizeof(naco) * n);
+	for (int i = 0; i < n; i++) c->mapa[i] = 0;
 	return c;
 }
 
