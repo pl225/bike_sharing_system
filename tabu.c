@@ -1,4 +1,3 @@
-#include "bitmap.h"
 #include "tabu.h"
 #include <stdlib.h>
 #include <stdio.h>

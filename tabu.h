@@ -1,3 +1,5 @@
+#include "bitmap.h"
+
 typedef struct
 {
 	int i, j, k; // a(i, j) e posicao k

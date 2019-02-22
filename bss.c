@@ -13,10 +13,16 @@
 #include "vizinhanca.h"
 #endif
 
+#ifndef TABU_H
+#define TABU_H
+#include "tabu.h"
+#endif
+
 #include <time.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 int main(int argc, char *argv[])
 {
@@ -25,55 +31,37 @@ int main(int argc, char *argv[])
 	strcat(caminho, argv[1]);
 	
 	Grafo g = carregarInstancia(caminho);
-	int IR = 100;
-	int iILS = 10 * g.n;
-	float alpha = 0.75;
-	float T0 = 1000;
-	
-	srand(time(NULL));
 	FabricaSolucao fs = instanciarFabrica(g);
-	Solucao s, sLinha, sAsterisco, sAux;
-	float T, delta, x, fAsterisco = INFINITY;
-	int iterILS;
-	sAux.custo = INFINITY;
+	srand(time(NULL));
+
+	Solucao s, sTralha, sAsterisco;
+	int tamanhoListaTabu = 30, NbIterMax = 1000, maxSemMelhora = 80, i = 0, j = 0;
 
 	s = instanciarSolucao(fs, construirOV_Greedy, escolherProximoVertice_Greedy);
-	sLinha = s;
-	T = T0;
-	iterILS = 0;
+	sAsterisco = copiarSolucao(s);
+	ListaTabu tabu = criarListaTabu(tamanhoListaTabu, g.n);
+	preencherListaTabu(&tabu, s.caminho, s.tamanhoCaminho);
 		
-	while (iterILS < iILS) {
-		s = RVND(s, fs);
-		delta = s.custo - sLinha.custo;
-		if (sAux.custo != INFINITY && s.caminho != sAux.caminho){ liberarSolucao(sAux);}
-		if (delta < 0) {
-			liberarSolucao(sLinha);
-			sLinha = s;
-			iterILS = 0;
-			if (s.custo < fAsterisco && isViavel(s)) {
-				if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
-				fAsterisco = s.custo;
-				sAsterisco = copiarSolucao(s);
-			}
+	while (i <= NbIterMax) {
+		sTralha = RVND(s, fs); //liberar s
+		if (s.caminho != sTralha.caminho) liberarSolucao(s);
+		s = sTralha;
+		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
+		if (s.custo < sAsterisco.custo) {
+			liberarSolucao(sAsterisco);
+			sAsterisco = copiarSolucao(s);
+			j = 0;
 		} else {
-			x = ((double) rand() / (RAND_MAX));
-			if (T > 0 && x < exp(-(delta / T))) {
-				if (s.caminho != sLinha.caminho) liberarSolucao(sLinha);
-				sLinha = s;
-			} else if (s.caminho != sLinha.caminho) {
-				liberarSolucao(s);
-			}
+			j++;
+			if (j == maxSemMelhora) break;
 		}
-		s = perturbar(sLinha, fs);
-		sAux = s;
-		iterILS += 1;
-		T *= alpha;
+		i++;
 	}
-
 	imprimirSolucao(sAsterisco, fs);
 
 	liberarGrafo(g);
 	liberarFabrica(fs);
+	liberarListaTabu (tabu);
 	liberarSolucao(sAsterisco);
 	liberarSolucao(s);
 	return 0;
