@@ -389,6 +389,7 @@ Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 				if (i == j) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
 				if (abs(s.capacidades[i] - s.capacidades[i - 1]) <= 1) continue;
+				if (tabuContem(lista, s.caminho[j-1], s.caminho[i], j-1) || tabuContem(lista, s.caminho[i], s.caminho[j], j)) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
 					qSum = s.ads[i][i].qSum - 1;
