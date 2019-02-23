@@ -1,10 +1,5 @@
 #include "vizinhanca.h"
 
-#ifndef TABU_H
-#define TABU_H
-#include "tabu.h"
-#endif
-
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -62,6 +57,8 @@ Solucao swap(Solucao s, FabricaSolucao fs, ListaTabu lista) {
 		for (int j = i + 1; j < s.tamanhoCaminho - 1; j++) {
 
 			if (s.ads[0][i - 1].lMin > 0 || s.ads[0][i - 1].lMax < 0) continue;
+			if (tabuContem(lista, s.caminho[i-1], s.caminho[j], i-1) || tabuContem(lista, s.caminho[j], s.caminho[i+1], i)) continue;
+			if (tabuContem(lista, s.caminho[j-1], s.caminho[i], j-1) || tabuContem(lista, s.caminho[i], s.caminho[j+1], j)) continue;
 
 			if (s.ads[0][i - 1].qSum >= s.ads[j][j].lMin && s.ads[0][i - 1].qSum <= s.ads[j][j].lMax) {
 				qSumAuxiliar = s.ads[0][i - 1].qSum + s.ads[j][j].qSum;
