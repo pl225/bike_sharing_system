@@ -27,3 +27,5 @@ void liberarListaTabu (ListaTabu lista);
 void preencherListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho);
 
 void atualizarListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho);
+
+int tabuContem(ListaTabu lista, int i, int j, int k);

@@ -80,3 +80,8 @@ void atualizarListaTabu (ListaTabu* lista, int* caminho, int tamanhoCaminho) {
 	move->n = a;
 	lista->indiceAtual = lista->indiceAtual + 1 >= lista->tamanho ? 0 : lista->indiceAtual + 1;
 }
+
+int tabuContem(ListaTabu lista, int i, int j, int k) {
+	Conjunto *c = lista.arcos[indConj(i, j, lista.nVertices)];
+	return get(c, k);
+}
