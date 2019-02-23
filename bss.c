@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
 	strcat(caminho, argv[1]);
 	
 	Grafo g = carregarInstancia(caminho);
-	int IR = 100;
 	int iILS = 10 * g.n;
 	float alpha = 0.75;
 	float T0 = 1000;
@@ -55,7 +54,7 @@ int main(int argc, char *argv[])
 	}
 
 	imprimirSolucao(sAsterisco, fs);
-
+	if (sLinha.caminho != s.caminho) liberarSolucao(sLinha);
 	liberarGrafo(g);
 	liberarFabrica(fs);
 	liberarSolucao(sAsterisco);
