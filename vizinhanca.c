@@ -452,12 +452,14 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 	int indices[] = {0, 1, 2, 3, 4, 5, 6};
 	Solucao (*vizinhancas[])(Solucao, FabricaSolucao) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
 	int LN = 7, N, aux;
+	float melhorCusto = INFINITY;
 	while (LN > 0) {
 		N = rand() % LN;
 		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs);
-		if (sLinha.custo < melhorSolucao.custo) {
+		if (sLinha.custo < melhorCusto) {
 			liberarSolucao(melhorSolucao);
 			melhorSolucao = sLinha;
+			melhorCusto = sLinha.custo;
 			LN = 7;
 		} else {
 			if (sLinha.caminho != melhorSolucao.caminho) liberarSolucao(sLinha);
@@ -468,10 +470,6 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 				indices[6] = aux;
 			}
 		}
-	}
-	if (melhorSolucao.custo == s.custo) {
-		liberarSolucao(melhorSolucao);
-		return s;
 	}
 	return melhorSolucao;
 }

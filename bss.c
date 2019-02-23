@@ -32,7 +32,6 @@ int main(int argc, char *argv[])
 	
 	Grafo g = carregarInstancia(caminho);
 	FabricaSolucao fs = instanciarFabrica(g);
-	srand(time(NULL));
 
 	Solucao s, sTralha, sAsterisco;
 	int tamanhoListaTabu = 30, NbIterMax = 1000, maxSemMelhora = 80, i = 0, j = 0;
@@ -44,7 +43,7 @@ int main(int argc, char *argv[])
 		
 	while (i <= NbIterMax) {
 		sTralha = RVND(s, fs); //liberar s
-		if (s.caminho != sTralha.caminho) liberarSolucao(s);
+		/*if (s.caminho != sTralha.caminho)*/ liberarSolucao(s);
 		s = sTralha;
 		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
 		if (s.custo < sAsterisco.custo) {
