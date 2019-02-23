@@ -281,6 +281,7 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 		for (int j = i + 3; j < s.tamanhoCaminho; j++) {
 
 			if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
+			if (tabuContem(lista, s.caminho[i], s.caminho[j-1], i) || tabuContem(lista, s.caminho[i+1], s.caminho[j], j)) continue;
 
 			auxI = i + 1, auxJ = j - 1;
 			ads = s.ads[auxI][auxJ];
@@ -460,7 +461,7 @@ Solucao RVND (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 		N = rand() % LN;
 		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs, lista);
 		if (sLinha.custo < melhorCusto) {
-			liberarSolucao(melhorSolucao);
+			if (sLinha.caminho != melhorSolucao.caminho) liberarSolucao(melhorSolucao);
 			melhorSolucao = sLinha;
 			melhorCusto = sLinha.custo;
 			LN = 7;
