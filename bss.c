@@ -42,8 +42,8 @@ int main(int argc, char *argv[])
 	preencherListaTabu(&tabu, s.caminho, s.tamanhoCaminho);
 		
 	while (i <= NbIterMax) {
-		sTralha = RVND(s, fs); //liberar s
-		/*if (s.caminho != sTralha.caminho)*/ liberarSolucao(s);
+		sTralha = RVND(s, fs);
+		liberarSolucao(s);
 		s = sTralha;
 		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
 		if (s.custo < sAsterisco.custo) {
