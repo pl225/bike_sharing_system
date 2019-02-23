@@ -1,4 +1,10 @@
 #include "vizinhanca.h"
+
+#ifndef TABU_H
+#define TABU_H
+#include "tabu.h"
+#endif
+
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -47,7 +53,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	atualizarADS(*s, Q, i, j);
 }
 
-Solucao swap(Solucao s, FabricaSolucao fs) {
+Solucao swap(Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
 	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 	short qSumAuxiliar;
@@ -127,7 +133,7 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 	}
 }
 
-Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
+Solucao orOPT(Solucao s, FabricaSolucao fs, ListaTabu lista, int tipo) {
 
 	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, menorCustoFinal;
 	int indiceTrocaI = -1, indiceTrocaJ = -1, passo, condicaoParada, fimSeg4 = s.tamanhoCaminho - 1,
@@ -251,23 +257,23 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 	}
 }
 
-Solucao reinsercao(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 0);
+Solucao reinsercao(Solucao s, FabricaSolucao fs, ListaTabu lista) {
+	return orOPT(s, fs, lista, 0);
 }
 
-Solucao orOPT2(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 1);
+Solucao orOPT2(Solucao s, FabricaSolucao fs, ListaTabu lista) {
+	return orOPT(s, fs, lista, 1);
 }
 
-Solucao orOPT3(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 2);
+Solucao orOPT3(Solucao s, FabricaSolucao fs, ListaTabu lista) {
+	return orOPT(s, fs, lista, 2);
 }
 
-Solucao orOPT4(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 3);
+Solucao orOPT4(Solucao s, FabricaSolucao fs, ListaTabu lista) {
+	return orOPT(s, fs, lista, 3);
 }
 
-Solucao _2OPT (Solucao s, FabricaSolucao fs) {
+Solucao _2OPT (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	int aux, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1, auxI, auxJ;
 
@@ -373,7 +379,7 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 	return copia;
 }
 
-Solucao split (Solucao s, FabricaSolucao fs) {
+Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
 	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
@@ -447,15 +453,15 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 	}
 }
 
-Solucao RVND (Solucao s, FabricaSolucao fs) {
+Solucao RVND (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	Solucao melhorSolucao = copiarSolucao(s), sLinha;
 	int indices[] = {0, 1, 2, 3, 4, 5, 6};
-	Solucao (*vizinhancas[])(Solucao, FabricaSolucao) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
+	Solucao (*vizinhancas[])(Solucao, FabricaSolucao, ListaTabu) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
 	int LN = 7, N, aux;
 	float melhorCusto = INFINITY;
 	while (LN > 0) {
 		N = rand() % LN;
-		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs);
+		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs, lista);
 		if (sLinha.custo < melhorCusto) {
 			liberarSolucao(melhorSolucao);
 			melhorSolucao = sLinha;

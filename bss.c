@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	preencherListaTabu(&tabu, s.caminho, s.tamanhoCaminho);
 		
 	while (i <= NbIterMax) {
-		sTralha = RVND(s, fs);
+		sTralha = RVND(s, fs, tabu);
 		liberarSolucao(s);
 		s = sTralha;
 		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
