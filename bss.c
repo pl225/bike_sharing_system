@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
 		liberarSolucao(s);
 		s = sTralha;
 		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
-		if (s.custo < sAsterisco.custo) {
+		if (s.custo < sAsterisco.custo && isViavel(s)) {
 			liberarSolucao(sAsterisco);
 			sAsterisco = copiarSolucao(s);
 			j = 0;
