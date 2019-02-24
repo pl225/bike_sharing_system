@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 	strcat(caminho, argv[1]);
 	
 	Grafo g = carregarInstancia(caminho);
+	g.q = atoi(argv[2]);
 	int IR = 100;
 	int iILS = 10 * g.n;
 	float alpha = 0.75;
