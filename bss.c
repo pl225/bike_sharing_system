@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 	FabricaSolucao fs = instanciarFabrica(g);
 
 	Solucao s, sTralha, sAsterisco;
-	int tamanhoListaTabu = 30, NbIterMax = 1000, maxSemMelhora = 80, i = 0, j = 0;
+	int tamanhoListaTabu = 20, NbIterMax = 1000, maxSemMelhora = 700, i = 0, j = 0;
 
 	s = instanciarSolucao(fs, construirOV_Greedy, escolherProximoVertice_Greedy);
 	sAsterisco = copiarSolucao(s);
@@ -49,13 +49,14 @@ int main(int argc, char *argv[])
 		if (s.custo < sAsterisco.custo && isViavel(s)) {
 			liberarSolucao(sAsterisco);
 			sAsterisco = copiarSolucao(s);
-			j = 0;
+			j = 0;i=0;
 		} else {
 			j++;
 			if (j == maxSemMelhora) break;
 		}
 		i++;
 	}
+	printf("%d %d\n", i, j);
 	imprimirSolucao(sAsterisco, fs);
 
 	liberarGrafo(g);
