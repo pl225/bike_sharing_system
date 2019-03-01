@@ -37,16 +37,17 @@ int main(int argc, char *argv[])
 	int tamanhoListaTabu = 20, NbIterMax = 1000, maxSemMelhora = 700, i = 0, j = 0;
 
 	s = instanciarSolucao(fs, construirOV_Greedy, escolherProximoVertice_Greedy);
+
 	sAsterisco = copiarSolucao(s);
 	ListaTabu tabu = criarListaTabu(tamanhoListaTabu, g.n);
 	preencherListaTabu(&tabu, s.caminho, s.tamanhoCaminho);
-		
+	
 	while (i <= NbIterMax) {
 		sTralha = RVND(s, fs, tabu);
 		liberarSolucao(s);
 		s = sTralha;
 		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
-		if (s.custo < sAsterisco.custo && isViavel(s)) {
+		if (s.custo < sAsterisco.custo) {
 			liberarSolucao(sAsterisco);
 			sAsterisco = copiarSolucao(s);
 			j = 0;i=0;
