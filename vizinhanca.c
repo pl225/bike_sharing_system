@@ -28,7 +28,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (s->caminho[i] == s->caminho[i + 1]) {
 		mergeAux(s, i, i + 1, tamanhoCaminho);
-		i -= 1, j -= 1, tamanhoCaminho -= 1;
+		j -= 1, tamanhoCaminho -= 1;
 	}
 	if (s->caminho[j - 1] == s->caminho[j]) {
 		mergeAux(s, j - 1, j, tamanhoCaminho);
@@ -36,7 +36,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (indiceTrocaJ < s->tamanhoCaminho - 1 && s->caminho[j] == s->caminho[j + 1]) {
 		mergeAux(s, j, j + 1, tamanhoCaminho);
-		j -= 1, tamanhoCaminho -= 1;
+		tamanhoCaminho -= 1;
 	}
 
 	size_t tamanhoADS = sizeof(ADS) * tamanhoCaminho;
@@ -46,6 +46,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	
 	for (int k = 0; k < tamanhoCaminho; k++) s->ads[k] = (ADS*) realloc(s->ads[k], tamanhoADS);
 	s->tamanhoCaminho = tamanhoCaminho;
+
 	atualizarADS(*s, Q, i, j);
 }
 
@@ -159,7 +160,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, ListaTabu lista, int tipo) {
 
 		menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + passo + 1], fs.n)];
 
-		for (int j = 1; j < condicaoParada; j++) {
+		for (int j = 1; j < condicaoParada; j++) { // j < s.tamanhoCaminho - 1
 			if (i == j) continue;
 			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
 			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
@@ -375,7 +376,6 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 	}
 
 	atualizarADS(copia, fs.q, inicioLoop, fimLoop);
-
 	return copia;
 }
 
@@ -460,6 +460,7 @@ Solucao RVND (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	Solucao (*vizinhancas[])(Solucao, FabricaSolucao, ListaTabu) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
 	int LN = 7, N, aux;
 	float melhorCusto = INFINITY;
+
 	while (LN > 0) {
 		N = rand() % LN;
 		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs, lista);
