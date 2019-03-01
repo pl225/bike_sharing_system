@@ -21,7 +21,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (s->caminho[i] == s->caminho[i + 1]) {
 		mergeAux(s, i, i + 1, tamanhoCaminho);
-		i -= 1, j -= 1, tamanhoCaminho -= 1;
+		j -= 1, tamanhoCaminho -= 1;
 	}
 	if (s->caminho[j - 1] == s->caminho[j]) {
 		mergeAux(s, j - 1, j, tamanhoCaminho);
@@ -29,7 +29,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (indiceTrocaJ < s->tamanhoCaminho - 1 && s->caminho[j] == s->caminho[j + 1]) {
 		mergeAux(s, j, j + 1, tamanhoCaminho);
-		j -= 1, tamanhoCaminho -= 1;
+		tamanhoCaminho -= 1;
 	}
 
 	size_t tamanhoADS = sizeof(ADS) * tamanhoCaminho;
