@@ -21,7 +21,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (s->caminho[i] == s->caminho[i + 1]) {
 		mergeAux(s, i, i + 1, tamanhoCaminho);
-		i -= 1, j -= 1, tamanhoCaminho -= 1;
+		j -= 1, tamanhoCaminho -= 1;
 	}
 	if (s->caminho[j - 1] == s->caminho[j]) {
 		mergeAux(s, j - 1, j, tamanhoCaminho);
@@ -29,7 +29,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (indiceTrocaJ < s->tamanhoCaminho - 1 && s->caminho[j] == s->caminho[j + 1]) {
 		mergeAux(s, j, j + 1, tamanhoCaminho);
-		j -= 1, tamanhoCaminho -= 1;
+		tamanhoCaminho -= 1;
 	}
 
 	size_t tamanhoADS = sizeof(ADS) * tamanhoCaminho;
@@ -113,8 +113,8 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 				qImais1 = nova.capacidades[i + 1] - nova.capacidades[i];
 				nova.capacidades[i] = nova.capacidades[i - 1] + aux;
 			}
-			merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
 		}
+		merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
 
 		return nova;
 	} else {
@@ -379,7 +379,7 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 
 				if (i == j) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
-				if (abs(s.caminho[i] - s.caminho[i - 1]) <= 1) continue;
+				if (abs(s.capacidades[i] - s.capacidades[i - 1]) <= 1) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
 					qSum = s.ads[i][i].qSum - 1;
@@ -546,7 +546,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 
 				if (i == j) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
-				if (abs(s.caminho[i] - s.caminho[i - 1]) <= 1) continue;
+				if (abs(s.capacidades[i] - s.capacidades[i - 1]) <= 1) continue;
 
 				custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
 					+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]

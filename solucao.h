@@ -145,6 +145,7 @@ void construirADS (Solucao s, int q) {
 void atualizarADS (Solucao s, int q, int inicio, int fim) { // inicio sempre > que zero
 	short qSumAuxiliar, cargaMinima, cargaMaxima;
 	int aux = inicio - 1, inicioLoop2;
+	
 	for (int i = 0; i <= fim; i++) { // o índice de fim deve ser incluído
 		
 		if (aux >= i) {	
@@ -153,7 +154,8 @@ void atualizarADS (Solucao s, int q, int inicio, int fim) { // inicio sempre > q
 			cargaMaxima = qSumAuxiliar > s.ads[i][aux].qMax ? qSumAuxiliar : s.ads[i][aux].qMax;
 			inicioLoop2 = inicio;
 		} else {
-			qSumAuxiliar = s.capacidades[i - 1] - s.capacidades[i];
+			if (i > 0) qSumAuxiliar = s.capacidades[i - 1] - s.capacidades[i];
+			else qSumAuxiliar = 0;
 			cargaMinima = qSumAuxiliar < 0 ? qSumAuxiliar : 0;
 			cargaMaxima = qSumAuxiliar > 0 ? qSumAuxiliar : 0;
 			inicioLoop2 = i;
