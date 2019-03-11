@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
 	srand(time(NULL));
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 1; i < 2; i++) {
 		for (int j = 0; j < 10; j++) {
 
 			strcpy(caminho, "instancias/");
@@ -95,20 +95,25 @@ int main(int argc, char *argv[])
 				g.q = qs[k];
 				fs.q = qs[k];
 
-				fprintf(arq, "%s %d\n", caminho, qs[k]);
-				double mediaTempo = 0;
+				fprintf(arq, "Instancia: %s, Q: %d\n", caminho, qs[k]);
+				float mediaTempo = 0;
+				float melhorCusto = INFINITY;
 
 				for (int l = 0; l < 10; l++) {
 					ILS_SBPRW(g, fs, arq, results);
-					fprintf(arq, "\tCusto%s\n", );
-				}				
+					fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
+					if (results[0] < melhorCusto) melhorCusto = results[0];
+					mediaTempo += results[1];
+				}
+				fprintf(arq, "Melhor custo: %.f, média dos tempos: %f\n", melhorCusto, mediaTempo / 10.0);
+				printf("Instancia: %s, Q: %d terminada.\n", caminho, g.q);
 			}
 			liberarGrafo(g);
 			liberarFabrica(fs);
 			strcpy(caminho, "");
 		}
 	}
-
+	printf("\n\n****************TERMINADO****************\n");
 	fclose(arq);
 	return 0;
 }
