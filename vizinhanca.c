@@ -160,7 +160,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, ListaTabu lista, int tipo) {
 
 		menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + passo + 1], fs.n)];
 
-		for (int j = 1; j < condicaoParada; j++) { // j < s.tamanhoCaminho - 1
+		for (int j = 1; j < s.tamanhoCaminho - 1; j++) { // j < s.tamanhoCaminho - 1
 			if (i == j) continue;
 			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
 			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
