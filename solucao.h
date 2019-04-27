@@ -49,12 +49,4 @@ void atualizarADS (Solucao s, int q, int inicio, int fim);
 
 FabricaSolucao instanciarFabrica (Grafo g);
 
-int* construirOV_ILS_RVND (FabricaSolucao fs, int* tamanhoOV);
-
-int* construirOV_Greedy (FabricaSolucao fs, int* tamanhoOV);
-
-int escolherProximoVertice_ILS_RVND (int OV[], int demandas[], int tamanhoOV, FabricaSolucao fs, int q, int estacaoAnterior);
-
-int escolherProximoVertice_Greedy (int OV[], int demandas[], int tamanhoOV, FabricaSolucao fs, int q, int estacaoAnterior);
-
-Solucao instanciarSolucao (FabricaSolucao fs, int* (*construcaoOV)(FabricaSolucao, int*), int (*escolherProximoVertice)(int [], int [], int, FabricaSolucao, int, int));
+Solucao GRASP(FabricaSolucao);
