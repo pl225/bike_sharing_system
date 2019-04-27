@@ -164,8 +164,11 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, ListaTabu lista, int tipo) {
 			if (i == j) continue;
 			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
 			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
+			
 			if (i < j && (tabuContem(lista, s.caminho[i - 1], s.caminho[i + passo + 1], i - 1) || tabuContem(lista, s.caminho[j], s.caminho[i], j - (passo + 1)))) continue;
+			if (i < j && tabuContem(lista, s.caminho[j + 1], s.caminho[i + passo], j)) continue;
 			if (i > j && (tabuContem(lista, s.caminho[j], s.caminho[i], j) || tabuContem(lista, s.caminho[i + passo], s.caminho[j + 1], j + passo + 1))) continue;
+			if (i > j && tabuContem(lista, s.caminho[i - 1], s.caminho[i + passo + 1], i + passo)) continue;
 
 			if (i < j) {
 				fimSeg1 = i - 1, iniSeg2 = i + passo + 1, fimSeg2 = j, iniSeg3 = i,
