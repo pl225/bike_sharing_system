@@ -232,7 +232,7 @@ void avaliarCustoInsercao(FabricaSolucao fs, float g[], int LC[], int demandas[]
 			if (g[i] <= *custoMin && g[i] != INFINITY) *custoMin = g[i];
 			if (g[i] >= *custoMax && g[i] != INFINITY) *custoMax = g[i];
 		} else {
-			g[LC[i]] = INFINITY;
+			g[i] = INFINITY;
 		}
 	}
 }
