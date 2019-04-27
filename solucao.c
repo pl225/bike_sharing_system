@@ -241,6 +241,70 @@ int verticeMaisProximo (int n, int qtdIndicesMaiorTroca, int partida, float * cu
 	return maisProximo;
 }
 
+float avaliarCustoInsercaoVertice (FabricaSolucao fs, int LC[], int demandaVertice, int q, int vertice, int ultimoVertice) {
+	
+	float custo = fs.custoArestas[IndiceArestas(ultimoVertice, vertice, fs.n)], fluxoMax = 0;
+	
+	for (int i = 0; i < fs.numVerticesComDemanda; i++)
+		if (LC[i] >= 0)
+			custo += fs.custoArestas[IndiceArestas(vertice, LC[i], fs.n)];
+
+	float y = (rand() % 171) / 100.f;
+	
+	if (demandaVertice < 0)
+		fluxoMax = abs(demandaVertice) <= q ? abs(demandaVertice) : q;
+	else
+		fluxoMax = fs.q - q >= demandaVertice ? demandaVertice : fs.q - q;
+
+	return custo - y * fluxoMax;
+}
+
+/*
+	FabricaSolucao, vetor que terá os custos, vetor dos candidatos atuais, demandas atuais dos candidatos, 
+	capacidade atual, último vértice visitado
+*/
+void avaliarCustoInsercao(FabricaSolucao fs, float g[], int LC[], int demandas[], int q, int ultimoVertice, float *custoMin, float *custoMax) {
+
+	*custoMin = INFINITY, *custoMax = 0;
+
+	for (int i = 0; i < fs.numVerticesComDemanda; i++) {
+		if (LC[i] >= 0 && LC[i] != ultimoVertice) {
+			g[LC[i]] = avaliarCustoInsercaoVertice(fs, LC, demandas[LC[i]], q, LC[i], ultimoVertice);
+			if (g[LC[i]] <= *custoMin) *custoMin = g[LC[i]];
+			if (g[LC[i]] >= *custoMax) *custoMax = g[LC[i]];
+		} else {
+			g[LC[i]] = INFINITY;
+		}
+	}
+}
+
+int construirListaRestritaDeCandidatos (float g[], int LRC[]) {
+
+}
+
 Solucao GRASP (FabricaSolucao fs) {
 	
+	int demandas[fs.n], q = fs.q;
+	memcpy(demandas, fs.demandas, sizeof(int) * fs.n); // cópia de demandas para não sobrescrever a original
+
+	Solucao solucao; // instanciação de uma nova solução
+	solucao.caminho = malloc(sizeof(int) * fs.n);
+	solucao.caminho[0] = 0;
+	solucao.capacidades = malloc(sizeof(int) * fs.n);
+	solucao.capacidades[0] = q;
+	solucao.custo = 0;
+
+	int LC[fs.numVerticesComDemanda], LRC[fs.numVerticesComDemanda]; // iniciando a lista de candidatos
+	float g[fs.numVerticesComDemanda], custoMin, custoMax; // conterá os custos de inserção
+	memcpy(LC, fs.verticesComDemanda, sizeof(int) * fs.numVerticesComDemanda);
+	int tamanhoLC = fs.numVerticesComDemanda;
+
+	int j = 1;
+
+	while (tamanhoLC > 0) {
+		avaliarCustoInsercao(fs, g, LC, demandas, q, solucao.caminho[j - 1], &custoMin, &custoMax);
+		construirListaRestritaDeCandidatos(g, LRC);
+		exit(0);
+	}
+
 }
