@@ -1,0 +1,1080 @@
+Instancia: instancias/n40q10A.tsp, Q: 10
+	Custo: 7217, Tempo: 1.328723
+	Custo: 7134, Tempo: 1.411137
+	Custo: 7134, Tempo: 1.013819
+	Custo: 7187, Tempo: 1.085261
+	Custo: 7084, Tempo: 2.101570
+	Custo: 7217, Tempo: 0.677820
+	Custo: 7217, Tempo: 0.791628
+	Custo: 7217, Tempo: 0.913354
+	Custo: 7141, Tempo: 1.641916
+	Custo: 7134, Tempo: 1.319835
+Melhor custo: 7084, média dos tempos: 1.228506
+Instancia: instancias/n40q10A.tsp, Q: 15
+	Custo: 6129, Tempo: 1.036408
+	Custo: 6164, Tempo: 0.675730
+	Custo: 6164, Tempo: 0.953549
+	Custo: 6164, Tempo: 0.881940
+	Custo: 6129, Tempo: 0.784130
+	Custo: 6164, Tempo: 1.038570
+	Custo: 6164, Tempo: 1.087431
+	Custo: 6164, Tempo: 1.034086
+	Custo: 6164, Tempo: 0.736763
+	Custo: 6164, Tempo: 0.834076
+Melhor custo: 6129, média dos tempos: 0.906268
+Instancia: instancias/n40q10A.tsp, Q: 20
+	Custo: 5449, Tempo: 1.014758
+	Custo: 5449, Tempo: 0.602379
+	Custo: 5449, Tempo: 0.796196
+	Custo: 5449, Tempo: 0.864309
+	Custo: 5449, Tempo: 0.835744
+	Custo: 5449, Tempo: 0.632685
+	Custo: 5449, Tempo: 1.319520
+	Custo: 5449, Tempo: 0.923206
+	Custo: 5454, Tempo: 0.777280
+	Custo: 5449, Tempo: 1.151479
+Melhor custo: 5449, média dos tempos: 0.891756
+Instancia: instancias/n40q10A.tsp, Q: 25
+	Custo: 5097, Tempo: 1.365109
+	Custo: 5097, Tempo: 0.663706
+	Custo: 5097, Tempo: 0.711575
+	Custo: 5097, Tempo: 1.002296
+	Custo: 5097, Tempo: 0.648394
+	Custo: 5097, Tempo: 0.821980
+	Custo: 5097, Tempo: 0.859045
+	Custo: 5097, Tempo: 0.976741
+	Custo: 5097, Tempo: 0.960767
+	Custo: 5097, Tempo: 1.080825
+Melhor custo: 5097, média dos tempos: 0.909044
+Instancia: instancias/n40q10A.tsp, Q: 30
+	Custo: 5042, Tempo: 0.728249
+	Custo: 5042, Tempo: 0.617848
+	Custo: 5042, Tempo: 0.611134
+	Custo: 5042, Tempo: 0.607853
+	Custo: 5042, Tempo: 0.617678
+	Custo: 5042, Tempo: 0.658447
+	Custo: 5042, Tempo: 0.798124
+	Custo: 5042, Tempo: 0.783400
+	Custo: 5042, Tempo: 0.752041
+	Custo: 5042, Tempo: 0.607263
+Melhor custo: 5042, média dos tempos: 0.678204
+Instancia: instancias/n40q10A.tsp, Q: 35
+	Custo: 5042, Tempo: 0.662225
+	Custo: 5042, Tempo: 0.632190
+	Custo: 5042, Tempo: 0.658163
+	Custo: 5042, Tempo: 0.666770
+	Custo: 5042, Tempo: 0.645376
+	Custo: 5042, Tempo: 0.626977
+	Custo: 5042, Tempo: 0.640844
+	Custo: 5042, Tempo: 0.661847
+	Custo: 5042, Tempo: 0.823326
+	Custo: 5042, Tempo: 0.827852
+Melhor custo: 5042, média dos tempos: 0.684557
+Instancia: instancias/n40q10A.tsp, Q: 40
+	Custo: 5042, Tempo: 0.703291
+	Custo: 5042, Tempo: 0.632690
+	Custo: 5042, Tempo: 0.661607
+	Custo: 5042, Tempo: 0.641172
+	Custo: 5042, Tempo: 0.678960
+	Custo: 5042, Tempo: 0.637837
+	Custo: 5042, Tempo: 0.874554
+	Custo: 5042, Tempo: 0.825240
+	Custo: 5042, Tempo: 0.767287
+	Custo: 5042, Tempo: 0.648476
+Melhor custo: 5042, média dos tempos: 0.707111
+Instancia: instancias/n40q10A.tsp, Q: 45
+	Custo: 5042, Tempo: 0.643050
+	Custo: 5042, Tempo: 0.639529
+	Custo: 5042, Tempo: 0.663375
+	Custo: 5042, Tempo: 0.698178
+	Custo: 5042, Tempo: 0.645188
+	Custo: 5042, Tempo: 0.637732
+	Custo: 5042, Tempo: 0.654890
+	Custo: 5042, Tempo: 0.682950
+	Custo: 5042, Tempo: 0.970071
+	Custo: 5042, Tempo: 0.827527
+Melhor custo: 5042, média dos tempos: 0.706249
+Instancia: instancias/n40q10A.tsp, Q: 1000
+	Custo: 5042, Tempo: 0.677673
+	Custo: 5042, Tempo: 0.707264
+	Custo: 5042, Tempo: 0.669126
+	Custo: 5042, Tempo: 0.675140
+	Custo: 5042, Tempo: 0.634440
+	Custo: 5042, Tempo: 0.643278
+	Custo: 5042, Tempo: 0.820368
+	Custo: 5042, Tempo: 0.841361
+	Custo: 5042, Tempo: 0.720006
+	Custo: 5042, Tempo: 0.655176
+Melhor custo: 5042, média dos tempos: 0.704383
+Instancia: instancias/n40q10B.tsp, Q: 10
+	Custo: 6388, Tempo: 0.850186
+	Custo: 6363, Tempo: 0.607286
+	Custo: 6234, Tempo: 0.708502
+	Custo: 6129, Tempo: 0.917886
+	Custo: 6129, Tempo: 0.756994
+	Custo: 6129, Tempo: 0.658146
+	Custo: 6129, Tempo: 0.909605
+	Custo: 6234, Tempo: 0.883253
+	Custo: 6302, Tempo: 0.526471
+	Custo: 6129, Tempo: 0.626826
+Melhor custo: 6129, média dos tempos: 0.744516
+Instancia: instancias/n40q10B.tsp, Q: 15
+	Custo: 5350, Tempo: 0.535291
+	Custo: 5596, Tempo: 0.595190
+	Custo: 5350, Tempo: 1.267518
+	Custo: 5596, Tempo: 0.765554
+	Custo: 5596, Tempo: 0.610609
+	Custo: 5596, Tempo: 0.569424
+	Custo: 5350, Tempo: 0.823461
+	Custo: 5596, Tempo: 0.571025
+	Custo: 5596, Tempo: 0.645486
+	Custo: 5596, Tempo: 0.542655
+Melhor custo: 5350, média dos tempos: 0.692621
+Instancia: instancias/n40q10B.tsp, Q: 20
+	Custo: 5324, Tempo: 0.612168
+	Custo: 5324, Tempo: 0.714906
+	Custo: 5324, Tempo: 0.720396
+	Custo: 5310, Tempo: 0.592654
+	Custo: 5324, Tempo: 0.560663
+	Custo: 5324, Tempo: 0.808347
+	Custo: 5324, Tempo: 0.556859
+	Custo: 5583, Tempo: 0.588852
+	Custo: 5324, Tempo: 0.545675
+	Custo: 5324, Tempo: 0.566067
+Melhor custo: 5310, média dos tempos: 0.626659
+Instancia: instancias/n40q10B.tsp, Q: 25
+	Custo: 5253, Tempo: 1.297175
+	Custo: 5253, Tempo: 0.828767
+	Custo: 5253, Tempo: 0.615222
+	Custo: 5253, Tempo: 0.957995
+	Custo: 5310, Tempo: 0.621276
+	Custo: 5253, Tempo: 0.763091
+	Custo: 5253, Tempo: 0.754521
+	Custo: 5253, Tempo: 0.602474
+	Custo: 5253, Tempo: 0.679573
+	Custo: 5253, Tempo: 0.586319
+Melhor custo: 5253, média dos tempos: 0.770641
+Instancia: instancias/n40q10B.tsp, Q: 30
+	Custo: 5253, Tempo: 0.677455
+	Custo: 5253, Tempo: 1.025846
+	Custo: 5253, Tempo: 0.962233
+	Custo: 5253, Tempo: 0.607744
+	Custo: 5253, Tempo: 0.604068
+	Custo: 5253, Tempo: 0.630505
+	Custo: 5253, Tempo: 0.598637
+	Custo: 5253, Tempo: 0.611957
+	Custo: 5253, Tempo: 0.638556
+	Custo: 5253, Tempo: 0.597521
+Melhor custo: 5253, média dos tempos: 0.695452
+Instancia: instancias/n40q10B.tsp, Q: 35
+	Custo: 5253, Tempo: 0.688488
+	Custo: 5253, Tempo: 0.661438
+	Custo: 5253, Tempo: 0.621506
+	Custo: 5253, Tempo: 0.675866
+	Custo: 5253, Tempo: 0.661075
+	Custo: 5253, Tempo: 0.600872
+	Custo: 5253, Tempo: 0.928576
+	Custo: 5253, Tempo: 0.679018
+	Custo: 5253, Tempo: 0.679765
+	Custo: 5253, Tempo: 0.686776
+Melhor custo: 5253, média dos tempos: 0.688338
+Instancia: instancias/n40q10B.tsp, Q: 40
+	Custo: 5253, Tempo: 0.881642
+	Custo: 5253, Tempo: 0.598065
+	Custo: 5253, Tempo: 0.717728
+	Custo: 5310, Tempo: 0.574872
+	Custo: 5253, Tempo: 0.773733
+	Custo: 5253, Tempo: 0.680167
+	Custo: 5253, Tempo: 0.735393
+	Custo: 5253, Tempo: 0.875346
+	Custo: 5253, Tempo: 0.756820
+	Custo: 5253, Tempo: 0.724487
+Melhor custo: 5253, média dos tempos: 0.731825
+Instancia: instancias/n40q10B.tsp, Q: 45
+	Custo: 5253, Tempo: 0.653410
+	Custo: 5253, Tempo: 0.592443
+	Custo: 5253, Tempo: 0.615841
+	Custo: 5253, Tempo: 0.615524
+	Custo: 5253, Tempo: 0.701685
+	Custo: 5253, Tempo: 0.586952
+	Custo: 5253, Tempo: 0.593037
+	Custo: 5253, Tempo: 0.738290
+	Custo: 5253, Tempo: 0.799124
+	Custo: 5253, Tempo: 1.074755
+Melhor custo: 5253, média dos tempos: 0.697106
+Instancia: instancias/n40q10B.tsp, Q: 1000
+	Custo: 5253, Tempo: 0.920067
+	Custo: 5253, Tempo: 0.732570
+	Custo: 5253, Tempo: 0.583858
+	Custo: 5253, Tempo: 0.595143
+	Custo: 5253, Tempo: 1.000567
+	Custo: 5253, Tempo: 0.912840
+	Custo: 5253, Tempo: 0.585420
+	Custo: 5253, Tempo: 0.577465
+	Custo: 5253, Tempo: 0.761061
+	Custo: 5253, Tempo: 0.803700
+Melhor custo: 5253, média dos tempos: 0.747269
+Instancia: instancias/n40q10C.tsp, Q: 10
+	Custo: 7263, Tempo: 0.697398
+	Custo: 7262, Tempo: 1.193945
+	Custo: 7255, Tempo: 1.079741
+	Custo: 7265, Tempo: 1.359514
+	Custo: 7265, Tempo: 0.557459
+	Custo: 7265, Tempo: 0.776732
+	Custo: 7255, Tempo: 1.258604
+	Custo: 7240, Tempo: 0.714463
+	Custo: 7267, Tempo: 1.198797
+	Custo: 7258, Tempo: 0.956181
+Melhor custo: 7240, média dos tempos: 0.979283
+Instancia: instancias/n40q10C.tsp, Q: 15
+	Custo: 5916, Tempo: 0.530055
+	Custo: 5916, Tempo: 0.524256
+	Custo: 5916, Tempo: 0.538904
+	Custo: 5916, Tempo: 0.782804
+	Custo: 5916, Tempo: 0.612523
+	Custo: 5916, Tempo: 0.770577
+	Custo: 5916, Tempo: 0.516505
+	Custo: 5916, Tempo: 0.523295
+	Custo: 5916, Tempo: 0.531559
+	Custo: 5916, Tempo: 0.655514
+Melhor custo: 5916, média dos tempos: 0.598599
+Instancia: instancias/n40q10C.tsp, Q: 20
+	Custo: 5425, Tempo: 0.527426
+	Custo: 5425, Tempo: 0.935484
+	Custo: 5529, Tempo: 0.645818
+	Custo: 5425, Tempo: 0.852069
+	Custo: 5529, Tempo: 0.661315
+	Custo: 5529, Tempo: 0.680907
+	Custo: 5529, Tempo: 0.568878
+	Custo: 5529, Tempo: 0.506666
+	Custo: 5529, Tempo: 0.511925
+	Custo: 5425, Tempo: 0.830762
+Melhor custo: 5425, média dos tempos: 0.672125
+Instancia: instancias/n40q10C.tsp, Q: 25
+	Custo: 5169, Tempo: 0.693116
+	Custo: 5132, Tempo: 0.644102
+	Custo: 5132, Tempo: 1.050823
+	Custo: 5132, Tempo: 1.752746
+	Custo: 5132, Tempo: 0.780456
+	Custo: 5132, Tempo: 0.814934
+	Custo: 5132, Tempo: 1.089243
+	Custo: 5132, Tempo: 0.705206
+	Custo: 5132, Tempo: 1.044110
+	Custo: 5132, Tempo: 1.528754
+Melhor custo: 5132, média dos tempos: 1.010349
+Instancia: instancias/n40q10C.tsp, Q: 30
+	Custo: 4806, Tempo: 0.565478
+	Custo: 4806, Tempo: 0.546486
+	Custo: 4806, Tempo: 0.520655
+	Custo: 4806, Tempo: 1.025769
+	Custo: 4806, Tempo: 1.235108
+	Custo: 4806, Tempo: 0.555493
+	Custo: 4780, Tempo: 0.560909
+	Custo: 4891, Tempo: 0.575602
+	Custo: 4806, Tempo: 1.015053
+	Custo: 4806, Tempo: 1.112731
+Melhor custo: 4780, média dos tempos: 0.771328
+Instancia: instancias/n40q10C.tsp, Q: 35
+	Custo: 4684, Tempo: 0.536057
+	Custo: 4684, Tempo: 0.692222
+	Custo: 4684, Tempo: 0.814932
+	Custo: 4684, Tempo: 0.645128
+	Custo: 4684, Tempo: 0.594952
+	Custo: 4684, Tempo: 0.669394
+	Custo: 4684, Tempo: 0.894268
+	Custo: 4684, Tempo: 0.794224
+	Custo: 4684, Tempo: 0.571923
+	Custo: 4684, Tempo: 0.544337
+Melhor custo: 4684, média dos tempos: 0.675744
+Instancia: instancias/n40q10C.tsp, Q: 40
+	Custo: 4693, Tempo: 0.595203
+	Custo: 4684, Tempo: 0.730831
+	Custo: 4684, Tempo: 0.800649
+	Custo: 4693, Tempo: 0.559425
+	Custo: 4684, Tempo: 0.924462
+	Custo: 4684, Tempo: 0.753883
+	Custo: 4684, Tempo: 0.743795
+	Custo: 4684, Tempo: 0.562987
+	Custo: 4684, Tempo: 0.556713
+	Custo: 4684, Tempo: 0.552605
+Melhor custo: 4684, média dos tempos: 0.678055
+Instancia: instancias/n40q10C.tsp, Q: 45
+	Custo: 4689, Tempo: 0.618687
+	Custo: 4689, Tempo: 0.783131
+	Custo: 4684, Tempo: 0.560180
+	Custo: 4689, Tempo: 0.625486
+	Custo: 4689, Tempo: 0.596192
+	Custo: 4689, Tempo: 0.592144
+	Custo: 4689, Tempo: 0.664655
+	Custo: 4689, Tempo: 0.781181
+	Custo: 4689, Tempo: 0.854949
+	Custo: 4689, Tempo: 0.648469
+Melhor custo: 4684, média dos tempos: 0.672507
+Instancia: instancias/n40q10C.tsp, Q: 1000
+	Custo: 4689, Tempo: 0.710520
+	Custo: 4689, Tempo: 0.598512
+	Custo: 4689, Tempo: 0.710828
+	Custo: 4689, Tempo: 0.592612
+	Custo: 4684, Tempo: 0.781422
+	Custo: 4689, Tempo: 0.803095
+	Custo: 4684, Tempo: 0.571960
+	Custo: 4689, Tempo: 0.574822
+	Custo: 4689, Tempo: 0.770327
+	Custo: 4684, Tempo: 0.731647
+Melhor custo: 4684, média dos tempos: 0.684575
+Instancia: instancias/n40q10D.tsp, Q: 10
+	Custo: 8054, Tempo: 0.945217
+	Custo: 7871, Tempo: 0.790410
+	Custo: 7868, Tempo: 1.155379
+	Custo: 7868, Tempo: 1.110698
+	Custo: 8271, Tempo: 0.553313
+	Custo: 8076, Tempo: 1.010768
+	Custo: 7868, Tempo: 1.079655
+	Custo: 7899, Tempo: 1.080886
+	Custo: 8076, Tempo: 0.820893
+	Custo: 7925, Tempo: 0.974334
+Melhor custo: 7868, média dos tempos: 0.952155
+Instancia: instancias/n40q10D.tsp, Q: 15
+	Custo: 6590, Tempo: 1.091727
+	Custo: 6590, Tempo: 0.983451
+	Custo: 6590, Tempo: 0.875606
+	Custo: 6590, Tempo: 1.168802
+	Custo: 6590, Tempo: 0.560868
+	Custo: 6590, Tempo: 0.685406
+	Custo: 6590, Tempo: 0.658861
+	Custo: 6590, Tempo: 0.694018
+	Custo: 6590, Tempo: 0.755006
+	Custo: 6590, Tempo: 0.969212
+Melhor custo: 6590, média dos tempos: 0.844296
+Instancia: instancias/n40q10D.tsp, Q: 20
+	Custo: 6057, Tempo: 0.554513
+	Custo: 6031, Tempo: 0.556207
+	Custo: 6027, Tempo: 0.712511
+	Custo: 5975, Tempo: 1.824237
+	Custo: 6027, Tempo: 0.522294
+	Custo: 6004, Tempo: 0.804036
+	Custo: 6004, Tempo: 0.875399
+	Custo: 6027, Tempo: 0.953020
+	Custo: 6004, Tempo: 0.637896
+	Custo: 6004, Tempo: 0.836798
+Melhor custo: 5975, média dos tempos: 0.827691
+Instancia: instancias/n40q10D.tsp, Q: 25
+	Custo: 5878, Tempo: 0.806455
+	Custo: 5878, Tempo: 0.775858
+	Custo: 5932, Tempo: 0.543184
+	Custo: 5932, Tempo: 0.560800
+	Custo: 5930, Tempo: 0.767264
+	Custo: 5860, Tempo: 0.827186
+	Custo: 5878, Tempo: 0.666027
+	Custo: 5860, Tempo: 0.984978
+	Custo: 5878, Tempo: 0.638627
+	Custo: 5878, Tempo: 0.653496
+Melhor custo: 5860, média dos tempos: 0.722388
+Instancia: instancias/n40q10D.tsp, Q: 30
+	Custo: 5535, Tempo: 0.632556
+	Custo: 5535, Tempo: 0.574697
+	Custo: 5487, Tempo: 0.887952
+	Custo: 5535, Tempo: 1.125025
+	Custo: 5487, Tempo: 0.840773
+	Custo: 5607, Tempo: 1.593620
+	Custo: 5607, Tempo: 0.731898
+	Custo: 5607, Tempo: 1.258699
+	Custo: 5535, Tempo: 0.738316
+	Custo: 5487, Tempo: 0.740456
+Melhor custo: 5487, média dos tempos: 0.912399
+Instancia: instancias/n40q10D.tsp, Q: 35
+	Custo: 5460, Tempo: 0.784070
+	Custo: 5347, Tempo: 0.821679
+	Custo: 5347, Tempo: 0.607090
+	Custo: 5438, Tempo: 0.561806
+	Custo: 5347, Tempo: 0.769380
+	Custo: 5347, Tempo: 0.631680
+	Custo: 5347, Tempo: 0.594573
+	Custo: 5347, Tempo: 0.685863
+	Custo: 5347, Tempo: 0.903486
+	Custo: 5347, Tempo: 0.767466
+Melhor custo: 5347, média dos tempos: 0.712709
+Instancia: instancias/n40q10D.tsp, Q: 40
+	Custo: 5311, Tempo: 0.615762
+	Custo: 5311, Tempo: 1.051751
+	Custo: 5311, Tempo: 0.592244
+	Custo: 5311, Tempo: 0.760280
+	Custo: 5311, Tempo: 0.619041
+	Custo: 5311, Tempo: 0.824644
+	Custo: 5311, Tempo: 0.788907
+	Custo: 5311, Tempo: 0.772098
+	Custo: 5311, Tempo: 0.634826
+	Custo: 5311, Tempo: 0.841129
+Melhor custo: 5311, média dos tempos: 0.750068
+Instancia: instancias/n40q10D.tsp, Q: 45
+	Custo: 5311, Tempo: 0.621885
+	Custo: 5311, Tempo: 0.792584
+	Custo: 5298, Tempo: 0.842893
+	Custo: 5311, Tempo: 1.047990
+	Custo: 5309, Tempo: 0.707020
+	Custo: 5311, Tempo: 0.781784
+	Custo: 5311, Tempo: 0.704215
+	Custo: 5298, Tempo: 0.634311
+	Custo: 5298, Tempo: 0.833295
+	Custo: 5311, Tempo: 0.741531
+Melhor custo: 5298, média dos tempos: 0.770751
+Instancia: instancias/n40q10D.tsp, Q: 1000
+	Custo: 5295, Tempo: 0.710699
+	Custo: 5311, Tempo: 0.657972
+	Custo: 5298, Tempo: 0.882101
+	Custo: 5311, Tempo: 0.908274
+	Custo: 5311, Tempo: 0.727959
+	Custo: 5311, Tempo: 0.814772
+	Custo: 5311, Tempo: 0.717801
+	Custo: 5311, Tempo: 0.634228
+	Custo: 5311, Tempo: 0.916189
+	Custo: 5311, Tempo: 0.629615
+Melhor custo: 5295, média dos tempos: 0.759961
+Instancia: instancias/n40q10E.tsp, Q: 10
+	Custo: 6658, Tempo: 0.454491
+	Custo: 6700, Tempo: 0.951830
+	Custo: 6846, Tempo: 1.038385
+	Custo: 6870, Tempo: 1.212102
+	Custo: 6700, Tempo: 0.964649
+	Custo: 6744, Tempo: 1.002941
+	Custo: 6691, Tempo: 0.811609
+	Custo: 6838, Tempo: 1.048991
+	Custo: 6706, Tempo: 0.602957
+	Custo: 6700, Tempo: 0.708484
+Melhor custo: 6658, média dos tempos: 0.879644
+Instancia: instancias/n40q10E.tsp, Q: 15
+	Custo: 5776, Tempo: 0.730680
+	Custo: 5776, Tempo: 0.774339
+	Custo: 5776, Tempo: 0.931711
+	Custo: 5776, Tempo: 0.680060
+	Custo: 5793, Tempo: 0.627854
+	Custo: 5776, Tempo: 0.649018
+	Custo: 5776, Tempo: 0.566903
+	Custo: 5776, Tempo: 0.519102
+	Custo: 5776, Tempo: 0.598437
+	Custo: 5776, Tempo: 0.671164
+Melhor custo: 5776, média dos tempos: 0.674927
+Instancia: instancias/n40q10E.tsp, Q: 20
+	Custo: 5505, Tempo: 0.604540
+	Custo: 5505, Tempo: 0.735625
+	Custo: 5569, Tempo: 0.571765
+	Custo: 5505, Tempo: 0.458991
+	Custo: 5505, Tempo: 0.954339
+	Custo: 5505, Tempo: 0.521431
+	Custo: 5505, Tempo: 1.035433
+	Custo: 5553, Tempo: 0.716248
+	Custo: 5505, Tempo: 0.993279
+	Custo: 5553, Tempo: 0.483861
+Melhor custo: 5505, média dos tempos: 0.707551
+Instancia: instancias/n40q10E.tsp, Q: 25
+	Custo: 5392, Tempo: 0.568902
+	Custo: 5392, Tempo: 0.831185
+	Custo: 5392, Tempo: 0.762912
+	Custo: 5392, Tempo: 0.902221
+	Custo: 5392, Tempo: 0.640755
+	Custo: 5392, Tempo: 0.463400
+	Custo: 5392, Tempo: 0.468256
+	Custo: 5392, Tempo: 0.645718
+	Custo: 5392, Tempo: 0.748205
+	Custo: 5392, Tempo: 0.505232
+Melhor custo: 5392, média dos tempos: 0.653679
+Instancia: instancias/n40q10E.tsp, Q: 30
+	Custo: 5279, Tempo: 0.520187
+	Custo: 5279, Tempo: 0.511090
+	Custo: 5279, Tempo: 0.695519
+	Custo: 5279, Tempo: 0.516603
+	Custo: 5279, Tempo: 0.479939
+	Custo: 5279, Tempo: 0.456490
+	Custo: 5279, Tempo: 0.493897
+	Custo: 5279, Tempo: 0.532654
+	Custo: 5279, Tempo: 0.682710
+	Custo: 5279, Tempo: 0.630855
+Melhor custo: 5279, média dos tempos: 0.551994
+Instancia: instancias/n40q10E.tsp, Q: 35
+	Custo: 5210, Tempo: 0.977768
+	Custo: 5210, Tempo: 0.543354
+	Custo: 5210, Tempo: 0.549764
+	Custo: 5210, Tempo: 0.485534
+	Custo: 5210, Tempo: 0.519203
+	Custo: 5210, Tempo: 0.809441
+	Custo: 5210, Tempo: 1.001982
+	Custo: 5210, Tempo: 0.798787
+	Custo: 5210, Tempo: 0.606290
+	Custo: 5210, Tempo: 0.522189
+Melhor custo: 5210, média dos tempos: 0.681431
+Instancia: instancias/n40q10E.tsp, Q: 40
+	Custo: 5210, Tempo: 0.628055
+	Custo: 5210, Tempo: 0.637630
+	Custo: 5210, Tempo: 0.654783
+	Custo: 5210, Tempo: 0.542511
+	Custo: 5210, Tempo: 0.476265
+	Custo: 5210, Tempo: 0.497647
+	Custo: 5210, Tempo: 0.491067
+	Custo: 5210, Tempo: 0.491258
+	Custo: 5210, Tempo: 0.485721
+	Custo: 5210, Tempo: 0.468678
+Melhor custo: 5210, média dos tempos: 0.537361
+Instancia: instancias/n40q10E.tsp, Q: 45
+	Custo: 5210, Tempo: 0.520762
+	Custo: 5210, Tempo: 0.479653
+	Custo: 5210, Tempo: 0.482448
+	Custo: 5210, Tempo: 0.502529
+	Custo: 5210, Tempo: 0.630721
+	Custo: 5210, Tempo: 0.503876
+	Custo: 5210, Tempo: 0.513234
+	Custo: 5210, Tempo: 0.516363
+	Custo: 5210, Tempo: 0.498303
+	Custo: 5210, Tempo: 0.491764
+Melhor custo: 5210, média dos tempos: 0.513965
+Instancia: instancias/n40q10E.tsp, Q: 1000
+	Custo: 5210, Tempo: 0.498760
+	Custo: 5210, Tempo: 0.544411
+	Custo: 5210, Tempo: 0.579123
+	Custo: 5210, Tempo: 0.660970
+	Custo: 5210, Tempo: 0.650151
+	Custo: 5210, Tempo: 0.676528
+	Custo: 5210, Tempo: 0.492112
+	Custo: 5210, Tempo: 0.516752
+	Custo: 5210, Tempo: 0.535508
+	Custo: 5210, Tempo: 0.487715
+Melhor custo: 5210, média dos tempos: 0.564203
+Instancia: instancias/n40q10F.tsp, Q: 10
+	Custo: 7357, Tempo: 0.894126
+	Custo: 7332, Tempo: 0.638514
+	Custo: 7242, Tempo: 0.762113
+	Custo: 7222, Tempo: 0.590256
+	Custo: 7171, Tempo: 0.756231
+	Custo: 7220, Tempo: 0.859753
+	Custo: 7332, Tempo: 0.751854
+	Custo: 7332, Tempo: 0.733757
+	Custo: 7176, Tempo: 0.717104
+	Custo: 7332, Tempo: 0.698325
+Melhor custo: 7171, média dos tempos: 0.740203
+Instancia: instancias/n40q10F.tsp, Q: 15
+	Custo: 5943, Tempo: 0.789758
+	Custo: 5943, Tempo: 0.656804
+	Custo: 5962, Tempo: 0.658164
+	Custo: 5943, Tempo: 0.797044
+	Custo: 5962, Tempo: 0.780477
+	Custo: 5945, Tempo: 0.649707
+	Custo: 5943, Tempo: 0.606394
+	Custo: 5945, Tempo: 0.728351
+	Custo: 5962, Tempo: 0.536113
+	Custo: 5962, Tempo: 0.766091
+Melhor custo: 5943, média dos tempos: 0.696890
+Instancia: instancias/n40q10F.tsp, Q: 20
+	Custo: 5289, Tempo: 1.585967
+	Custo: 5289, Tempo: 1.133799
+	Custo: 5289, Tempo: 0.702748
+	Custo: 5289, Tempo: 0.734364
+	Custo: 5289, Tempo: 1.060640
+	Custo: 5289, Tempo: 0.701998
+	Custo: 5289, Tempo: 1.063742
+	Custo: 5289, Tempo: 0.853210
+	Custo: 5289, Tempo: 0.626883
+	Custo: 5289, Tempo: 0.967399
+Melhor custo: 5289, média dos tempos: 0.943075
+Instancia: instancias/n40q10F.tsp, Q: 25
+	Custo: 5176, Tempo: 1.337822
+	Custo: 5176, Tempo: 0.631479
+	Custo: 5176, Tempo: 0.592249
+	Custo: 5180, Tempo: 0.681650
+	Custo: 5176, Tempo: 0.921701
+	Custo: 5176, Tempo: 1.417777
+	Custo: 5176, Tempo: 0.808537
+	Custo: 5176, Tempo: 0.894887
+	Custo: 5176, Tempo: 0.806853
+	Custo: 5176, Tempo: 0.833107
+Melhor custo: 5176, média dos tempos: 0.892606
+Instancia: instancias/n40q10F.tsp, Q: 30
+	Custo: 5049, Tempo: 0.591451
+	Custo: 5049, Tempo: 0.746952
+	Custo: 5049, Tempo: 0.910175
+	Custo: 5049, Tempo: 0.643805
+	Custo: 5049, Tempo: 0.963067
+	Custo: 5062, Tempo: 0.616496
+	Custo: 5049, Tempo: 0.678895
+	Custo: 5049, Tempo: 0.588217
+	Custo: 5049, Tempo: 0.569282
+	Custo: 5049, Tempo: 0.609666
+Melhor custo: 5049, média dos tempos: 0.691801
+Instancia: instancias/n40q10F.tsp, Q: 35
+	Custo: 5007, Tempo: 0.612544
+	Custo: 5007, Tempo: 0.584215
+	Custo: 5007, Tempo: 0.904658
+	Custo: 5007, Tempo: 0.585725
+	Custo: 5007, Tempo: 0.597709
+	Custo: 5007, Tempo: 0.588101
+	Custo: 5007, Tempo: 0.987010
+	Custo: 5007, Tempo: 0.818962
+	Custo: 5007, Tempo: 0.578913
+	Custo: 5007, Tempo: 0.614442
+Melhor custo: 5007, média dos tempos: 0.687228
+Instancia: instancias/n40q10F.tsp, Q: 40
+	Custo: 4944, Tempo: 0.714140
+	Custo: 5093, Tempo: 0.682267
+	Custo: 5007, Tempo: 0.615929
+	Custo: 5007, Tempo: 1.163386
+	Custo: 5093, Tempo: 0.739896
+	Custo: 4944, Tempo: 0.876567
+	Custo: 5007, Tempo: 0.608498
+	Custo: 4944, Tempo: 0.747464
+	Custo: 5007, Tempo: 0.643900
+	Custo: 5011, Tempo: 0.621603
+Melhor custo: 4944, média dos tempos: 0.741365
+Instancia: instancias/n40q10F.tsp, Q: 45
+	Custo: 5007, Tempo: 0.660010
+	Custo: 5007, Tempo: 0.627031
+	Custo: 4944, Tempo: 1.155762
+	Custo: 5007, Tempo: 0.846454
+	Custo: 4944, Tempo: 1.031677
+	Custo: 4944, Tempo: 0.709685
+	Custo: 4944, Tempo: 0.703797
+	Custo: 5007, Tempo: 0.614222
+	Custo: 5007, Tempo: 0.654022
+	Custo: 4944, Tempo: 0.702984
+Melhor custo: 4944, média dos tempos: 0.770564
+Instancia: instancias/n40q10F.tsp, Q: 1000
+	Custo: 4944, Tempo: 0.846082
+	Custo: 4944, Tempo: 1.029971
+	Custo: 4944, Tempo: 1.294632
+	Custo: 4944, Tempo: 0.804735
+	Custo: 5007, Tempo: 0.617247
+	Custo: 4944, Tempo: 0.881338
+	Custo: 5007, Tempo: 0.612075
+	Custo: 4944, Tempo: 1.156615
+	Custo: 4944, Tempo: 1.124875
+	Custo: 4944, Tempo: 0.708284
+Melhor custo: 4944, média dos tempos: 0.907585
+Instancia: instancias/n40q10G.tsp, Q: 10
+	Custo: 7624, Tempo: 0.671289
+	Custo: 7388, Tempo: 1.003589
+	Custo: 7388, Tempo: 1.374748
+	Custo: 7591, Tempo: 0.693075
+	Custo: 7432, Tempo: 1.024813
+	Custo: 7388, Tempo: 1.087743
+	Custo: 7398, Tempo: 1.559219
+	Custo: 7591, Tempo: 0.682636
+	Custo: 7388, Tempo: 1.658663
+	Custo: 7641, Tempo: 0.729007
+Melhor custo: 7388, média dos tempos: 1.048478
+Instancia: instancias/n40q10G.tsp, Q: 15
+	Custo: 6432, Tempo: 0.985837
+	Custo: 6432, Tempo: 0.685656
+	Custo: 6432, Tempo: 0.917429
+	Custo: 6432, Tempo: 0.693607
+	Custo: 6432, Tempo: 0.919230
+	Custo: 6432, Tempo: 0.621774
+	Custo: 6432, Tempo: 0.866195
+	Custo: 6431, Tempo: 1.389459
+	Custo: 6432, Tempo: 0.868868
+	Custo: 6432, Tempo: 0.642107
+Melhor custo: 6431, média dos tempos: 0.859016
+Instancia: instancias/n40q10G.tsp, Q: 20
+	Custo: 6076, Tempo: 0.660389
+	Custo: 5476, Tempo: 0.922537
+	Custo: 5476, Tempo: 1.052529
+	Custo: 5476, Tempo: 1.275687
+	Custo: 5476, Tempo: 0.922013
+	Custo: 5476, Tempo: 1.433492
+	Custo: 6031, Tempo: 1.188789
+	Custo: 5476, Tempo: 1.006558
+	Custo: 5476, Tempo: 0.851493
+	Custo: 6199, Tempo: 0.745675
+Melhor custo: 5476, média dos tempos: 1.005916
+Instancia: instancias/n40q10G.tsp, Q: 25
+	Custo: 5361, Tempo: 0.635872
+	Custo: 5361, Tempo: 0.626446
+	Custo: 5361, Tempo: 0.618804
+	Custo: 5361, Tempo: 0.624558
+	Custo: 5361, Tempo: 0.629977
+	Custo: 5361, Tempo: 0.614117
+	Custo: 5361, Tempo: 0.640859
+	Custo: 5361, Tempo: 0.612521
+	Custo: 5361, Tempo: 0.623253
+	Custo: 5361, Tempo: 0.628672
+Melhor custo: 5361, média dos tempos: 0.625508
+Instancia: instancias/n40q10G.tsp, Q: 30
+	Custo: 5378, Tempo: 0.641467
+	Custo: 5378, Tempo: 0.686527
+	Custo: 5312, Tempo: 0.636760
+	Custo: 5312, Tempo: 0.715507
+	Custo: 5312, Tempo: 0.633472
+	Custo: 5312, Tempo: 0.661971
+	Custo: 5312, Tempo: 0.626259
+	Custo: 5312, Tempo: 0.666231
+	Custo: 5312, Tempo: 0.641330
+	Custo: 5312, Tempo: 0.616407
+Melhor custo: 5312, média dos tempos: 0.652593
+Instancia: instancias/n40q10G.tsp, Q: 35
+	Custo: 5319, Tempo: 0.748716
+	Custo: 5319, Tempo: 0.683197
+	Custo: 5312, Tempo: 0.653628
+	Custo: 5312, Tempo: 0.651248
+	Custo: 5312, Tempo: 0.660176
+	Custo: 5319, Tempo: 0.690930
+	Custo: 5344, Tempo: 0.657722
+	Custo: 5319, Tempo: 0.673252
+	Custo: 5312, Tempo: 0.667135
+	Custo: 5319, Tempo: 0.661069
+Melhor custo: 5312, média dos tempos: 0.674707
+Instancia: instancias/n40q10G.tsp, Q: 40
+	Custo: 5312, Tempo: 0.668063
+	Custo: 5312, Tempo: 0.671479
+	Custo: 5319, Tempo: 0.694907
+	Custo: 5312, Tempo: 0.715197
+	Custo: 5312, Tempo: 0.673965
+	Custo: 5319, Tempo: 0.698816
+	Custo: 5319, Tempo: 0.840505
+	Custo: 5319, Tempo: 0.776343
+	Custo: 5312, Tempo: 0.688561
+	Custo: 5344, Tempo: 0.879672
+Melhor custo: 5312, média dos tempos: 0.730751
+Instancia: instancias/n40q10G.tsp, Q: 45
+	Custo: 5344, Tempo: 0.847781
+	Custo: 5312, Tempo: 0.678339
+	Custo: 5312, Tempo: 0.674665
+	Custo: 5319, Tempo: 0.681940
+	Custo: 5319, Tempo: 0.681269
+	Custo: 5319, Tempo: 0.732840
+	Custo: 5312, Tempo: 0.679369
+	Custo: 5319, Tempo: 0.731229
+	Custo: 5319, Tempo: 0.776122
+	Custo: 5319, Tempo: 0.719002
+Melhor custo: 5312, média dos tempos: 0.720256
+Instancia: instancias/n40q10G.tsp, Q: 1000
+	Custo: 5312, Tempo: 0.694562
+	Custo: 5319, Tempo: 0.754411
+	Custo: 5312, Tempo: 0.674223
+	Custo: 5312, Tempo: 0.675377
+	Custo: 5312, Tempo: 0.670822
+	Custo: 5344, Tempo: 0.781515
+	Custo: 5344, Tempo: 0.806459
+	Custo: 5344, Tempo: 0.684267
+	Custo: 5312, Tempo: 0.675724
+	Custo: 5319, Tempo: 0.686815
+Melhor custo: 5312, média dos tempos: 0.710418
+Instancia: instancias/n40q10H.tsp, Q: 10
+	Custo: 6758, Tempo: 1.360573
+	Custo: 6758, Tempo: 1.225701
+	Custo: 6745, Tempo: 1.285943
+	Custo: 6758, Tempo: 1.300871
+	Custo: 6757, Tempo: 1.879212
+	Custo: 6758, Tempo: 1.401723
+	Custo: 6758, Tempo: 1.231783
+	Custo: 6899, Tempo: 1.043628
+	Custo: 6824, Tempo: 1.026075
+	Custo: 6758, Tempo: 2.018145
+Melhor custo: 6745, média dos tempos: 1.377365
+Instancia: instancias/n40q10H.tsp, Q: 15
+	Custo: 5594, Tempo: 1.073327
+	Custo: 5594, Tempo: 2.624383
+	Custo: 5769, Tempo: 0.632501
+	Custo: 5646, Tempo: 1.318604
+	Custo: 5797, Tempo: 1.267034
+	Custo: 5797, Tempo: 0.965284
+	Custo: 5646, Tempo: 1.550531
+	Custo: 5782, Tempo: 0.629799
+	Custo: 5769, Tempo: 0.617583
+	Custo: 5619, Tempo: 2.952158
+Melhor custo: 5594, média dos tempos: 1.363120
+Instancia: instancias/n40q10H.tsp, Q: 20
+	Custo: 5303, Tempo: 0.697743
+	Custo: 5253, Tempo: 0.663429
+	Custo: 5253, Tempo: 0.639267
+	Custo: 5277, Tempo: 0.664364
+	Custo: 5253, Tempo: 0.630432
+	Custo: 5277, Tempo: 0.692085
+	Custo: 5277, Tempo: 1.206262
+	Custo: 5285, Tempo: 0.630858
+	Custo: 5303, Tempo: 0.654035
+	Custo: 5253, Tempo: 0.635918
+Melhor custo: 5253, média dos tempos: 0.711439
+Instancia: instancias/n40q10H.tsp, Q: 25
+	Custo: 4981, Tempo: 0.697351
+	Custo: 4981, Tempo: 1.044432
+	Custo: 5119, Tempo: 0.871500
+	Custo: 4981, Tempo: 0.706811
+	Custo: 4981, Tempo: 0.670370
+	Custo: 4981, Tempo: 0.861034
+	Custo: 4981, Tempo: 0.715361
+	Custo: 4981, Tempo: 0.692704
+	Custo: 4981, Tempo: 0.707772
+	Custo: 4981, Tempo: 0.832231
+Melhor custo: 4981, média dos tempos: 0.779957
+Instancia: instancias/n40q10H.tsp, Q: 30
+	Custo: 4939, Tempo: 0.846885
+	Custo: 4939, Tempo: 0.827387
+	Custo: 4962, Tempo: 0.712189
+	Custo: 4939, Tempo: 0.674265
+	Custo: 4939, Tempo: 0.696617
+	Custo: 4939, Tempo: 1.248038
+	Custo: 4939, Tempo: 1.034470
+	Custo: 4939, Tempo: 0.717873
+	Custo: 5027, Tempo: 0.651651
+	Custo: 4939, Tempo: 0.778106
+Melhor custo: 4939, média dos tempos: 0.818748
+Instancia: instancias/n40q10H.tsp, Q: 35
+	Custo: 4939, Tempo: 0.927662
+	Custo: 4939, Tempo: 1.172293
+	Custo: 4962, Tempo: 0.901129
+	Custo: 4962, Tempo: 0.793951
+	Custo: 4939, Tempo: 0.763979
+	Custo: 4939, Tempo: 0.726863
+	Custo: 4939, Tempo: 0.703355
+	Custo: 4939, Tempo: 0.763290
+	Custo: 4944, Tempo: 0.700466
+	Custo: 4939, Tempo: 1.492231
+Melhor custo: 4939, média dos tempos: 0.894522
+Instancia: instancias/n40q10H.tsp, Q: 40
+	Custo: 4962, Tempo: 1.187499
+	Custo: 4939, Tempo: 0.917570
+	Custo: 4939, Tempo: 1.016881
+	Custo: 4944, Tempo: 0.795174
+	Custo: 4941, Tempo: 1.001973
+	Custo: 4962, Tempo: 0.805998
+	Custo: 4939, Tempo: 0.731564
+	Custo: 4939, Tempo: 0.846061
+	Custo: 4944, Tempo: 0.723833
+	Custo: 4939, Tempo: 1.058667
+Melhor custo: 4939, média dos tempos: 0.908522
+Instancia: instancias/n40q10H.tsp, Q: 45
+	Custo: 4939, Tempo: 0.702911
+	Custo: 4941, Tempo: 0.794320
+	Custo: 4939, Tempo: 0.783924
+	Custo: 4939, Tempo: 0.713352
+	Custo: 4939, Tempo: 0.834393
+	Custo: 4941, Tempo: 0.894081
+	Custo: 4939, Tempo: 1.112123
+	Custo: 4944, Tempo: 0.854465
+	Custo: 4944, Tempo: 0.699015
+	Custo: 4939, Tempo: 0.721586
+Melhor custo: 4939, média dos tempos: 0.811017
+Instancia: instancias/n40q10H.tsp, Q: 1000
+	Custo: 4939, Tempo: 0.789930
+	Custo: 4962, Tempo: 0.718260
+	Custo: 4962, Tempo: 0.696597
+	Custo: 5040, Tempo: 0.709350
+	Custo: 4939, Tempo: 0.718711
+	Custo: 4939, Tempo: 1.358672
+	Custo: 5030, Tempo: 0.700646
+	Custo: 4939, Tempo: 0.890002
+	Custo: 4939, Tempo: 1.557838
+	Custo: 5049, Tempo: 0.757065
+Melhor custo: 4939, média dos tempos: 0.889707
+Instancia: instancias/n40q10I.tsp, Q: 10
+	Custo: 7208, Tempo: 1.029675
+	Custo: 7044, Tempo: 0.655467
+	Custo: 7044, Tempo: 0.559018
+	Custo: 7044, Tempo: 0.567402
+	Custo: 7187, Tempo: 0.660157
+	Custo: 7006, Tempo: 1.091387
+	Custo: 6961, Tempo: 0.739395
+	Custo: 7016, Tempo: 0.967224
+	Custo: 6974, Tempo: 0.758363
+	Custo: 7044, Tempo: 0.553928
+Melhor custo: 6961, média dos tempos: 0.758202
+Instancia: instancias/n40q10I.tsp, Q: 15
+	Custo: 5907, Tempo: 0.909100
+	Custo: 5962, Tempo: 0.938851
+	Custo: 5915, Tempo: 0.844207
+	Custo: 5879, Tempo: 1.084610
+	Custo: 5919, Tempo: 0.670727
+	Custo: 5897, Tempo: 1.260563
+	Custo: 5916, Tempo: 0.937324
+	Custo: 5895, Tempo: 0.560853
+	Custo: 5895, Tempo: 1.280062
+	Custo: 5895, Tempo: 1.202231
+Melhor custo: 5879, média dos tempos: 0.968853
+Instancia: instancias/n40q10I.tsp, Q: 20
+	Custo: 5109, Tempo: 0.539051
+	Custo: 5109, Tempo: 0.512073
+	Custo: 5204, Tempo: 0.506291
+	Custo: 5109, Tempo: 0.876324
+	Custo: 5204, Tempo: 0.526223
+	Custo: 5204, Tempo: 0.505879
+	Custo: 5109, Tempo: 0.511811
+	Custo: 5109, Tempo: 1.012813
+	Custo: 5109, Tempo: 0.529717
+	Custo: 5109, Tempo: 0.525943
+Melhor custo: 5109, média dos tempos: 0.604612
+Instancia: instancias/n40q10I.tsp, Q: 25
+	Custo: 5046, Tempo: 0.565098
+	Custo: 5052, Tempo: 0.552308
+	Custo: 5021, Tempo: 0.549147
+	Custo: 5046, Tempo: 0.606489
+	Custo: 5093, Tempo: 0.721873
+	Custo: 5021, Tempo: 0.699078
+	Custo: 5052, Tempo: 0.631436
+	Custo: 5021, Tempo: 0.557079
+	Custo: 5052, Tempo: 0.644526
+	Custo: 5021, Tempo: 0.549613
+Melhor custo: 5021, média dos tempos: 0.607665
+Instancia: instancias/n40q10I.tsp, Q: 30
+	Custo: 4912, Tempo: 0.688694
+	Custo: 4933, Tempo: 0.604875
+	Custo: 4912, Tempo: 1.121947
+	Custo: 4912, Tempo: 0.788553
+	Custo: 4933, Tempo: 0.589993
+	Custo: 4912, Tempo: 1.092931
+	Custo: 4912, Tempo: 1.223563
+	Custo: 4933, Tempo: 0.579060
+	Custo: 5086, Tempo: 0.595079
+	Custo: 4933, Tempo: 0.582565
+Melhor custo: 4912, média dos tempos: 0.786726
+Instancia: instancias/n40q10I.tsp, Q: 35
+	Custo: 4912, Tempo: 1.100716
+	Custo: 4912, Tempo: 0.854644
+	Custo: 4912, Tempo: 1.132152
+	Custo: 4912, Tempo: 0.612717
+	Custo: 4912, Tempo: 1.067650
+	Custo: 5086, Tempo: 0.608593
+	Custo: 4933, Tempo: 0.587846
+	Custo: 4940, Tempo: 0.840944
+	Custo: 4912, Tempo: 0.796401
+	Custo: 4912, Tempo: 0.865389
+Melhor custo: 4912, média dos tempos: 0.846705
+Instancia: instancias/n40q10I.tsp, Q: 40
+	Custo: 4912, Tempo: 0.630841
+	Custo: 4912, Tempo: 0.634679
+	Custo: 4912, Tempo: 0.962721
+	Custo: 4912, Tempo: 0.665949
+	Custo: 4933, Tempo: 0.586469
+	Custo: 4933, Tempo: 0.602735
+	Custo: 4912, Tempo: 1.122274
+	Custo: 4912, Tempo: 0.969462
+	Custo: 4912, Tempo: 1.123506
+	Custo: 4912, Tempo: 0.631235
+Melhor custo: 4912, média dos tempos: 0.792987
+Instancia: instancias/n40q10I.tsp, Q: 45
+	Custo: 4933, Tempo: 0.604418
+	Custo: 4912, Tempo: 0.643208
+	Custo: 4933, Tempo: 0.614892
+	Custo: 4940, Tempo: 1.003662
+	Custo: 4912, Tempo: 0.868785
+	Custo: 5086, Tempo: 0.797495
+	Custo: 5086, Tempo: 0.811376
+	Custo: 4933, Tempo: 0.616648
+	Custo: 4912, Tempo: 0.592552
+	Custo: 4933, Tempo: 0.608878
+Melhor custo: 4912, média dos tempos: 0.716191
+Instancia: instancias/n40q10I.tsp, Q: 1000
+	Custo: 4912, Tempo: 0.796405
+	Custo: 4933, Tempo: 0.597573
+	Custo: 4912, Tempo: 0.747241
+	Custo: 5086, Tempo: 0.626648
+	Custo: 4912, Tempo: 0.685736
+	Custo: 5086, Tempo: 0.621009
+	Custo: 4912, Tempo: 0.837011
+	Custo: 5086, Tempo: 0.597542
+	Custo: 4940, Tempo: 0.780287
+	Custo: 4912, Tempo: 0.753946
+Melhor custo: 4912, média dos tempos: 0.704340
+Instancia: instancias/n40q10J.tsp, Q: 10
+	Custo: 6369, Tempo: 0.962427
+	Custo: 6370, Tempo: 1.218531
+	Custo: 6369, Tempo: 0.610649
+	Custo: 6425, Tempo: 0.808123
+	Custo: 6425, Tempo: 1.135200
+	Custo: 6369, Tempo: 0.628538
+	Custo: 6370, Tempo: 0.834040
+	Custo: 6369, Tempo: 1.167132
+	Custo: 6369, Tempo: 1.070806
+	Custo: 6369, Tempo: 0.999106
+Melhor custo: 6369, média dos tempos: 0.943455
+Instancia: instancias/n40q10J.tsp, Q: 15
+	Custo: 5656, Tempo: 0.781509
+	Custo: 5833, Tempo: 0.522176
+	Custo: 5768, Tempo: 0.936579
+	Custo: 5768, Tempo: 0.665568
+	Custo: 5768, Tempo: 0.563222
+	Custo: 5833, Tempo: 0.919624
+	Custo: 5833, Tempo: 0.842331
+	Custo: 5769, Tempo: 0.656094
+	Custo: 5833, Tempo: 0.625767
+	Custo: 5833, Tempo: 0.542626
+Melhor custo: 5656, média dos tempos: 0.705550
+Instancia: instancias/n40q10J.tsp, Q: 20
+	Custo: 5221, Tempo: 0.606004
+	Custo: 5170, Tempo: 0.984986
+	Custo: 5170, Tempo: 1.102526
+	Custo: 5210, Tempo: 0.987815
+	Custo: 5170, Tempo: 0.583852
+	Custo: 5220, Tempo: 0.562330
+	Custo: 5220, Tempo: 0.662676
+	Custo: 5272, Tempo: 0.839835
+	Custo: 5221, Tempo: 0.838273
+	Custo: 5221, Tempo: 0.769166
+Melhor custo: 5170, média dos tempos: 0.793746
+Instancia: instancias/n40q10J.tsp, Q: 25
+	Custo: 4869, Tempo: 0.721215
+	Custo: 4869, Tempo: 0.558061
+	Custo: 4869, Tempo: 0.534273
+	Custo: 4869, Tempo: 0.534844
+	Custo: 4869, Tempo: 0.642948
+	Custo: 4869, Tempo: 0.681525
+	Custo: 4869, Tempo: 0.507120
+	Custo: 4869, Tempo: 0.633546
+	Custo: 4869, Tempo: 0.537315
+	Custo: 4869, Tempo: 0.612484
+Melhor custo: 4869, média dos tempos: 0.596333
+Instancia: instancias/n40q10J.tsp, Q: 30
+	Custo: 4811, Tempo: 0.534767
+	Custo: 4811, Tempo: 0.670840
+	Custo: 4811, Tempo: 0.773922
+	Custo: 4811, Tempo: 0.687889
+	Custo: 4811, Tempo: 0.567134
+	Custo: 4811, Tempo: 0.517949
+	Custo: 4811, Tempo: 0.522985
+	Custo: 4811, Tempo: 0.521685
+	Custo: 4811, Tempo: 0.528895
+	Custo: 4811, Tempo: 0.560503
+Melhor custo: 4811, média dos tempos: 0.588657
+Instancia: instancias/n40q10J.tsp, Q: 35
+	Custo: 4811, Tempo: 0.575200
+	Custo: 4811, Tempo: 0.522669
+	Custo: 4811, Tempo: 0.556999
+	Custo: 4811, Tempo: 0.521684
+	Custo: 4811, Tempo: 0.589053
+	Custo: 4811, Tempo: 0.548803
+	Custo: 4811, Tempo: 0.551042
+	Custo: 4811, Tempo: 0.542973
+	Custo: 4811, Tempo: 0.525591
+	Custo: 4811, Tempo: 0.525023
+Melhor custo: 4811, média dos tempos: 0.545904
+Instancia: instancias/n40q10J.tsp, Q: 40
+	Custo: 4811, Tempo: 0.543796
+	Custo: 4811, Tempo: 0.584821
+	Custo: 4811, Tempo: 0.550005
+	Custo: 4811, Tempo: 0.650784
+	Custo: 4811, Tempo: 0.557736
+	Custo: 4811, Tempo: 0.623206
+	Custo: 4811, Tempo: 0.552332
+	Custo: 4811, Tempo: 0.752873
+	Custo: 4811, Tempo: 0.539618
+	Custo: 4811, Tempo: 0.530434
+Melhor custo: 4811, média dos tempos: 0.588560
+Instancia: instancias/n40q10J.tsp, Q: 45
+	Custo: 4811, Tempo: 0.549877
+	Custo: 4811, Tempo: 0.631750
+	Custo: 4811, Tempo: 0.697646
+	Custo: 4811, Tempo: 0.737462
+	Custo: 4811, Tempo: 0.678036
+	Custo: 4811, Tempo: 0.609569
+	Custo: 4811, Tempo: 0.558954
+	Custo: 4811, Tempo: 0.619604
+	Custo: 4811, Tempo: 0.620404
+	Custo: 4811, Tempo: 0.685838
+Melhor custo: 4811, média dos tempos: 0.638914
+Instancia: instancias/n40q10J.tsp, Q: 1000
+	Custo: 4811, Tempo: 0.684548
+	Custo: 4811, Tempo: 0.626642
+	Custo: 4811, Tempo: 0.562302
+	Custo: 4811, Tempo: 0.573628
+	Custo: 4811, Tempo: 0.678298
+	Custo: 4811, Tempo: 0.526132
+	Custo: 4811, Tempo: 0.525405
+	Custo: 4811, Tempo: 0.630567
+	Custo: 4811, Tempo: 0.743867
+	Custo: 4811, Tempo: 0.720349
+Melhor custo: 4811, média dos tempos: 0.627174
