@@ -197,57 +197,15 @@ FabricaSolucao instanciarFabrica (Grafo g) {
 	return fs;
 }
 
-/*
-	nº de vértices, vetor que possuirá as operações de valor máximo, vetor das demandas atuais, capacidade máxima, 
-	capacidade atual, vetor que guardará os maiores índices de troca
-*/
-int computeTroca (int n, int troca[], int demandas [], int Q, int q, int indicesMaiorTroca[]) {
-
-	int maiorTroca = 0, j = 0; // j guardará a maior quantidade de trocas que são maiores
-
-	for (int i = 0; i < n; i++) {
-		if (demandas[i] == 0) {
-			troca[i] = 0;
-			continue;
-		}
-		if (demandas[i] < 0) {
-			troca[i] = q;
-		} else {
-			troca[i] = Q - q;
-		}
-
-		if (troca[i] > maiorTroca) {
-			maiorTroca = troca[i];
-			j = 0;
-			indicesMaiorTroca[j] = i;
-		} else if (troca[i] != 0 && troca[i] == maiorTroca) {
-			j++;
-			indicesMaiorTroca[j] = i;
-		}
-	}
-	return j + 1;
-}
-
-int verticeMaisProximo (int n, int qtdIndicesMaiorTroca, int partida, float * custoArestas, int indicesMaiorTroca[]) {
-	int maisProximo = indicesMaiorTroca[0], j;
-	float menorDistancia = custoArestas[IndiceArestas(partida, maisProximo, n)];
-	for (int i = 1; i < qtdIndicesMaiorTroca; i++) {
-		j = indicesMaiorTroca[i]; // guarda o vértice candidato atual a ser o mais próximo
-		if (custoArestas[IndiceArestas(partida, j, n)] < menorDistancia) {
-			maisProximo = j;
-			menorDistancia = custoArestas[IndiceArestas(partida, j, n)]; 
-		}
-	}
-	return maisProximo;
-}
-
-float avaliarCustoInsercaoVertice (FabricaSolucao fs, int LC[], int demandaVertice, int q, int vertice, int ultimoVertice) {
+float avaliarCustoInsercaoVertice (FabricaSolucao fs, int LC[], int demandas[], int q, int indiceVertice, int ultimoVertice) {
 	
-	float custo = fs.custoArestas[IndiceArestas(ultimoVertice, vertice, fs.n)], fluxoMax = 0;
+	float custo = fs.custoArestas[IndiceArestas(ultimoVertice, LC[indiceVertice], fs.n)], fluxoMax = 0;
+
+	int demandaVertice = demandas[LC[indiceVertice]];
 	
 	for (int i = 0; i < fs.numVerticesComDemanda; i++)
-		if (LC[i] >= 0)
-			custo += fs.custoArestas[IndiceArestas(vertice, LC[i], fs.n)];
+		if (LC[i] >= 0 && LC[i] != LC[indiceVertice] && demandas[LC[i]] != 0)
+			custo += fs.custoArestas[IndiceArestas(LC[indiceVertice], LC[i], fs.n)];
 
 	float y = (rand() % 171) / 100.f;
 	
@@ -256,7 +214,8 @@ float avaliarCustoInsercaoVertice (FabricaSolucao fs, int LC[], int demandaVerti
 	else
 		fluxoMax = fs.q - q >= demandaVertice ? demandaVertice : fs.q - q;
 
-	return custo - y * fluxoMax;
+	if (fluxoMax > 0) return custo - y * fluxoMax;
+	else return INFINITY;
 }
 
 /*
@@ -269,17 +228,46 @@ void avaliarCustoInsercao(FabricaSolucao fs, float g[], int LC[], int demandas[]
 
 	for (int i = 0; i < fs.numVerticesComDemanda; i++) {
 		if (LC[i] >= 0 && LC[i] != ultimoVertice) {
-			g[LC[i]] = avaliarCustoInsercaoVertice(fs, LC, demandas[LC[i]], q, LC[i], ultimoVertice);
-			if (g[LC[i]] <= *custoMin) *custoMin = g[LC[i]];
-			if (g[LC[i]] >= *custoMax) *custoMax = g[LC[i]];
+			g[i] = avaliarCustoInsercaoVertice(fs, LC, demandas, q, i, ultimoVertice);
+			if (g[i] <= *custoMin && g[i] != INFINITY) *custoMin = g[i];
+			if (g[i] >= *custoMax && g[i] != INFINITY) *custoMax = g[i];
 		} else {
 			g[LC[i]] = INFINITY;
 		}
 	}
 }
 
-int construirListaRestritaDeCandidatos (float g[], int LRC[]) {
+int construirListaRestritaDeCandidatos (int LC[], float g[], int LRC[], float custoMin, float custoMax, int n) {
+	float alpha = 0.5/*(float) rand() / (float) RAND_MAX*/;
+	float limite = custoMin + alpha * (custoMax - custoMin);
+	int a = 0;
+	
+	for (int i = 0; i < n; i++) {
+		if (LC[i] >= 0 && g[i] <= limite) {
+			LRC[a] = i;
+			a++;
+		}
+	}
 
+	return a;
+}
+
+int atualizarDemandaVertice(int e, int demandas[], int q, int LC[], int capMax, int *tamanhoLC) {
+
+	if ((demandas[LC[e]] < 0 && abs(demandas[LC[e]]) <= q) || (demandas[LC[e]] > 0 && capMax - q >= demandas[LC[e]])) {
+		q += demandas[LC[e]];
+		demandas[LC[e]] = 0;
+		LC[e] = -1;
+		*tamanhoLC = *tamanhoLC - 1;
+	} else if (demandas[LC[e]] < 0) {
+		demandas[LC[e]] += q;
+		q = 0;
+	} else {
+		demandas[LC[e]] -= (capMax - q);
+		q = capMax;
+	}
+
+	return q;
 }
 
 Solucao GRASP (FabricaSolucao fs) {
@@ -297,14 +285,43 @@ Solucao GRASP (FabricaSolucao fs) {
 	int LC[fs.numVerticesComDemanda], LRC[fs.numVerticesComDemanda]; // iniciando a lista de candidatos
 	float g[fs.numVerticesComDemanda], custoMin, custoMax; // conterá os custos de inserção
 	memcpy(LC, fs.verticesComDemanda, sizeof(int) * fs.numVerticesComDemanda);
-	int tamanhoLC = fs.numVerticesComDemanda;
-
-	int j = 1;
+	
+	int tamanhoLC = fs.numVerticesComDemanda, j = 1, e, qtdLRC, tamanhoAtualCaminho = fs.n;
 
 	while (tamanhoLC > 0) {
+		
 		avaliarCustoInsercao(fs, g, LC, demandas, q, solucao.caminho[j - 1], &custoMin, &custoMax);
-		construirListaRestritaDeCandidatos(g, LRC);
-		exit(0);
+
+		qtdLRC = construirListaRestritaDeCandidatos(LC, g, LRC, custoMin, custoMax, fs.numVerticesComDemanda);
+		e = LRC[rand() % qtdLRC];
+
+		solucao.caminho[j] = LC[e]; // adicionando o vértice ao caminho
+		solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], LC[e], fs.n)];
+
+		q = atualizarDemandaVertice(e, demandas, q, LC, fs.q, &tamanhoLC);
+
+		solucao.capacidades[j] = q;
+		j++;
+
+		if (j == tamanhoAtualCaminho) { // caminho já chegou ao tamanho máximo
+			tamanhoAtualCaminho += fs.n;
+			solucao.caminho = realloc(solucao.caminho, sizeof(int) * tamanhoAtualCaminho);
+			solucao.capacidades = realloc(solucao.capacidades, sizeof(int) * tamanhoAtualCaminho); 
+		}
+		
 	}
 
+	solucao.caminho = realloc(solucao.caminho, sizeof(int) * (j + 1));
+	solucao.capacidades = realloc(solucao.capacidades, sizeof(int) * (j + 1));
+	solucao.caminho[j] = 0;
+	solucao.custo += fs.custoArestas[IndiceArestas(solucao.caminho[j - 1], 0, fs.n)];
+	solucao.capacidades[j] = q;
+	solucao.tamanhoCaminho = j + 1;
+
+	solucao.ads = (ADS**) malloc(sizeof(ADS*) * solucao.tamanhoCaminho);
+	for (int i = 0; i < solucao.tamanhoCaminho; i++) solucao.ads[i] = (ADS*) malloc(sizeof(ADS) * solucao.tamanhoCaminho);
+	
+	construirADS(solucao, fs.q);
+
+	return solucao;
 }
