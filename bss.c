@@ -16,11 +16,18 @@
 
 int main(int argc, char *argv[])
 {
+	srand(time(NULL));
 
-	Grafo g = carregarInstancia(argv[1]);
+	Grafo g = carregarInstancia("instancias/n20q10A.tsp");
 	FabricaSolucao fs = instanciarFabrica(g);
 
-	srand(time(NULL));
+	Solucao s = GRASP(fs);
+
+	imprimirSolucao(s, fs);
+
+	liberarGrafo(g);
+	liberarFabrica(fs);
+	liberarSolucao(s);
 
 	return 0;
 }
