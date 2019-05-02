@@ -21,7 +21,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (s->caminho[i] == s->caminho[i + 1]) {
 		mergeAux(s, i, i + 1, tamanhoCaminho);
-		i -= 1, j -= 1, tamanhoCaminho -= 1;
+		j -= 1, tamanhoCaminho -= 1;
 	}
 	if (s->caminho[j - 1] == s->caminho[j]) {
 		mergeAux(s, j - 1, j, tamanhoCaminho);
@@ -29,7 +29,7 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	}
 	if (indiceTrocaJ < s->tamanhoCaminho - 1 && s->caminho[j] == s->caminho[j + 1]) {
 		mergeAux(s, j, j + 1, tamanhoCaminho);
-		j -= 1, tamanhoCaminho -= 1;
+		tamanhoCaminho -= 1;
 	}
 
 	size_t tamanhoADS = sizeof(ADS) * tamanhoCaminho;
@@ -150,7 +150,7 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 
 		menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + passo + 1], fs.n)];
 
-		for (int j = 1; j < condicaoParada; j++) {
+		for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
 			if (i == j) continue;
 			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
 			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
