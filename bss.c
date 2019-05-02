@@ -29,7 +29,7 @@ void tabuSearch(Grafo g, FabricaSolucao fs, float results[])
 	clock_t start = clock();
 
 	Solucao s, sTralha, sAsterisco;
-	int tamanhoListaTabu = 20, NbIterMax = 2000, maxSemMelhora = 700, i = 0, j = 0;
+	int tamanhoListaTabu = 60, NbIterMax = 12000, maxSemMelhora = 700, i = 0, j = 0;
 
 	s = instanciarSolucao(fs, construirOV_Greedy, escolherProximoVertice_Greedy);
 
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
 	srand(time(NULL));
 
-	for (int i = 1; i < 2; i++) {
+	for (int i = 4; i < 5; i++) {
 		for (int j = 0; j < 10; j++) {
 
 			strcpy(caminho, "instancias/");
