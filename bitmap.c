@@ -5,8 +5,10 @@
 void set (Conjunto* c, int i) {
 	int j = WORD_OFFSET(i);
 	if (j >= c->n) {
+		int nAntigo = c->n;
 		c->n = j+1;
 		c->mapa = realloc(c->mapa, c->n * sizeof(naco));
+		for (int k = nAntigo; k < c->n; k++) c->mapa[k] = 0;
 	}
 	c->mapa[j] |= (1 << BIT_OFFSET(i));
 }
