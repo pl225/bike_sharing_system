@@ -203,9 +203,9 @@ float avaliarCustoInsercaoVertice (FabricaSolucao fs, int LC[], int demandas[], 
 
 	int demandaVertice = demandas[LC[indiceVertice]];
 	
-	for (int i = 0; i < fs.numVerticesComDemanda; i++)
+	/*for (int i = 0; i < fs.numVerticesComDemanda; i++)
 		if (LC[i] >= 0 && LC[i] != LC[indiceVertice] && demandas[LC[i]] != 0)
-			custo += fs.custoArestas[IndiceArestas(LC[indiceVertice], LC[i], fs.n)];
+			custo += fs.custoArestas[IndiceArestas(LC[indiceVertice], LC[i], fs.n)];*/
 
 	float y = (rand() % 171) / 100.f;
 	
@@ -238,7 +238,7 @@ void avaliarCustoInsercao(FabricaSolucao fs, float g[], int LC[], int demandas[]
 }
 
 int construirListaRestritaDeCandidatos (int LC[], float g[], int LRC[], float custoMin, float custoMax, int n) {
-	float alpha = 0.5/*(float) rand() / (float) RAND_MAX*/;
+	float alpha = (float) rand() / (float) RAND_MAX;
 	float limite = custoMin + alpha * (custoMax - custoMin);
 	int a = 0;
 	
