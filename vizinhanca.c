@@ -149,6 +149,137 @@ Solucao exchange_2_2(Solucao s, FabricaSolucao fs) {
 	}
 }
 
+Solucao exchange_1_2(Solucao s, FabricaSolucao fs) {
+	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
+	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
+	int iniSeg2, iniSeg3, iniSeg4, iniSeg5, fimSeg1, fimSeg2, fimSeg3, fimSeg4;
+	short qSumAuxiliar;
+
+	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
+		for (int j = 1; j < s.tamanhoCaminho - 2; j++) {
+
+			if (i == j) continue;
+			if (i > j && i - j < 2) continue;
+			if (s.ads[0][i - 1].lMin > 0 || s.ads[0][i - 1].lMax < 0) continue;
+
+			if (i < j) {
+				fimSeg1 = i - 1, iniSeg2 = j, fimSeg2 = j + 1, iniSeg3 = i + 1,
+					fimSeg3 = j - 1, iniSeg4 = i, fimSeg4 = i, iniSeg5 = j + 2;
+			} else {
+				fimSeg1 = j - 1, iniSeg2 = i, fimSeg2 = i, iniSeg3 = j + 2,
+					fimSeg3 = i - 1, iniSeg4 = j, fimSeg4 = j + 1, iniSeg5 = i + 1;
+			}
+
+			if (s.ads[0][fimSeg1].qSum >= s.ads[iniSeg2][fimSeg2].lMin && s.ads[0][fimSeg1].qSum <= s.ads[iniSeg2][fimSeg2].lMax) {
+			
+				qSumAuxiliar = s.ads[0][fimSeg1].qSum + s.ads[iniSeg2][fimSeg2].qSum;
+				
+				if (qSumAuxiliar >= s.ads[iniSeg3][fimSeg3].lMin && qSumAuxiliar <= s.ads[iniSeg3][fimSeg3].lMax) {
+				
+					qSumAuxiliar += s.ads[iniSeg3][fimSeg3].qSum;
+
+					if (qSumAuxiliar >= s.ads[iniSeg4][fimSeg4].lMin && qSumAuxiliar <= s.ads[iniSeg4][fimSeg4].lMax) {
+
+						qSumAuxiliar += s.ads[iniSeg4][fimSeg4].qSum;
+						if (qSumAuxiliar >= s.ads[iniSeg5][indiceFinal].lMin && qSumAuxiliar <= s.ads[iniSeg5][indiceFinal].lMax) {
+
+							
+							if (i + 1 != j && j + 2 != i) {
+								
+								custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
+									+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[i + 1], fs.n)];
+								
+								custoAux += fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)] 
+									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 2], fs.n)];
+
+								custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
+									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)];
+								
+								custoAuxAntigo += fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)] 
+									+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[j + 2], fs.n)];
+							
+							} else {
+								
+								custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
+									+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[i], fs.n)]
+									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 2], fs.n)];
+								
+								custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
+									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]
+									+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[j + 2], fs.n)];
+							}
+
+							menorCustoParcial = custoOriginal + custoAux - custoAuxAntigo;
+							if (menorCustoParcial < menorCusto) {
+								indiceTrocaI = i;
+								indiceTrocaJ = j;
+								menorCusto = menorCustoParcial;
+							} 
+
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	if (indiceTrocaI != -1) {
+		Solucao nova = copiarSolucao(s);
+		nova.custo = menorCusto;
+
+		int auxI = nova.caminho[indiceTrocaI], auxJ = nova.caminho[indiceTrocaJ],
+			capsAntesI = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1],
+			capsAntesJ = nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaJ - 1],
+			capsJ_J_1 = nova.capacidades[indiceTrocaJ + 1] - nova.capacidades[indiceTrocaJ];
+
+		if (indiceTrocaI < indiceTrocaJ) {
+			memmove(nova.caminho + indiceTrocaI + 2, nova.caminho + indiceTrocaI + 1, sizeof(int) * (indiceTrocaJ - indiceTrocaI - 1));
+			nova.caminho[indiceTrocaI] = auxJ;
+			nova.caminho[indiceTrocaI + 1] = nova.caminho[indiceTrocaJ + 1];
+			nova.caminho[indiceTrocaJ + 1] = auxI;
+
+			int capsDpsI = nova.capacidades[indiceTrocaI + 1] - nova.capacidades[indiceTrocaI];
+
+			memmove(nova.capacidades + indiceTrocaI + 2, nova.capacidades + indiceTrocaI + 1, sizeof(int) * (indiceTrocaJ - indiceTrocaI - 1));
+			nova.capacidades[indiceTrocaI] = nova.capacidades[indiceTrocaI - 1] + capsAntesJ;
+			nova.capacidades[indiceTrocaI + 1] = nova.capacidades[indiceTrocaI] + capsJ_J_1;
+
+			for (int a = indiceTrocaI + 2; a < indiceTrocaJ + 1; a++) {
+				auxJ = capsDpsI;
+				capsDpsI = nova.capacidades[a + 1] - nova.capacidades[a];
+				nova.capacidades[a] = nova.capacidades[a - 1] + auxJ;
+			}
+
+			nova.capacidades[indiceTrocaJ + 1] = nova.capacidades[indiceTrocaJ] + capsAntesI;
+
+			merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
+
+		} else {
+			nova.caminho[indiceTrocaJ] = auxI;
+			nova.caminho[indiceTrocaI] = nova.caminho[indiceTrocaJ + 1];
+			memcpy(nova.caminho + indiceTrocaJ + 1, nova.caminho + indiceTrocaJ + 2, sizeof(int) * (indiceTrocaI - (indiceTrocaJ + 1) - 1));
+			nova.caminho[indiceTrocaI - 1] = auxJ;
+
+			int capsDpsJ = nova.capacidades[indiceTrocaJ + 2] - nova.capacidades[indiceTrocaJ];
+
+			nova.capacidades[indiceTrocaJ] = nova.capacidades[indiceTrocaJ - 1] + capsAntesI;
+
+			for (int a = indiceTrocaJ + 1; a < indiceTrocaI - 1; a++) {
+				nova.capacidades[a] = nova.capacidades[a - 1] + (nova.capacidades[a + 1] - nova.capacidades[a]);
+			}
+
+			nova.capacidades[indiceTrocaI - 1] = nova.capacidades[indiceTrocaI - 2] + capsAntesJ;
+			nova.capacidades[indiceTrocaI] = nova.capacidades[indiceTrocaI - 1] + capsJ_J_1;
+
+			merge(&nova, fs.q, indiceTrocaJ, indiceTrocaI);
+		}		
+
+		return nova;
+	} else {
+		return s;
+	}
+}
+
 Solucao orOPT(Solucao s, FabricaSolucao fs, ListaTabu lista, int tipo) {
 
 	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, menorCustoFinal;
