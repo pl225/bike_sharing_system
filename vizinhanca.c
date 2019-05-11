@@ -710,31 +710,37 @@ Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 }
 
 Solucao splitP (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
-	int indiceTrocaI = -1, indiceTrocaJ = -1;
+	int indiceTrocaI = -1, indiceTrocaJ = -1, maior = 1, diff;
 
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
-		if (fs.demandas[s.caminho[i]] < - 1 || fs.demandas[s.caminho[i]] > 1) {
-			for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
-
-				if (i == j) continue;
-				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
-				if (abs(s.capacidades[i] - s.capacidades[i - 1]) <= 1) continue;
-
-				custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
-					+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
-					+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]);
-
-				if (custoParcial < menorCusto) {
-					indiceTrocaI = i;
-					indiceTrocaJ = j;
-					menorCusto = custoParcial;
-				}
-			}
+		diff = abs(s.capacidades[i] - s.capacidades[i - 1]);
+		if (diff > maior) {
+			maior = diff;
+			indiceTrocaI = i;
 		}
 	}
+
 	if (indiceTrocaI != -1) {
-		return s;//autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
+
+		indiceTrocaJ = 1 + rand() % (s.tamanhoCaminho - 2);
+		while (s.caminho[indiceTrocaJ] == s.caminho[indiceTrocaI] 
+			|| s.caminho[indiceTrocaI] == s.caminho[indiceTrocaJ - 1] || s.caminho[indiceTrocaJ] == s.caminho[indiceTrocaI - 1])
+			indiceTrocaJ = 1 + rand() % (s.tamanhoCaminho - 2);
+
+		float menorCusto = s.custo - fs.custoArestas[IndiceArestas(s.caminho[indiceTrocaJ - 1], s.caminho[indiceTrocaJ], fs.n)]
+				+ (fs.custoArestas[IndiceArestas(s.caminho[indiceTrocaJ - 1], s.caminho[indiceTrocaI], fs.n)]
+				+ fs.custoArestas[IndiceArestas(s.caminho[indiceTrocaI], s.caminho[indiceTrocaJ], fs.n)]);
+
+		short qSumNovaVisita, qSum = s.ads[indiceTrocaI][indiceTrocaI].qSum;;
+
+		if (fs.demandas[indiceTrocaI] < 0)
+			qSum = qSum % 2 == 0 ? qSum / 2 : qSum / 2 + 1;
+		else
+			qSum = qSum % 2 == 0 ? qSum / 2 : qSum / 2 - 1;
+
+		qSumNovaVisita = s.ads[indiceTrocaI][indiceTrocaI].qSum - qSum;
+		printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
+		return atualizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, qSumNovaVisita, menorCusto);
 	} else {
 		return s;
 	}
