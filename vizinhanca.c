@@ -483,7 +483,7 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	}
 }
 
-Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, int indiceTrocaJ, float novoCusto) {
+Solucao atualizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, int indiceTrocaJ, short qSumNovaVisita, float novoCusto) {
 	Solucao copia = copiarSolucao(s);
 	copia.tamanhoCaminho += 1;
 	copia.caminho = (int *) realloc(copia.caminho, sizeof(int) * copia.tamanhoCaminho);
@@ -494,25 +494,30 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 	memcpy(copia.caminho + indiceTrocaJ + 1, copia.caminho + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
 	copia.caminho[indiceTrocaJ] = aux;
 
-	int inicioLoop, fimLoop, fatorAlteracao;
+	int inicioLoop, fimLoop, fatorAlteracao, fatorAlteracaoCapacidade;
+	short qSumDivididoI = copia.ads[indiceTrocaI][indiceTrocaI].qSum - qSumNovaVisita;
+
+	int diff = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1], diffAbs = abs(diff);
 
 	if (indiceTrocaI < indiceTrocaJ) {
-		fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? 1 : -1;
+		fatorAlteracao = diff < 0 ? 1 : -1;
+		fatorAlteracaoCapacidade = fatorAlteracao * abs(abs(qSumDivididoI) - diffAbs);
 		inicioLoop = indiceTrocaI, fimLoop = indiceTrocaJ;
 	} else {
 		inicioLoop = indiceTrocaJ, fimLoop = indiceTrocaI + 1;
-		fatorAlteracao = copia.capacidades[indiceTrocaI] - copia.capacidades[indiceTrocaI - 1] < 0 ? -1 : 1;
+		fatorAlteracao = diff < 0 ? -1 : 1;
+		fatorAlteracaoCapacidade = fatorAlteracao * abs(abs(qSumDivididoI) - diffAbs);
 	}
 
 	aux = copia.capacidades[indiceTrocaI];
 	memcpy(copia.capacidades + indiceTrocaJ + 1, copia.capacidades + indiceTrocaJ, sizeof(int) * (s.tamanhoCaminho - indiceTrocaJ));
 	copia.capacidades[indiceTrocaJ] = aux;
 
-	for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracao;
+	for (int a = inicioLoop; a < fimLoop; a++) copia.capacidades[a] += fatorAlteracaoCapacidade;
 
 	if (indiceTrocaI < indiceTrocaJ)
 		fatorAlteracao *= -1;
-	copia.capacidades[indiceTrocaJ] = copia.capacidades[indiceTrocaJ - 1] + fatorAlteracao;
+	copia.capacidades[indiceTrocaJ] = copia.capacidades[indiceTrocaJ - 1] + fatorAlteracao * abs(qSumNovaVisita);
 
 	copia.ads = (ADS**) realloc(copia.ads, sizeof(ADS*) * copia.tamanhoCaminho);
 	memcpy(copia.ads + indiceTrocaJ + 1, copia.ads + indiceTrocaJ, sizeof(ADS*) * (s.tamanhoCaminho - indiceTrocaJ));
@@ -530,9 +535,9 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 	return copia;
 }
 
-Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
+Solucao split (Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
-	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
+	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4, qSumNovaVisita, melhorQSumNovaVisita;
 	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 
 	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
@@ -542,24 +547,29 @@ Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 				if (i == j) continue;
 				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
 				if (abs(s.capacidades[i] - s.capacidades[i - 1]) <= 1) continue;
-				if (tabuContem(lista, s.caminho[j-1], s.caminho[i], j-1) || tabuContem(lista, s.caminho[i], s.caminho[j], j)) continue;
 
 				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
-					qSum = s.ads[i][i].qSum - 1;
+					
+					qSum = s.ads[i][i].qSum % 2 == 0 ? s.ads[i][i].qSum / 2 : s.ads[i][i].qSum / 2 + 1;
+					qSumNovaVisita = s.ads[i][i].qSum - qSum;
+
 					if (i < j) {
-						lMin4 = 0, lMax4 = fs.q - 1, qSum4 = 1,
+						lMin4 = 0, lMax4 = fs.q - qSumNovaVisita, qSum4 = qSumNovaVisita,
 							qSum2 = qSum, lMin2 = 0, lMax2 = fs.q - qSum;
 					} else {
-						lMin2 = 0, lMax2 = fs.q - 1, qSum2 = 1,
+						lMin2 = 0, lMax2 = fs.q - qSumNovaVisita, qSum2 = qSumNovaVisita,
 							qSum4 = qSum, lMin4 = 0, lMax4 = fs.q - qSum;
 					}
 				} else { // entrega
-					qSum = s.ads[i][i].qSum + 1;
+
+					qSum = s.ads[i][i].qSum % 2 == 0 ? s.ads[i][i].qSum / 2 : s.ads[i][i].qSum / 2 - 1;
+					qSumNovaVisita = s.ads[i][i].qSum - qSum;
+
 					if (i < j) {
-						lMin4 = 1, lMax4 = fs.q, qSum4 = -1,
+						lMin4 = -qSumNovaVisita, lMax4 = fs.q, qSum4 = qSumNovaVisita,
 							qSum2 = qSum, lMin2 = -qSum, lMax2 = fs.q;
 					} else {
-						lMin2 = 1, lMax2 = fs.q, qSum2 = -1,
+						lMin2 = -qSumNovaVisita, lMax2 = fs.q, qSum2 = qSumNovaVisita,
 							qSum4 = qSum, lMin4 = -qSum, lMax4 = fs.q;
 					}
 				}
@@ -590,6 +600,7 @@ Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 									indiceTrocaI = i;
 									indiceTrocaJ = j;
 									menorCusto = custoParcial;
+									melhorQSumNovaVisita = qSumNovaVisita;
 								}
 							}
 						}
@@ -599,7 +610,7 @@ Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 		}
 	}
 	if (indiceTrocaI != -1) {
-		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
+		return atualizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, melhorQSumNovaVisita, menorCusto);
 	} else {
 		return s;
 	}
@@ -723,7 +734,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 		}
 	}
 	if (indiceTrocaI != -1) {
-		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
+		return s;//autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
 	} else {
 		return s;
 	}
