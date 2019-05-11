@@ -50,47 +50,53 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	atualizarADS(*s, Q, i, j);
 }
 
-Solucao swap(Solucao s, FabricaSolucao fs, ListaTabu lista) {
+Solucao exchange_2_2(Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
 	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 	short qSumAuxiliar;
 
-	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
-		for (int j = i + 1; j < s.tamanhoCaminho - 1; j++) {
+	for (int i = 1; i < s.tamanhoCaminho - 2; i++) {
+		for (int j = i + 2; j < s.tamanhoCaminho - 2; j++) {
 
 			if (s.ads[0][i - 1].lMin > 0 || s.ads[0][i - 1].lMax < 0) continue;
-			if (tabuContem(lista, s.caminho[i-1], s.caminho[j], i-1) || tabuContem(lista, s.caminho[j], s.caminho[i+1], i)) continue;
-			if (tabuContem(lista, s.caminho[j-1], s.caminho[i], j-1) || tabuContem(lista, s.caminho[i], s.caminho[j+1], j)) continue;
 
-			if (s.ads[0][i - 1].qSum >= s.ads[j][j].lMin && s.ads[0][i - 1].qSum <= s.ads[j][j].lMax) {
-				qSumAuxiliar = s.ads[0][i - 1].qSum + s.ads[j][j].qSum;
-				if ((j - 1) - (i + 1) >= 0) {
-					int a = i + 1, b = j - 1;
+			if (s.ads[0][i - 1].qSum >= s.ads[j][j + 1].lMin && s.ads[0][i - 1].qSum <= s.ads[j][j + 1].lMax) {
+				qSumAuxiliar = s.ads[0][i - 1].qSum + s.ads[j][j + 1].qSum;
+				if ((j - 1) - (i + 2) >= 0) {
+					int a = i + 2, b = j - 1;
 					if (qSumAuxiliar >= s.ads[a][b].lMin && qSumAuxiliar <= s.ads[a][b].lMax)
 						qSumAuxiliar += s.ads[a][b].qSum;
 					else 
 						continue;
 				}
-				if (qSumAuxiliar >= s.ads[i][i].lMin && qSumAuxiliar <= s.ads[i][i].lMax) {
-					qSumAuxiliar += s.ads[i][i].qSum;
-					if (qSumAuxiliar >= s.ads[j + 1][indiceFinal].lMin 
-						&& qSumAuxiliar <= s.ads[j + 1][indiceFinal].lMax) {
+				if (qSumAuxiliar >= s.ads[i][i + 1].lMin && qSumAuxiliar <= s.ads[i][i + 1].lMax) {
+					qSumAuxiliar += s.ads[i][i + 1].qSum;
+					if (qSumAuxiliar >= s.ads[j + 2][indiceFinal].lMin 
+						&& qSumAuxiliar <= s.ads[j + 2][indiceFinal].lMax) {
 
-						if (j - i > 1) {
+						if (j - (i + 1) > 1) {
+							
 							custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[i + 2], fs.n)];
+							
 							custoAux += fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[i + 1], s.caminho[j + 2], fs.n)];
 
 							custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[i + 1], s.caminho[i + 2], fs.n)];
+							
 							custoAuxAntigo += fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[j + 2], fs.n)];
+						
 						} else {
+							
 							custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[i], fs.n)]
+								+ fs.custoArestas[IndiceArestas(s.caminho[i + 1], s.caminho[j + 2], fs.n)];
+							
 							custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[j + 1], s.caminho[j + 2], fs.n)]
+								+ fs.custoArestas[IndiceArestas(s.caminho[i + 1], s.caminho[j], fs.n)];
 						}
 
 						menorCustoParcial = custoOriginal + custoAux - custoAuxAntigo;
@@ -107,24 +113,35 @@ Solucao swap(Solucao s, FabricaSolucao fs, ListaTabu lista) {
 
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
+		
 		int aux = nova.caminho[indiceTrocaI];
 		nova.caminho[indiceTrocaI] = nova.caminho[indiceTrocaJ];
 		nova.caminho[indiceTrocaJ] = aux;
+
+		aux = nova.caminho[indiceTrocaI + 1];
+		nova.caminho[indiceTrocaI + 1] = nova.caminho[indiceTrocaJ + 1];
+		nova.caminho[indiceTrocaJ + 1] = aux;
+
 		nova.custo = menorCusto;
 
-		int qI = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
-		int qJ = nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaJ - 1];
+		int capsAntesJ = nova.capacidades[indiceTrocaJ] - nova.capacidades[indiceTrocaJ - 1],
+			capsJ_J_1 = nova.capacidades[indiceTrocaJ + 1] - nova.capacidades[indiceTrocaJ];
 
-		if (qI != qJ) {
-			int qImais1 = nova.capacidades[indiceTrocaI + 1] - nova.capacidades[indiceTrocaI], aux;
-			nova.capacidades[indiceTrocaI] = nova.capacidades[indiceTrocaI - 1] + qJ;
-			for (int i = indiceTrocaI + 1; i < indiceTrocaJ; i++) {
-				aux = qImais1;
-				qImais1 = nova.capacidades[i + 1] - nova.capacidades[i];
-				nova.capacidades[i] = nova.capacidades[i - 1] + aux;
-			}
+		int capsAntesI = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1],
+			capsI_I_1 = nova.capacidades[indiceTrocaI + 1] - nova.capacidades[indiceTrocaI];
+
+		nova.capacidades[indiceTrocaI] = nova.capacidades[indiceTrocaI - 1] + capsAntesJ;
+
+		for (int a = indiceTrocaI + 1; a < indiceTrocaJ; a++) {
+			aux = capsJ_J_1;
+			capsJ_J_1 = nova.capacidades[a + 1] - nova.capacidades[a];
+			nova.capacidades[a] = nova.capacidades[a - 1] + aux;
 		}
-		merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
+
+		nova.capacidades[indiceTrocaJ] = nova.capacidades[indiceTrocaJ - 1] + capsAntesI;
+		nova.capacidades[indiceTrocaJ + 1] = nova.capacidades[indiceTrocaJ] + capsI_I_1;
+
+		merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ + 1);
 
 		return nova;
 	} else {
@@ -457,10 +474,10 @@ Solucao split (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	}
 }
 
-Solucao RVND (Solucao s, FabricaSolucao fs, ListaTabu lista) {
+/*Solucao RVND (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	Solucao melhorSolucao = copiarSolucao(s), sLinha;
 	int indices[] = {0, 1, 2, 3, 4, 5, 6};
-	Solucao (*vizinhancas[])(Solucao, FabricaSolucao, ListaTabu) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
+	Solucao (*vizinhancas[])(Solucao, FabricaSolucao, ListaTabu) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, exchange_2_2};
 	int LN = 7, N, aux;
 	float melhorCusto = INFINITY;
 
@@ -483,7 +500,7 @@ Solucao RVND (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 		}
 	}
 	return melhorSolucao;
-}
+}*/
 
 Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
 	Solucao copia = copiarSolucao(s);
