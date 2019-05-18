@@ -5,6 +5,20 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+unsigned int rand_interval(unsigned int min, unsigned int max)
+{
+    int r;
+    const unsigned int range = 1 + max - min;
+    const unsigned int buckets = RAND_MAX / range;
+    const unsigned int limit = buckets * range;
+
+    do {
+        r = rand();
+    } while (r >= limit);
+
+    return min + (r / buckets);
+}
+
 void mergeAux (Solucao *s, int destino, int origem, int tamanhoCaminho) {
 	size_t tamPedacoMovido = tamanhoCaminho - origem, tamanhoADS = sizeof(ADS) * tamPedacoMovido;
 
@@ -424,7 +438,7 @@ Solucao orOPT4(Solucao s, FabricaSolucao fs, ListaTabu lista) {
 	return orOPT(s, fs, lista, 3);
 }
 
-Solucao _2OPT (Solucao s, FabricaSolucao fs, ListaTabu lista) {
+Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
 	int aux, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1, auxI, auxJ;
 
@@ -435,7 +449,7 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs, ListaTabu lista) {
 		for (int j = i + 3; j < s.tamanhoCaminho; j++) {
 
 			if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
-			if (tabuContem(lista, s.caminho[i], s.caminho[j-1], i) || tabuContem(lista, s.caminho[i+1], s.caminho[j], j)) continue;
+			//if (tabuContem(lista, s.caminho[i], s.caminho[j-1], i) || tabuContem(lista, s.caminho[i+1], s.caminho[j], j)) continue;
 
 			auxI = i + 1, auxJ = j - 1;
 			ads = s.ads[auxI][auxJ];
@@ -644,67 +658,36 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 	return melhorSolucao;
 }*/
 
-Solucao doubleBridge (Solucao s, FabricaSolucao fs) {
+Solucao _3OPT_P (Solucao s, FabricaSolucao fs) {
+	
 	Solucao copia = copiarSolucao(s);
 	int tamanho = copia.tamanhoCaminho - 1;
-	const int tamInt = sizeof(int);
-	int p1 = 1 + rand() % (tamanho - 5),
-		p2 = rand() % ((tamanho - 4) - p1) + p1,
-		p3 = rand() % ((tamanho - 3) - p2) + p2 + 1,
-		p4 = rand() % ((tamanho - 2 - p3)) + p3;
-	
-	int tamSecao1 = p2 - p1 + 1, secao1[tamSecao1], tamSecao2 = (p3 - 1) - (p2 + 1) + 1, tamSecao3 = p4 - p3 + 1;
-	memcpy(secao1, copia.caminho + p1, tamSecao1 * tamInt);
+	int p1 = rand_interval(1, tamanho - 8),
+		p2 = rand_interval(p1 + 1, tamanho - 7),
+		p3 = rand_interval(p2 + 2, tamanho - 5),
+		p4 = rand_interval(p3 + 1, tamanho - 4),
+		p5 = rand_interval(p4 + 2, tamanho - 2),
+		p6 = rand_interval(p5 + 1, tamanho - 1);
 
 	copia.custo = s.custo - (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p1], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p4 + 1], fs.n)]);
-	copia.custo += (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p3], fs.n)]
-					+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p4 + 1], fs.n)]);
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p2 + 1], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p3], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p4 + 1], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p5 - 1], s.caminho[p5], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p6], s.caminho[p6 + 1], fs.n)]) 
+					
+						  + (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p2], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p2 + 1], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p4], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p4 + 1], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p5 - 1], s.caminho[p6], fs.n)]
+		 						+ fs.custoArestas[IndiceArestas(s.caminho[p5], s.caminho[p6 + 1], fs.n)]);
+
+	inverterSubsequencia(s, copia, p1, p2);
+	inverterSubsequencia(s, copia, p3, p4);
+	inverterSubsequencia(s, copia, p5, p6);
 	
-	if (tamSecao2 == 0) {
-
-		copia.custo -= fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p3], fs.n)];
-		copia.custo += fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p1], fs.n)];
-
-		memcpy(copia.caminho + p1, copia.caminho + p3, tamSecao3 * tamInt);
-		memcpy(copia.caminho + p1 + tamSecao3, secao1, tamSecao1 * tamInt);
-	} else {
-
-		copia.custo -= (fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p2 + 1], fs.n)]
-						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p3], fs.n)]);
-		copia.custo += (fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p2 + 1], fs.n)]
-						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p1], fs.n)]);
-
-		int secao2[tamSecao2];
-		memcpy(secao2, copia.caminho + p2 + 1, tamSecao2 * tamInt);
-		memcpy(copia.caminho + p1, copia.caminho + p3, tamSecao3 * tamInt);
-		memcpy(copia.caminho + p1 + tamSecao3, secao2, tamSecao2 * tamInt);
-		memcpy(copia.caminho + p1 + tamSecao2 + tamSecao3, secao1, tamSecao1 * tamInt);
-	}
-
-	int capSecao1[tamSecao1];
-	int capIni1 = copia.capacidades[p1] - copia.capacidades[p1 - 1];
-	memcpy(capSecao1, copia.capacidades + p1, tamSecao1 * tamInt);
-	int *capSecao2 = NULL, capIni2 = - 1;
-	if (tamSecao2 > 0) {
-		capSecao2 = (int *) malloc(tamSecao2 * tamInt);
-		memcpy(capSecao2, copia.capacidades + p2 + 1, tamSecao2 * tamInt);
-		capIni2 = copia.capacidades[p2 + 1] - copia.capacidades[p2];
-	}
-	copia.capacidades[p1] = copia.capacidades[p1 - 1] + (copia.capacidades[p3] - copia.capacidades[p3 - 1]);
-	for (int i = p1 + 1, a = p3 + 1; i < p1 + tamSecao3; i++, a++)
-		copia.capacidades[i] = copia.capacidades[i - 1] + (copia.capacidades[a] - copia.capacidades[a - 1]);
-	if (tamSecao2 > 0) {
-		copia.capacidades[p1 + tamSecao3] = copia.capacidades[p1 + tamSecao3 - 1] + capIni2;
-		for (int i = p1 + tamSecao3 + 1, a = 1; i < p1 + tamSecao3 + tamSecao2; i++, a++)
-			copia.capacidades[i] = copia.capacidades[i - 1] + (capSecao2[a] - capSecao2[a - 1]);
-		free(capSecao2);
-	}
-	copia.capacidades[p1 + tamSecao3 + tamSecao2] = copia.capacidades[p1 + tamSecao3 + tamSecao2 - 1] + capIni1;
-	for (int i = p1 + tamSecao3 + tamSecao2 + 1, a = 1; i < p1 + tamSecao3 + tamSecao2 + tamSecao1; i++, a++)
-		copia.capacidades[i] = copia.capacidades[i - 1] + (capSecao1[a] - capSecao1[a - 1]);
-
-	merge(&copia, fs.q, p1, p4);
+	merge(&copia, fs.q, p1, p6);
 
 	return copia;
 }
@@ -739,7 +722,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 			qSum = qSum % 2 == 0 ? qSum / 2 : qSum / 2 - 1;
 
 		qSumNovaVisita = s.ads[indiceTrocaI][indiceTrocaI].qSum - qSum;
-		printf("%d %d\n", indiceTrocaI, indiceTrocaJ);
+
 		return atualizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, qSumNovaVisita, menorCusto);
 	} else {
 		return s;
@@ -749,5 +732,5 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 Solucao perturbar (Solucao s, FabricaSolucao fs) {
 	int i = rand() % 2;
 	if (i == 1) return splitP(s, fs);
-	else return doubleBridge(s, fs);
+	else return _3OPT_P(s, fs);
 }
