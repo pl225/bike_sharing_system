@@ -197,15 +197,33 @@ FabricaSolucao instanciarFabrica (Grafo g) {
 	return fs;
 }
 
+/*
+	Inverte a subsequência de copia, utilizando as capacidades da solução s que a originou
+
+*/
+
+void inverterSubsequencia (Solucao s, Solucao copia, int pInicio, int pFim) {
+	
+	int aux;
+	for (int a = pInicio, b = pFim; a < b; a++, b--) { // reversão entre i e j
+		aux = s.caminho[a];
+		copia.caminho[a] = copia.caminho[b];
+		copia.caminho[b] = aux; 
+	}
+
+	short diff;
+	for (int a = pInicio, b = pFim; a <= pFim; a++, b--) {
+		diff = s.capacidades[b] - s.capacidades[b - 1];
+		copia.capacidades[a] = copia.capacidades[a - 1] + diff;
+	}
+
+}
+
 float avaliarCustoInsercaoVertice (FabricaSolucao fs, int LC[], int demandas[], int q, int indiceVertice, int ultimoVertice) {
 	
 	float custo = fs.custoArestas[IndiceArestas(ultimoVertice, LC[indiceVertice], fs.n)], fluxoMax = 0;
 
 	int demandaVertice = demandas[LC[indiceVertice]];
-	
-	/*for (int i = 0; i < fs.numVerticesComDemanda; i++)
-		if (LC[i] >= 0 && LC[i] != LC[indiceVertice] && demandas[LC[i]] != 0)
-			custo += fs.custoArestas[IndiceArestas(LC[indiceVertice], LC[i], fs.n)];*/
 
 	float y = (rand() % 171) / 100.f;
 	

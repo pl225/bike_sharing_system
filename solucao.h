@@ -50,3 +50,5 @@ void atualizarADS (Solucao s, int q, int inicio, int fim);
 FabricaSolucao instanciarFabrica (Grafo g);
 
 Solucao GRASP(FabricaSolucao);
+
+void inverterSubsequencia(Solucao s, Solucao copiar, int pInicio, int pFim);
