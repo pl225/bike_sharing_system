@@ -294,203 +294,110 @@ Solucao exchange_1_2(Solucao s, FabricaSolucao fs) {
 	}
 }
 
-Solucao orOPT(Solucao s, FabricaSolucao fs, ListaTabu lista, int tipo) {
+float custo4Pontos (Solucao s, FabricaSolucao fs, int p1, int p2, int p3, int p4) {
+	return s.custo - (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p2 + 1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p3], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p4 + 1], fs.n)]) 
 
-	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, menorCustoFinal;
-	int indiceTrocaI = -1, indiceTrocaJ = -1, passo, condicaoParada, fimSeg4 = s.tamanhoCaminho - 1,
-		fimSeg1, iniSeg2, fimSeg2, iniSeg3, fimSeg3, iniSeg4;
-	short qSumAuxiliar;
+  				   + (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p2], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p2 + 1], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p4], fs.n)]
+						+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p4 + 1], fs.n)]);
+}
 
-	if (tipo == 0) { // reinsercao
-		passo = 0;
-		condicaoParada = s.tamanhoCaminho - 2;
-	} else if (tipo == 1) { // orOPT2
-	 	passo = 1;
-	 	condicaoParada = s.tamanhoCaminho - 3;
-	} else if (tipo == 2) { // orOPT3
-	 	passo = 2;
-	 	condicaoParada = s.tamanhoCaminho - 4;
-	} else { // orOPT4
-		passo = 3;
-		condicaoParada = s.tamanhoCaminho - 5;
-	}
+Solucao _3OPT (Solucao s, FabricaSolucao fs) {
+	float menorCusto = INFINITY, custoParcial;
+	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceTrocaK = -1, indiceTrocaL = - 1;
 
-	for (int i = 1; i < condicaoParada; i++) {
+	ADS adsA, adsB, adsC, ads;
 
-		menorCustoParcial = custoOriginal - (fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)]
-					+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[i + passo + 1], fs.n)]);
+	for (int p1 = 1; p1 < s.tamanhoCaminho - 7; p1++) {
 
-		menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + passo + 1], fs.n)];
+		for (int p2 = p1 + 1; p2 < s.tamanhoCaminho - 6; p2++) {
 
-		for (int j = 1; j < s.tamanhoCaminho - 1; j++) { // j < s.tamanhoCaminho - 1
-			if (i == j) continue;
-			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
-			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
-			
-			if (i < j && (tabuContem(lista, s.caminho[i - 1], s.caminho[i + passo + 1], i - 1) || tabuContem(lista, s.caminho[j], s.caminho[i], j - (passo + 1)))) continue;
-			if (i < j && tabuContem(lista, s.caminho[j + 1], s.caminho[i + passo], j)) continue;
-			if (i > j && (tabuContem(lista, s.caminho[j], s.caminho[i], j) || tabuContem(lista, s.caminho[i + passo], s.caminho[j + 1], j + passo + 1))) continue;
-			if (i > j && tabuContem(lista, s.caminho[i - 1], s.caminho[i + passo + 1], i + passo)) continue;
+			ads = s.ads[p1][p2];
+			adsA.qSum = ads.qSum, adsA.lMin = -ads.qSum + ads.qMax, adsA.lMax = fs.q - ads.qSum + ads.qMin;
 
-			if (i < j) {
-				fimSeg1 = i - 1, iniSeg2 = i + passo + 1, fimSeg2 = j, iniSeg3 = i,
-					fimSeg3 = i + passo, iniSeg4 = j + 1;
-			} else {
-				fimSeg1 = j, iniSeg2 = i, fimSeg2 = i + passo, iniSeg3 = j + 1,
-					fimSeg3 = i - 1, iniSeg4 = i + passo + 1;
-			}
+			int segViavelInvA = s.ads[0][p1 - 1].qSum >= adsA.lMin && s.ads[0][p1 - 1].qSum <= adsA.lMax;
+			short qSumInvA = 0;
+			if (segViavelInvA) qSumInvA = s.ads[0][p1 - 1].qSum + adsA.qSum;
+		
+			for (int p3 = p2 + 2; p3 < s.tamanhoCaminho - 4; p3++) {
 
-			if (s.ads[0][fimSeg1].lMin > 0 || s.ads[0][fimSeg1].lMax < 0) continue;
+				int segViavelInvAInvB = segViavelInvA && qSumInvA >= s.ads[p2 + 1][p3 - 1].lMin && qSumInvA <= s.ads[p2 + 1][p3 - 1].lMax;
+				short qSumInvAInvB = 0;
+				if (segViavelInvAInvB) qSumInvAInvB = qSumInvA + s.ads[p2 + 1][p3 - 1].qSum;
 
-			if (s.ads[0][fimSeg1].qSum >= s.ads[iniSeg2][fimSeg2].lMin && s.ads[0][fimSeg1].qSum <= s.ads[iniSeg2][fimSeg2].lMax) {
-			
-				qSumAuxiliar = s.ads[0][fimSeg1].qSum + s.ads[iniSeg2][fimSeg2].qSum;
-				
-				if (qSumAuxiliar >= s.ads[iniSeg3][fimSeg3].lMin && qSumAuxiliar <= s.ads[iniSeg3][fimSeg3].lMax) {
-				
-					qSumAuxiliar += s.ads[iniSeg3][fimSeg3].qSum;
+				for (int p4 = p3 + 1; p4 < s.tamanhoCaminho - 3; p4++) {
+					
+					ads = s.ads[p3][p4];
+					adsB.qSum = ads.qSum, adsB.lMin = -ads.qSum + ads.qMax, adsB.lMax = fs.q - ads.qSum + ads.qMin;
 
-					if (qSumAuxiliar >= s.ads[iniSeg4][fimSeg4].lMin && qSumAuxiliar <= s.ads[iniSeg4][fimSeg4].lMax) {
-						menorCustoFinal = menorCustoParcial + fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i], fs.n)]
-						+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[j + 1], fs.n)];
+					int segViavelAInvB = s.ads[0][p3 - 1].qSum >= adsB.lMin && s.ads[0][p3 - 1].qSum <= adsB.lMax;
+					short qSumAInvB = 0;
+					if (segViavelAInvB) qSumAInvB = s.ads[0][p3 - 1].qSum + adsB.qSum;
 
-						menorCustoFinal -= fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
-						if (menorCustoFinal < menorCusto) {
-							menorCusto = menorCustoFinal;
-							indiceTrocaI = i;
-							indiceTrocaJ = j;
+					segViavelInvAInvB = segViavelInvAInvB && qSumInvAInvB >= adsB.lMin && qSumInvA <= adsB.lMax;
+					if (segViavelInvAInvB) {
+						custoParcial = custo4Pontos(s, fs, p1, p2, p3, p4);
+						if (custoParcial < menorCusto) {
+							menorCusto = custoParcial;
+							indiceTrocaI = p1, indiceTrocaJ = p2, indiceTrocaK = p3, indiceTrocaL = p4;
+						}
+					}
+
+					if (!segViavelInvA && !segViavelAInvB) continue;
+
+					for (int p5 = p4 + 2; p5 < s.tamanhoCaminho - 2; p5++) {
+
+						segViavelAInvB = segViavelAInvB && qSumAInvB >= s.ads[p4 + 1][p5 - 1].lMin && qSumAInvB <= s.ads[p4 + 1][p5 - 1].lMax;
+						segViavelInvA = segViavelInvA && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMin && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMax;
+
+						if (!segViavelAInvB && !segViavelInvA) continue;
+
+						if (segViavelAInvB) qSumAInvB = qSumAInvB + s.ads[p4 + 1][p5 - 1].qSum;
+
+						if (segViavelInvA) qSumInvA = qSumInvA + s.ads[p2 + 1][p5 - 1].qSum;
+						
+						for (int p6 = p5 + 1; p6 < s.tamanhoCaminho - 1; p6++) {
+
+							ads = s.ads[p5][p6];
+							adsC.qSum = ads.qSum, adsC.lMin = -ads.qSum + ads.qMax, adsC.lMax = fs.q - ads.qSum + ads.qMin;
+
+							segViavelAInvB = segViavelAInvB && qSumAInvB >= adsC.lMin && qSumAInvB <= adsC.lMax;
+							if (segViavelAInvB) {
+								custoParcial = custo4Pontos(s, fs, p3, p4, p5, p6);
+								if (custoParcial < menorCusto) {
+									menorCusto = custoParcial;
+									indiceTrocaI = p3, indiceTrocaJ = p4, indiceTrocaK = p5, indiceTrocaL = p6;
+								}
+							}
+
+							segViavelInvA = segViavelInvA && qSumInvA >= adsC.lMin && qSumInvA <= adsC.lMax;
+							if (segViavelInvA) {
+								custoParcial = custo4Pontos(s, fs, p1, p2, p5, p6);
+								if (custoParcial < menorCusto) {
+									menorCusto = custoParcial;
+									indiceTrocaI = p1, indiceTrocaJ = p2, indiceTrocaK = p5, indiceTrocaL = p6;
+								}
+							}
+
 						}
 					}
 				}
 			}
 		}
 	}
-	if (indiceTrocaI != -1) {
-		Solucao nova = copiarSolucao(s);
-		nova.custo = menorCusto;
-		int verticesMovidos[passo + 1], capacidadesMovidas[passo + 1];
 
-		memcpy(verticesMovidos, nova.caminho + indiceTrocaI, sizeof(int) * (passo + 1));
-		memcpy(capacidadesMovidas, nova.capacidades + indiceTrocaI, sizeof(int) * (passo + 1));
-		if (indiceTrocaI < indiceTrocaJ) {
-			int posAux = indiceTrocaI + passo + 1;
-			int trazidosTras = indiceTrocaJ - posAux + 1;
-			memcpy(nova.caminho + indiceTrocaI, nova.caminho + posAux, sizeof(int) * trazidosTras);
-			memcpy(nova.caminho + indiceTrocaI + trazidosTras, verticesMovidos, sizeof(int) * (passo + 1));
-
-			int diff = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
-			int inicioTrocaCapacidade = indiceTrocaI + trazidosTras;
-
-			for (int i = indiceTrocaI, a = posAux, k = 0; k < trazidosTras; i++, a++, k++) {
-				nova.capacidades[i] = nova.capacidades[i - 1] + (nova.capacidades[a] - nova.capacidades[a - 1]);
-			}
-
-			nova.capacidades[inicioTrocaCapacidade] = nova.capacidades[inicioTrocaCapacidade - 1] + diff;
-			for (int i = inicioTrocaCapacidade + 1, a = 1; a < passo + 1; i++, a++) {
-				nova.capacidades[i] = nova.capacidades[i - 1] + (capacidadesMovidas[a] - capacidadesMovidas[a - 1]);
-			} 
-			merge(&nova, fs.q, indiceTrocaI, indiceTrocaJ);
-		} else {
-			int posAux = indiceTrocaJ + passo + 1;
-			int trazidosFrente = indiceTrocaI - indiceTrocaJ;
-			
-			memcpy(nova.caminho + posAux, nova.caminho + indiceTrocaJ, sizeof(int) * trazidosFrente); //modificação do caminho
-			memcpy(nova.caminho + indiceTrocaJ + 1, verticesMovidos, sizeof(int) * (passo + 1));
-
-			int diff = nova.capacidades[indiceTrocaI] - nova.capacidades[indiceTrocaI - 1];
-			int operacoesFrente[trazidosFrente - 1];
-
-			for (int i = 0, a = indiceTrocaJ + 1; i < trazidosFrente - 1; i++, a++) {
-				operacoesFrente[i] = nova.capacidades[a] - nova.capacidades[a - 1];
-			}
-
-			nova.capacidades[indiceTrocaJ + 1] = nova.capacidades[indiceTrocaJ] + diff;
-			for (int i = indiceTrocaJ + 2, a = 1, k = indiceTrocaI + 1; a < passo + 1; i++, a++, k++) {
-				nova.capacidades[i] = nova.capacidades[i - 1] + (nova.capacidades[k] - nova.capacidades[k - 1]);
-			}
-
-			for (int i = posAux + 1, a = 0; a < trazidosFrente - 1; i++, a++) {
-				nova.capacidades[i] = nova.capacidades[i - 1] + operacoesFrente[a];
-			}
-
-			merge(&nova, fs.q, indiceTrocaJ + 1, indiceTrocaI + passo);	
-		}
-	
-		return nova;
-	} else {
-		return s;
-	}
-}
-
-Solucao reinsercao(Solucao s, FabricaSolucao fs, ListaTabu lista) {
-	return orOPT(s, fs, lista, 0);
-}
-
-Solucao orOPT2(Solucao s, FabricaSolucao fs, ListaTabu lista) {
-	return orOPT(s, fs, lista, 1);
-}
-
-Solucao orOPT3(Solucao s, FabricaSolucao fs, ListaTabu lista) {
-	return orOPT(s, fs, lista, 2);
-}
-
-Solucao orOPT4(Solucao s, FabricaSolucao fs, ListaTabu lista) {
-	return orOPT(s, fs, lista, 3);
-}
-
-Solucao _2OPT (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
-	int aux, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1, auxI, auxJ;
-
-	short qSomaI, lMinI, lMaxI, qSomaAuxiliar;
-	ADS ads;
-
-	for (int i = 0; i < s.tamanhoCaminho; i++) {
-		for (int j = i + 3; j < s.tamanhoCaminho; j++) {
-
-			if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
-			//if (tabuContem(lista, s.caminho[i], s.caminho[j-1], i) || tabuContem(lista, s.caminho[i+1], s.caminho[j], j)) continue;
-
-			auxI = i + 1, auxJ = j - 1;
-			ads = s.ads[auxI][auxJ];
-			qSomaI = ads.qSum;
-			lMinI = -ads.qSum + ads.qMax;
-			lMaxI = fs.q - ads.qSum + ads.qMin;
-
-			if (s.ads[0][i].qSum >= lMinI && s.ads[0][i].qSum <= lMaxI) {
-				qSomaAuxiliar = s.ads[0][i].qSum + qSomaI;
-				if (qSomaAuxiliar >= s.ads[j][indiceFinal].lMin && qSomaAuxiliar <= s.ads[j][indiceFinal].lMax) {
-
-					custoParcial = custoOriginal - (
-						fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxI], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[auxJ], s.caminho[j], fs.n)])
-						+ (fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxJ], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[auxI], s.caminho[j], fs.n)]);
-
-					if (custoParcial < menorCusto) {
-						menorCusto = custoParcial;
-						indiceTrocaI = i;
-						indiceTrocaJ = j;
-					}
-				}
-			}
-		}
-	}
-
-	if (indiceTrocaI != - 1) {
+	if (indiceTrocaI != - 1) { printf("%d %d %d %d\n", indiceTrocaI, indiceTrocaJ, indiceTrocaK, indiceTrocaL);
 		Solucao copia = copiarSolucao(s);
 		copia.custo = menorCusto;
-		for (int a = indiceTrocaI + 1, b = indiceTrocaJ - 1; a < b; a++, b--) { // reversão entre i e j
-			aux = copia.caminho[a];
-			copia.caminho[a] = copia.caminho[b];
-			copia.caminho[b] = aux; 
-		}
-		short diff;
-		for (int a = indiceTrocaI + 1, b = indiceTrocaJ - 1; a < indiceTrocaJ; a++, b--) {
-			diff = s.capacidades[b] - s.capacidades[b - 1];
-			copia.capacidades[a] = copia.capacidades[a - 1] + diff;
-		}
-		merge(&copia, fs.q, indiceTrocaI + 1, indiceTrocaJ - 1);		
+		
+		inverterSubsequencia(s, copia, indiceTrocaI, indiceTrocaJ);
+		inverterSubsequencia(s, copia, indiceTrocaK, indiceTrocaL);
+
+		merge(&copia, fs.q, indiceTrocaI, indiceTrocaL);		
 		return copia;
 	} else {
 		return s;
