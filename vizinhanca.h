@@ -78,9 +78,11 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
 						} else {
 							custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 1], fs.n)]
+								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i], fs.n)];
 							custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
+								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)]
+								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)];
 						}
 
 						menorCustoParcial = custoOriginal + custoAux - custoAuxAntigo;
@@ -284,11 +286,15 @@ Solucao _2OPT (Solucao s, FabricaSolucao fs) {
 				qSomaAuxiliar = s.ads[0][i].qSum + qSomaI;
 				if (qSomaAuxiliar >= s.ads[j][indiceFinal].lMin && qSomaAuxiliar <= s.ads[j][indiceFinal].lMax) {
 
-					custoParcial = custoOriginal - (
-						fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxI], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[auxJ], s.caminho[j], fs.n)])
-						+ (fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxJ], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[auxI], s.caminho[j], fs.n)]);
+					custoParcial = custoOriginal;
+					for (int y = i; y < j; y++)
+						custoParcial -= fs.custoArestas[IndiceArestas(s.caminho[y], s.caminho[y + 1], fs.n)];
+					
+					for (int y = j - 1; y > i + 1; y--)
+						custoParcial += fs.custoArestas[IndiceArestas(s.caminho[y], s.caminho[y - 1], fs.n)];
+				
+					custoParcial += (fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxJ], fs.n)]
+									 + fs.custoArestas[IndiceArestas(s.caminho[auxI], s.caminho[j], fs.n)]);
 
 					if (custoParcial < menorCusto) {
 						menorCusto = custoParcial;
@@ -450,6 +456,7 @@ Solucao RVND (Solucao s, FabricaSolucao fs) {
 	while (LN > 0) {
 		N = rand() % LN;
 		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs);
+		
 		if (sLinha.custo < melhorSolucao.custo) {
 			liberarSolucao(melhorSolucao);
 			melhorSolucao = sLinha;
