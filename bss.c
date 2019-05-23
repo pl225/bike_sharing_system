@@ -8,6 +8,11 @@
 #include "solucao.h"
 #endif
 
+#ifndef VIZINHANCA_H
+#define VIZINHANCA_H
+#include "vizinhanca.h"
+#endif
+
 #include <time.h>
 #include <math.h>
 #include <string.h>
@@ -16,9 +21,9 @@
 
 int main(int argc, char *argv[])
 {
+	
 	srand(time(NULL));
-
-	Grafo g = carregarInstancia("instancias/n20q10A.tsp");
+	Grafo g = carregarInstancia("instancias/teste_teo.tsp");
 	FabricaSolucao fs = instanciarFabrica(g);
 
 	Solucao s = GRASP(fs);
