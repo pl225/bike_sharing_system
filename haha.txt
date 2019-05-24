@@ -1,0 +1,24 @@
+Instancia: InstancesBRP/36Guadalajara30.txt, Q: 30
+	Custo: 57476, Tempo: 45.409657
+	Custo: 57476, Tempo: 46.446705
+	Custo: 57476, Tempo: 44.602169
+	Custo: 57476, Tempo: 45.138294
+	Custo: 57476, Tempo: 47.164448
+	Custo: 57476, Tempo: 44.102718
+	Custo: 57476, Tempo: 48.256615
+	Custo: 57476, Tempo: 46.430752
+	Custo: 57476, Tempo: 46.318024
+	Custo: 57476, Tempo: 50.371265
+Melhor custo: 57476, média dos tempos: 46.424066
+Instancia: InstancesBRP/22Ottawa20.txt, Q: 20
+	Custo: 16478, Tempo: 2.979342
+	Custo: 16478, Tempo: 2.956307
+	Custo: 16478, Tempo: 3.108510
+	Custo: 16478, Tempo: 2.895950
+	Custo: 16478, Tempo: 3.029339
+	Custo: 16478, Tempo: 2.945777
+	Custo: 16478, Tempo: 3.012014
+	Custo: 16478, Tempo: 2.979171
+	Custo: 16478, Tempo: 2.974024
+	Custo: 16478, Tempo: 2.932664
+Melhor custo: 16478, média dos tempos: 2.981310
