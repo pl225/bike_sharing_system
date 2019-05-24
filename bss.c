@@ -72,33 +72,41 @@ int main(int argc, char *argv[])
 
 	char caminho[50];
 
-	while (1) {
-		strcpy(caminho, "InstancesBRP/");
-		strcat(caminho, "15Treviso10.txt");	
+	DIR *d;
+  	struct dirent *dir;
+  	d = opendir("InstancesBRP");
+  	int i = 1;
 
-		Grafo g = carregarInstancia(caminho);
-		FabricaSolucao fs = instanciarFabrica(g);
+	while ((dir = readdir(d)) != NULL) {
+		if (dir->d_type == DT_REG) {
+			strcpy(caminho, "InstancesBRP/");
+			strcat(caminho, dir->d_name);	
 
-		fprintf(arq, "Instancia: %s, Q: %d\n", caminho, g.q);
-		float mediaTempo = 0;
-		float melhorCusto = INFINITY;
+			Grafo g = carregarInstancia(caminho);
+			FabricaSolucao fs = instanciarFabrica(g);
 
-		for (int l = 0; l < 10; l++) {
-			ILS_SBPRW(g, fs, arq, results);
-			fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
-			if (results[0] < melhorCusto) melhorCusto = results[0];
-			mediaTempo += results[1];
+			fprintf(arq, "Instancia: %s, Q: %d\n", caminho, g.q);
+			float mediaTempo = 0;
+			float melhorCusto = INFINITY;
+
+			for (int l = 0; l < 10; l++) {
+				ILS_SBPRW(g, fs, arq, results);
+				fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
+				if (results[0] < melhorCusto) melhorCusto = results[0];
+				mediaTempo += results[1];
+			}
+			fprintf(arq, "Melhor custo: %.f, média dos tempos: %f\n", melhorCusto, mediaTempo / 10.0);
+			printf("Instancia: %s, Q: %d terminada. %d/50\n", caminho, g.q, i);
+
+			liberarGrafo(g);
+			liberarFabrica(fs);
+			strcpy(caminho, "");
+			i++;
 		}
-		fprintf(arq, "Melhor custo: %.f, média dos tempos: %f\n", melhorCusto, mediaTempo / 10.0);
-		printf("Instancia: %s, Q: %d terminada.\n", caminho, g.q);
-
-		liberarGrafo(g);
-		liberarFabrica(fs);
-		strcpy(caminho, "");
-		break;
 	}
 	printf("\n\n****************TERMINADO****************\n");
 	fclose(arq);
+	closedir(d);
 	
 	return 0;
 }
