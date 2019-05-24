@@ -4,12 +4,10 @@ typedef struct Grafo
 {
 	int n;
 	int q;
-	int *pontos;
+	float *custos;
 	int *demandas;
 } Grafo;
 
 void liberarGrafo (Grafo g);
-
-int IndicePontos (int i, int j);
 
 Grafo carregarInstancia (char caminhoArquivo []);
