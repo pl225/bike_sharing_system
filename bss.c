@@ -97,8 +97,6 @@ int main(int argc, char *argv[])
 			liberarFabrica(fs);
 			strcpy(caminho, "");
 			i++;
-
-			if (i == 3) break;
 		}
 	}
 	printf("\n\n****************TERMINADO****************\n");
