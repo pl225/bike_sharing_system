@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 			fprintf(arq, "Instancia: %s, Q: %d\n", caminho, g.q);
 			float mediaTempo = 0;
 			float melhorCusto = INFINITY;
-
+			
 			for (int l = 0; l < 10; l++) {
 				tabuSearch(g, fs, results);
 				fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
@@ -105,14 +105,12 @@ int main(int argc, char *argv[])
 				mediaTempo += results[1];
 			}
 			fprintf(arq, "Melhor custo: %.f, média dos tempos: %f\n", melhorCusto, mediaTempo / 10.0);
-			printf("Instancia: %s, Q: %d terminada. %d/50\n", caminho, g.q, i);
+			printf("Instancia: %s, Q: %d terminada. %d/50\n", dir->d_name, g.q, i);
 
 			liberarGrafo(g);
 			liberarFabrica(fs);
 			strcpy(caminho, "");
 			i++;
-
-			if (i == 3) break;
 		}
 	}
 	printf("\n\n****************TERMINADO****************\n");
