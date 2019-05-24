@@ -28,39 +28,48 @@ void tabuSearch(Grafo g, FabricaSolucao fs, float results[])
 {
 	clock_t start = clock();
 
-	Solucao s, sTralha, sAsterisco;
-	int tamanhoListaTabu = 60, NbIterMax = 12000, maxSemMelhora = 700, i = 0, j = 0;
+	Solucao s, sTralha, sAsterisco, sLinha;
+	sAsterisco.custo = INFINITY;
+	int tamanhoListaTabu = g.n, maxSemMelhora = 10 * g.n, i = 0, j = 0, k = 0, IR = 100; // i = total de iterações, k = reinicios, j = iteração final
 
-	s = instanciarSolucao(fs, construirOV_Greedy, escolherProximoVertice_Greedy);
+	for (int a = 0; a < IR; a++) {
+		s = instanciarSolucao(fs, construirOV_ILS_RVND, escolherProximoVertice_ILS_RVND);
 
-	sAsterisco = copiarSolucao(s);
-	ListaTabu tabu = criarListaTabu(tamanhoListaTabu, g.n);
-	preencherListaTabu(&tabu, s.caminho, s.tamanhoCaminho);
-	
-	while (i <= NbIterMax) {
-		sTralha = RVND(s, fs, tabu);
-		liberarSolucao(s);
-		s = sTralha;
-		atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
-		if (s.custo < sAsterisco.custo /*&& isViavel(s)*/) {
-			liberarSolucao(sAsterisco);
-			sAsterisco = copiarSolucao(s);
-			j = 0;i=0;
-		} else {
-			j++;
-			//if (j == maxSemMelhora) break;
+		sLinha = copiarSolucao(s);
+		ListaTabu tabu = criarListaTabu(tamanhoListaTabu, g.n);
+		preencherListaTabu(&tabu, s.caminho, s.tamanhoCaminho);
+		
+		while (1) {
+			sTralha = RVND(s, fs, tabu);
+			liberarSolucao(s);
+			s = sTralha;
+			atualizarListaTabu (&tabu, s.caminho, s.tamanhoCaminho);
+			if (s.custo < sLinha.custo) {
+				liberarSolucao(sLinha);
+				sLinha = copiarSolucao(s);
+				j = 0; k++;
+			} else {
+				j++;
+				if (j == maxSemMelhora) break;
+			}
+			i++;
 		}
-		i++;
-		//s = perturbar(s, fs);
+
+		if (sLinha.custo < sAsterisco.custo) {
+			if (sAsterisco.custo != INFINITY) liberarSolucao(sAsterisco);
+			sAsterisco = sLinha;
+		} else {
+			liberarSolucao(sLinha);			
+		}
+		liberarSolucao(s);
+		liberarListaTabu(tabu);
 	}
 	
-	liberarListaTabu (tabu);
 	liberarSolucao(sAsterisco);
-	liberarSolucao(s);
 
 	clock_t end = clock();
 	float seconds = (float) (end - start) / CLOCKS_PER_SEC;	
-	results[0] = sAsterisco.custo, results[1] = seconds;
+	results[0] = sAsterisco.custo, results[1] = seconds, results[2] = i, results[3] = j, results[4] = k;
 }
 
 int main(int argc, char *argv[])
@@ -69,7 +78,7 @@ int main(int argc, char *argv[])
 	char *ns [] = {"20", "30", "40", "50", "60"};
 	char *grupo [] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
 	int qs [] = {10, 15, 20, 25, 30, 35, 40, 45, 1000};
-	float results[2]; // 0 = custo, 1 = tempo
+	float results[5]; // 0 = custo, 1 = tempo
 
 	FILE *arq = fopen(argv[1], "w");
 
@@ -78,7 +87,7 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 
 	for (int i = 4; i < 5; i++) {
-		for (int j = 0; j < 10; j++) {
+		for (int j = 6; j < 10; j++) {
 
 			strcpy(caminho, "instancias/");
 			strcat(caminho, "n");
@@ -101,7 +110,8 @@ int main(int argc, char *argv[])
 
 				for (int l = 0; l < 10; l++) {
 					tabuSearch(g, fs, results);
-					fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
+					fprintf(arq, "\tCusto: %.f, Tempo: %f, Total de iteracoes: %.f, Iteracao final: %.f, Reinicios: %.f\n", 
+						results[0], results[1], results[2], results[3], results[4]);
 					if (results[0] < melhorCusto) melhorCusto = results[0];
 					mediaTempo += results[1];
 				}

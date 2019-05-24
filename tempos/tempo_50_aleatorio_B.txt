@@ -1,0 +1,108 @@
+Instancia: instancias/n50q10B.tsp, Q: 10
+	Custo: 9174, Tempo: 53.618858, Total de iteracoes: 112631, Iteracao final: 500, Reinicios: 1668
+	Custo: 9180, Tempo: 51.180138, Total de iteracoes: 107313, Iteracao final: 500, Reinicios: 1663
+	Custo: 9200, Tempo: 54.488567, Total de iteracoes: 114981, Iteracao final: 500, Reinicios: 1639
+	Custo: 9202, Tempo: 51.734177, Total de iteracoes: 108161, Iteracao final: 500, Reinicios: 1587
+	Custo: 9174, Tempo: 50.712234, Total de iteracoes: 106656, Iteracao final: 500, Reinicios: 1490
+	Custo: 9159, Tempo: 50.886616, Total de iteracoes: 107027, Iteracao final: 500, Reinicios: 1627
+	Custo: 9200, Tempo: 55.414551, Total de iteracoes: 115500, Iteracao final: 500, Reinicios: 1736
+	Custo: 9242, Tempo: 51.742203, Total de iteracoes: 109599, Iteracao final: 500, Reinicios: 1549
+	Custo: 9210, Tempo: 54.035007, Total de iteracoes: 114272, Iteracao final: 500, Reinicios: 1670
+	Custo: 9167, Tempo: 56.628555, Total de iteracoes: 119889, Iteracao final: 500, Reinicios: 1802
+Melhor custo: 9159, média dos tempos: 53.044092
+Instancia: instancias/n50q10B.tsp, Q: 15
+	Custo: 7764, Tempo: 54.589680, Total de iteracoes: 113347, Iteracao final: 500, Reinicios: 1359
+	Custo: 7764, Tempo: 56.520042, Total de iteracoes: 116219, Iteracao final: 500, Reinicios: 1362
+	Custo: 7764, Tempo: 52.845737, Total de iteracoes: 109583, Iteracao final: 500, Reinicios: 1325
+	Custo: 7764, Tempo: 52.737434, Total de iteracoes: 109159, Iteracao final: 500, Reinicios: 1302
+	Custo: 7764, Tempo: 53.778568, Total de iteracoes: 112752, Iteracao final: 500, Reinicios: 1372
+	Custo: 7764, Tempo: 54.061665, Total de iteracoes: 113362, Iteracao final: 500, Reinicios: 1408
+	Custo: 7764, Tempo: 57.100800, Total de iteracoes: 119239, Iteracao final: 500, Reinicios: 1441
+	Custo: 7765, Tempo: 57.377449, Total de iteracoes: 119038, Iteracao final: 500, Reinicios: 1412
+	Custo: 7764, Tempo: 55.993458, Total de iteracoes: 116987, Iteracao final: 500, Reinicios: 1414
+	Custo: 7764, Tempo: 53.562977, Total de iteracoes: 111258, Iteracao final: 500, Reinicios: 1342
+Melhor custo: 7764, média dos tempos: 54.856781
+Instancia: instancias/n50q10B.tsp, Q: 20
+	Custo: 6963, Tempo: 52.344143, Total de iteracoes: 107816, Iteracao final: 500, Reinicios: 1203
+	Custo: 6930, Tempo: 53.672112, Total de iteracoes: 109745, Iteracao final: 500, Reinicios: 1283
+	Custo: 6930, Tempo: 51.824612, Total de iteracoes: 106689, Iteracao final: 500, Reinicios: 1168
+	Custo: 6930, Tempo: 51.103939, Total de iteracoes: 104672, Iteracao final: 500, Reinicios: 1222
+	Custo: 6932, Tempo: 49.845695, Total de iteracoes: 103117, Iteracao final: 500, Reinicios: 1247
+	Custo: 6947, Tempo: 50.411831, Total de iteracoes: 103389, Iteracao final: 500, Reinicios: 1165
+	Custo: 6963, Tempo: 53.262753, Total de iteracoes: 108422, Iteracao final: 500, Reinicios: 1272
+	Custo: 6963, Tempo: 50.872883, Total de iteracoes: 105276, Iteracao final: 500, Reinicios: 1228
+	Custo: 6963, Tempo: 53.472919, Total de iteracoes: 109460, Iteracao final: 500, Reinicios: 1313
+	Custo: 6963, Tempo: 53.127270, Total de iteracoes: 108491, Iteracao final: 500, Reinicios: 1193
+Melhor custo: 6930, média dos tempos: 51.993817
+Instancia: instancias/n50q10B.tsp, Q: 25
+	Custo: 6697, Tempo: 51.221352, Total de iteracoes: 106363, Iteracao final: 500, Reinicios: 1071
+	Custo: 6697, Tempo: 47.850052, Total de iteracoes: 99110, Iteracao final: 500, Reinicios: 1066
+	Custo: 6702, Tempo: 53.040539, Total de iteracoes: 110997, Iteracao final: 500, Reinicios: 1120
+	Custo: 6702, Tempo: 50.563019, Total de iteracoes: 103792, Iteracao final: 500, Reinicios: 1097
+	Custo: 6702, Tempo: 48.860672, Total de iteracoes: 100921, Iteracao final: 500, Reinicios: 1088
+	Custo: 6702, Tempo: 49.779888, Total de iteracoes: 102552, Iteracao final: 500, Reinicios: 1110
+	Custo: 6702, Tempo: 48.896080, Total de iteracoes: 101092, Iteracao final: 500, Reinicios: 1033
+	Custo: 6702, Tempo: 49.393707, Total de iteracoes: 102498, Iteracao final: 500, Reinicios: 1097
+	Custo: 6702, Tempo: 49.227451, Total de iteracoes: 101599, Iteracao final: 500, Reinicios: 1079
+	Custo: 6702, Tempo: 49.729122, Total de iteracoes: 102821, Iteracao final: 500, Reinicios: 1051
+Melhor custo: 6697, média dos tempos: 49.856189
+Instancia: instancias/n50q10B.tsp, Q: 30
+	Custo: 6477, Tempo: 47.408340, Total de iteracoes: 97656, Iteracao final: 500, Reinicios: 970
+	Custo: 6477, Tempo: 48.771793, Total de iteracoes: 100291, Iteracao final: 500, Reinicios: 1005
+	Custo: 6451, Tempo: 52.751141, Total de iteracoes: 107398, Iteracao final: 500, Reinicios: 1013
+	Custo: 6457, Tempo: 49.906429, Total de iteracoes: 101775, Iteracao final: 500, Reinicios: 936
+	Custo: 6490, Tempo: 49.697990, Total de iteracoes: 100401, Iteracao final: 500, Reinicios: 956
+	Custo: 6477, Tempo: 51.789524, Total de iteracoes: 106638, Iteracao final: 500, Reinicios: 971
+	Custo: 6477, Tempo: 49.601593, Total de iteracoes: 101030, Iteracao final: 500, Reinicios: 957
+	Custo: 6477, Tempo: 48.435631, Total de iteracoes: 99249, Iteracao final: 500, Reinicios: 1000
+	Custo: 6487, Tempo: 49.247391, Total de iteracoes: 100858, Iteracao final: 500, Reinicios: 1025
+	Custo: 6477, Tempo: 49.082241, Total de iteracoes: 101034, Iteracao final: 500, Reinicios: 1020
+Melhor custo: 6451, média dos tempos: 49.669211
+Instancia: instancias/n50q10B.tsp, Q: 35
+	Custo: 6269, Tempo: 51.252174, Total de iteracoes: 103381, Iteracao final: 500, Reinicios: 954
+	Custo: 6269, Tempo: 47.243031, Total de iteracoes: 96147, Iteracao final: 500, Reinicios: 878
+	Custo: 6269, Tempo: 47.553600, Total de iteracoes: 95786, Iteracao final: 500, Reinicios: 879
+	Custo: 6269, Tempo: 46.860836, Total de iteracoes: 94072, Iteracao final: 500, Reinicios: 967
+	Custo: 6269, Tempo: 47.030964, Total de iteracoes: 96332, Iteracao final: 500, Reinicios: 919
+	Custo: 6269, Tempo: 51.145283, Total de iteracoes: 104188, Iteracao final: 500, Reinicios: 1020
+	Custo: 6274, Tempo: 47.321857, Total de iteracoes: 95879, Iteracao final: 500, Reinicios: 918
+	Custo: 6269, Tempo: 46.919777, Total de iteracoes: 95062, Iteracao final: 500, Reinicios: 917
+	Custo: 6269, Tempo: 46.163593, Total de iteracoes: 94278, Iteracao final: 500, Reinicios: 914
+	Custo: 6269, Tempo: 51.793816, Total de iteracoes: 105018, Iteracao final: 500, Reinicios: 1035
+Melhor custo: 6269, média dos tempos: 48.328497
+Instancia: instancias/n50q10B.tsp, Q: 40
+	Custo: 6127, Tempo: 44.340660, Total de iteracoes: 87954, Iteracao final: 500, Reinicios: 732
+	Custo: 6127, Tempo: 46.457104, Total de iteracoes: 92074, Iteracao final: 500, Reinicios: 813
+	Custo: 6127, Tempo: 42.795650, Total de iteracoes: 85229, Iteracao final: 500, Reinicios: 693
+	Custo: 6127, Tempo: 44.700314, Total de iteracoes: 89364, Iteracao final: 500, Reinicios: 815
+	Custo: 6127, Tempo: 45.819298, Total de iteracoes: 90790, Iteracao final: 500, Reinicios: 831
+	Custo: 6127, Tempo: 46.119801, Total de iteracoes: 91251, Iteracao final: 500, Reinicios: 788
+	Custo: 6127, Tempo: 46.417927, Total de iteracoes: 92622, Iteracao final: 500, Reinicios: 820
+	Custo: 6127, Tempo: 44.654610, Total de iteracoes: 88895, Iteracao final: 500, Reinicios: 764
+	Custo: 6127, Tempo: 49.177910, Total de iteracoes: 97914, Iteracao final: 500, Reinicios: 757
+	Custo: 6127, Tempo: 47.831638, Total de iteracoes: 95908, Iteracao final: 500, Reinicios: 781
+Melhor custo: 6127, média dos tempos: 45.831494
+Instancia: instancias/n50q10B.tsp, Q: 45
+	Custo: 6061, Tempo: 49.417358, Total de iteracoes: 98533, Iteracao final: 500, Reinicios: 756
+	Custo: 6061, Tempo: 45.954689, Total de iteracoes: 91229, Iteracao final: 500, Reinicios: 707
+	Custo: 6061, Tempo: 44.241798, Total de iteracoes: 86974, Iteracao final: 500, Reinicios: 630
+	Custo: 6061, Tempo: 49.764999, Total de iteracoes: 96540, Iteracao final: 500, Reinicios: 765
+	Custo: 6061, Tempo: 42.272942, Total de iteracoes: 83723, Iteracao final: 500, Reinicios: 633
+	Custo: 6061, Tempo: 42.683121, Total de iteracoes: 83615, Iteracao final: 500, Reinicios: 686
+	Custo: 6061, Tempo: 46.266041, Total de iteracoes: 92643, Iteracao final: 500, Reinicios: 676
+	Custo: 6061, Tempo: 46.123127, Total de iteracoes: 90245, Iteracao final: 500, Reinicios: 716
+	Custo: 6061, Tempo: 41.893700, Total de iteracoes: 82805, Iteracao final: 500, Reinicios: 631
+	Custo: 6061, Tempo: 42.295376, Total de iteracoes: 84972, Iteracao final: 500, Reinicios: 674
+Melhor custo: 6061, média dos tempos: 45.091318
+Instancia: instancias/n50q10B.tsp, Q: 1000
+	Custo: 5955, Tempo: 45.025661, Total de iteracoes: 83586, Iteracao final: 500, Reinicios: 541
+	Custo: 5955, Tempo: 48.472397, Total de iteracoes: 90721, Iteracao final: 500, Reinicios: 637
+	Custo: 5955, Tempo: 43.623173, Total de iteracoes: 81544, Iteracao final: 500, Reinicios: 560
+	Custo: 5955, Tempo: 43.567322, Total de iteracoes: 80828, Iteracao final: 500, Reinicios: 542
+	Custo: 5955, Tempo: 42.636230, Total de iteracoes: 79600, Iteracao final: 500, Reinicios: 538
+	Custo: 5955, Tempo: 43.005619, Total de iteracoes: 80711, Iteracao final: 500, Reinicios: 543
+	Custo: 5955, Tempo: 44.329494, Total de iteracoes: 83587, Iteracao final: 500, Reinicios: 583
+	Custo: 5955, Tempo: 44.343594, Total de iteracoes: 83511, Iteracao final: 500, Reinicios: 538
+	Custo: 5955, Tempo: 42.934448, Total de iteracoes: 80724, Iteracao final: 500, Reinicios: 564
+	Custo: 5955, Tempo: 43.260365, Total de iteracoes: 81250, Iteracao final: 500, Reinicios: 572
+Melhor custo: 5955, média dos tempos: 44.119833
