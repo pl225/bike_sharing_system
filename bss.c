@@ -2,6 +2,7 @@
 #include "solucao.h"
 #include "vizinhanca.h"
 #include <time.h>
+#include <dirent.h> 
 
 void ILS_SBPRW (Grafo g, FabricaSolucao fs, FILE* arq, float results[]) {
 	
@@ -60,55 +61,49 @@ void ILS_SBPRW (Grafo g, FabricaSolucao fs, FILE* arq, float results[]) {
 
 int main(int argc, char *argv[])
 {
-
-	char *ns [] = {"20", "30", "40", "50", "60"};
-	char *grupo [] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-	int qs [] = {10, 15, 20, 25, 30, 35, 40, 45, 1000};
+	srand(time(NULL));
 	float results[2]; // 0 = custo, 1 = tempo
-
 	FILE *arq = fopen(argv[1], "w");
 
-	char caminho[30];
+	char caminho[50];
 
-	srand(time(NULL));
+	DIR *d;
+  	struct dirent *dir;
+  	d = opendir("InstancesBRP");
+  	int i = 1;
 
-	for (int i = 0; i < 1; i++) {
-		for (int j = 0; j < 10; j++) {
-
-			strcpy(caminho, "instancias/");
-			strcat(caminho, "n");
-			strcat(caminho, ns[i]);
-			strcat(caminho, "q10");
-			strcat(caminho, grupo[j]);
-			strcat(caminho, ".tsp");
+	while ((dir = readdir(d)) != NULL) {
+		if (dir->d_type == DT_REG) {
+			strcpy(caminho, "InstancesBRP/");
+			strcat(caminho, dir->d_name);	
 
 			Grafo g = carregarInstancia(caminho);
 			FabricaSolucao fs = instanciarFabrica(g);
 
-			for (int k = 0; k < 9; k++) {
-				
-				g.q = qs[k];
-				fs.q = qs[k];
+			fprintf(arq, "Instancia: %s, Q: %d\n", caminho, g.q);
+			float mediaTempo = 0;
+			float melhorCusto = INFINITY;
 
-				fprintf(arq, "Instancia: %s, Q: %d\n", caminho, qs[k]);
-				float mediaTempo = 0;
-				float melhorCusto = INFINITY;
-
-				for (int l = 0; l < 10; l++) {
-					ILS_SBPRW(g, fs, arq, results);
-					fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
-					if (results[0] < melhorCusto) melhorCusto = results[0];
-					mediaTempo += results[1];
-				}
-				fprintf(arq, "Melhor custo: %.f, média dos tempos: %f\n", melhorCusto, mediaTempo / 10.0);
-				printf("Instancia: %s, Q: %d terminada.\n", caminho, g.q);
+			for (int l = 0; l < 10; l++) {
+				ILS_SBPRW(g, fs, arq, results);
+				fprintf(arq, "\tCusto: %.f, Tempo: %f\n", results[0], results[1]);
+				if (results[0] < melhorCusto) melhorCusto = results[0];
+				mediaTempo += results[1];
 			}
+			fprintf(arq, "Melhor custo: %.f, média dos tempos: %f\n", melhorCusto, mediaTempo / 10.0);
+			printf("Instancia: %s, Q: %d terminada. %d/50\n", caminho, g.q, i);
+
 			liberarGrafo(g);
 			liberarFabrica(fs);
 			strcpy(caminho, "");
+			i++;
+
+			if (i == 3) break;
 		}
 	}
 	printf("\n\n****************TERMINADO****************\n");
 	fclose(arq);
+	closedir(d);
+	
 	return 0;
 }

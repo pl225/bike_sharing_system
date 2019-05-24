@@ -7,43 +7,47 @@ typedef struct Grafo
 {
 	int n;
 	int q;
-	int *pontos;
+	float *custos;
 	int *demandas;
 } Grafo;
 
 void liberarGrafo (Grafo g) { // mover
-	free(g.pontos);
+	free(g.custos);
 	free(g.demandas);
 }
 
-int IndicePontos (int i, int j) { // mover
-	return i * N_COLUNAS + j;
-}
-
-Grafo carregarInstancia (char caminhoArquivo []) {
+Grafo carregarInstancia(char caminhoArquivo []) {
 
 	FILE *arquivo = fopen(caminhoArquivo, "r");
+	int n, q, d;
 
-	int n, q;
-
-	fscanf(arquivo, "%d\n%d\n", &n, &q);
+	fscanf(arquivo, "%d\n", &n);
 
 	Grafo g;
 	g.n = n;
-	g.q = q;//5;
 
-	g.pontos = (int *) malloc(sizeof(int) * n * N_COLUNAS);
 	g.demandas = (int *) malloc(sizeof(int) * n);
-	float p1, p2;
+	int demanda0 = 0;
 
 	for (int i = 0; i < n; i++) {
-		fscanf(arquivo, "%*d %f %f\n", &p1, &p2);
-		g.pontos[IndicePontos(i, 0)] = (int) p1;
-		g.pontos[IndicePontos(i, 1)] = (int) p2;
+		fscanf(arquivo, "%d", &d);
+		g.demandas[i] = -1 * d;
+		demanda0 += g.demandas[i];
+		fgetc(arquivo);
 	}
+	g.demandas[0] = -1 * demanda0;
 
+	fscanf(arquivo, "%d\n", &q);
+	g.q = q;
+
+	int a = 0;
+	g.custos = malloc(sizeof(float) * n * n);
 	for (int i = 0; i < n; i++) {
-		fscanf(arquivo, "%*d %d\n", &g.demandas[i]);
+		for (int j = 0; j < n; j++, a++) {
+			fscanf(arquivo, "%f", &g.custos[a]);
+			fgetc(arquivo);
+			if (i == j) g.custos[a] = 0;
+		}
 	}
 
 	fclose(arquivo);
