@@ -1,0 +1,600 @@
+Instancia: InstancesBRP/36Guadalajara30.txt, Q: 30
+	Custo: 57476, Tempo: 37.207516
+	Custo: 57476, Tempo: 35.266270
+	Custo: 57476, Tempo: 35.216881
+	Custo: 57476, Tempo: 34.335869
+	Custo: 57476, Tempo: 34.048313
+	Custo: 57476, Tempo: 35.346809
+	Custo: 57476, Tempo: 34.142204
+	Custo: 57476, Tempo: 35.867249
+	Custo: 57476, Tempo: 38.978905
+	Custo: 57476, Tempo: 36.917751
+Melhor custo: 57476, média dos tempos: 35.732779
+Instancia: InstancesBRP/22Ottawa20.txt, Q: 20
+	Custo: 16478, Tempo: 2.231209
+	Custo: 16478, Tempo: 2.255689
+	Custo: 16478, Tempo: 2.645523
+	Custo: 16478, Tempo: 2.297864
+	Custo: 16478, Tempo: 2.240045
+	Custo: 16478, Tempo: 2.253525
+	Custo: 16478, Tempo: 2.253124
+	Custo: 16478, Tempo: 2.222918
+	Custo: 16478, Tempo: 2.261756
+	Custo: 16478, Tempo: 2.240254
+Melhor custo: 16478, média dos tempos: 2.290191
+Instancia: InstancesBRP/10Parma30.txt, Q: 30
+	Custo: 29000, Tempo: 0.868641
+	Custo: 29000, Tempo: 0.804867
+	Custo: 29000, Tempo: 0.950909
+	Custo: 29000, Tempo: 1.073297
+	Custo: 29000, Tempo: 0.874918
+	Custo: 29000, Tempo: 0.799025
+	Custo: 29000, Tempo: 0.873607
+	Custo: 29000, Tempo: 1.021410
+	Custo: 29000, Tempo: 0.990986
+	Custo: 29000, Tempo: 0.792353
+Melhor custo: 29000, média dos tempos: 0.905001
+Instancia: InstancesBRP/32Roma18.txt, Q: 18
+	Custo: 68300, Tempo: 10.546128
+	Custo: 68200, Tempo: 9.925310
+	Custo: 68300, Tempo: 9.920350
+	Custo: 68200, Tempo: 10.717937
+	Custo: 68400, Tempo: 10.549940
+	Custo: 68400, Tempo: 10.388150
+	Custo: 68400, Tempo: 10.139135
+	Custo: 68300, Tempo: 10.156123
+	Custo: 68300, Tempo: 9.755736
+	Custo: 68400, Tempo: 9.983284
+Melhor custo: 68200, média dos tempos: 10.208209
+Instancia: InstancesBRP/50Boston16.txt, Q: 16
+	Custo: 76594, Tempo: 130.986572
+	Custo: 75497, Tempo: 128.801041
+	Custo: 76509, Tempo: 134.822586
+	Custo: 75466, Tempo: 127.601189
+	Custo: 76178, Tempo: 141.405167
+	Custo: 77175, Tempo: 134.422714
+	Custo: 76481, Tempo: 129.151520
+	Custo: 76128, Tempo: 130.477676
+	Custo: 75813, Tempo: 136.543686
+	Custo: 76655, Tempo: 127.574966
+Melhor custo: 75466, média dos tempos: 132.178711
+Instancia: InstancesBRP/31Roma20.txt, Q: 20
+	Custo: 66600, Tempo: 11.585950
+	Custo: 66800, Tempo: 11.305997
+	Custo: 66800, Tempo: 11.164862
+	Custo: 66600, Tempo: 11.516049
+	Custo: 66200, Tempo: 11.131360
+	Custo: 66800, Tempo: 10.571229
+	Custo: 66800, Tempo: 11.480454
+	Custo: 66200, Tempo: 10.847386
+	Custo: 66300, Tempo: 11.229522
+	Custo: 66700, Tempo: 10.673981
+Melhor custo: 66200, média dos tempos: 11.150679
+Instancia: InstancesBRP/2Bari20.txt, Q: 20
+	Custo: 15700, Tempo: 0.674329
+	Custo: 15700, Tempo: 0.681965
+	Custo: 15700, Tempo: 0.781892
+	Custo: 15700, Tempo: 0.855257
+	Custo: 15700, Tempo: 0.833156
+	Custo: 15700, Tempo: 0.689169
+	Custo: 15700, Tempo: 0.689698
+	Custo: 15700, Tempo: 0.759967
+	Custo: 15700, Tempo: 0.883040
+	Custo: 15700, Tempo: 0.856043
+Melhor custo: 15700, média dos tempos: 0.770452
+Instancia: InstancesBRP/35Madison10.txt, Q: 10
+	Custo: 34284, Tempo: 7.825744
+	Custo: 34294, Tempo: 8.216295
+	Custo: 34294, Tempo: 7.997525
+	Custo: 34294, Tempo: 7.724960
+	Custo: 34294, Tempo: 7.654386
+	Custo: 34294, Tempo: 7.682867
+	Custo: 34284, Tempo: 8.624956
+	Custo: 34284, Tempo: 8.723667
+	Custo: 34294, Tempo: 8.419695
+	Custo: 34294, Tempo: 7.994903
+Melhor custo: 34284, média dos tempos: 8.086499
+Instancia: InstancesBRP/13Treviso30.txt, Q: 30
+	Custo: 29259, Tempo: 1.699472
+	Custo: 29259, Tempo: 1.947481
+	Custo: 29259, Tempo: 1.707262
+	Custo: 29259, Tempo: 1.851455
+	Custo: 29259, Tempo: 1.834528
+	Custo: 29259, Tempo: 1.819370
+	Custo: 29259, Tempo: 1.918032
+	Custo: 29259, Tempo: 1.672098
+	Custo: 29259, Tempo: 2.017382
+	Custo: 29259, Tempo: 1.666307
+Melhor custo: 29259, média dos tempos: 1.813339
+Instancia: InstancesBRP/49Boston20.txt, Q: 20
+	Custo: 72959, Tempo: 127.320374
+	Custo: 72732, Tempo: 126.396698
+	Custo: 72842, Tempo: 115.634781
+	Custo: 72490, Tempo: 120.349434
+	Custo: 72467, Tempo: 128.466553
+	Custo: 72733, Tempo: 123.796654
+	Custo: 72702, Tempo: 124.882675
+	Custo: 72864, Tempo: 128.761612
+	Custo: 72566, Tempo: 129.291611
+	Custo: 72375, Tempo: 128.637360
+Melhor custo: 72375, média dos tempos: 125.353772
+Instancia: InstancesBRP/25SanAntonio20.txt, Q: 20
+	Custo: 24007, Tempo: 5.937354
+	Custo: 24007, Tempo: 6.111978
+	Custo: 23887, Tempo: 6.092232
+	Custo: 23887, Tempo: 5.778988
+	Custo: 23887, Tempo: 5.902756
+	Custo: 23887, Tempo: 6.302450
+	Custo: 23887, Tempo: 6.248694
+	Custo: 24007, Tempo: 5.968547
+	Custo: 23887, Tempo: 6.182718
+	Custo: 23887, Tempo: 6.026972
+Melhor custo: 23887, média dos tempos: 6.055269
+Instancia: InstancesBRP/1Bari30.txt, Q: 30
+	Custo: 15000, Tempo: 0.865962
+	Custo: 15000, Tempo: 0.887172
+	Custo: 15000, Tempo: 0.715486
+	Custo: 15000, Tempo: 0.704230
+	Custo: 15000, Tempo: 0.641225
+	Custo: 15000, Tempo: 0.868706
+	Custo: 15000, Tempo: 0.868498
+	Custo: 15000, Tempo: 0.747559
+	Custo: 15000, Tempo: 0.687297
+	Custo: 15000, Tempo: 0.670748
+Melhor custo: 15000, média dos tempos: 0.765688
+Instancia: InstancesBRP/8Bergamo20.txt, Q: 20
+	Custo: 12900, Tempo: 0.780142
+	Custo: 12900, Tempo: 0.768716
+	Custo: 12900, Tempo: 0.855374
+	Custo: 12900, Tempo: 0.995178
+	Custo: 12900, Tempo: 0.935653
+	Custo: 12900, Tempo: 0.779751
+	Custo: 12900, Tempo: 0.769474
+	Custo: 12900, Tempo: 0.960792
+	Custo: 12900, Tempo: 0.993104
+	Custo: 12900, Tempo: 0.844066
+Melhor custo: 12900, média dos tempos: 0.868225
+Instancia: InstancesBRP/37Guadalajara20.txt, Q: 20
+	Custo: 59894, Tempo: 39.648121
+	Custo: 60159, Tempo: 37.359695
+	Custo: 60044, Tempo: 40.894436
+	Custo: 60175, Tempo: 40.036079
+	Custo: 60231, Tempo: 39.946640
+	Custo: 59894, Tempo: 39.070801
+	Custo: 59894, Tempo: 37.779049
+	Custo: 59894, Tempo: 37.838577
+	Custo: 60159, Tempo: 39.618439
+	Custo: 60217, Tempo: 36.633125
+Melhor custo: 59894, média dos tempos: 38.882492
+Instancia: InstancesBRP/30Roma30.txt, Q: 30
+	Custo: 61900, Tempo: 12.174695
+	Custo: 61900, Tempo: 10.965293
+	Custo: 61900, Tempo: 10.748650
+	Custo: 61900, Tempo: 12.267733
+	Custo: 62000, Tempo: 10.842976
+	Custo: 62000, Tempo: 11.026340
+	Custo: 61900, Tempo: 11.094759
+	Custo: 61900, Tempo: 10.887274
+	Custo: 61900, Tempo: 11.223559
+	Custo: 62000, Tempo: 10.612784
+Melhor custo: 61900, média dos tempos: 11.184406
+Instancia: InstancesBRP/15Treviso10.txt, Q: 10
+	Custo: 31443, Tempo: 2.366713
+	Custo: 31443, Tempo: 2.553128
+	Custo: 31443, Tempo: 2.620700
+	Custo: 31443, Tempo: 2.192617
+	Custo: 31443, Tempo: 2.544047
+	Custo: 31443, Tempo: 2.378738
+	Custo: 31443, Tempo: 2.367619
+	Custo: 31443, Tempo: 2.681616
+	Custo: 31443, Tempo: 2.260679
+	Custo: 31443, Tempo: 2.523264
+Melhor custo: 31443, média dos tempos: 2.448912
+Instancia: InstancesBRP/39Dublin30.txt, Q: 30
+	Custo: 33921, Tempo: 60.463432
+	Custo: 34306, Tempo: 54.821056
+	Custo: 34263, Tempo: 56.133224
+	Custo: 33591, Tempo: 54.843449
+	Custo: 34264, Tempo: 57.681171
+	Custo: 33933, Tempo: 57.109455
+	Custo: 33615, Tempo: 57.040359
+	Custo: 33548, Tempo: 59.494839
+	Custo: 33548, Tempo: 57.292522
+	Custo: 33934, Tempo: 56.123753
+Melhor custo: 33548, média dos tempos: 57.100330
+Instancia: InstancesBRP/7Bergamo30.txt, Q: 30
+	Custo: 12600, Tempo: 0.893614
+	Custo: 12600, Tempo: 1.024570
+	Custo: 12600, Tempo: 0.900757
+	Custo: 12600, Tempo: 0.792928
+	Custo: 12600, Tempo: 0.795160
+	Custo: 12600, Tempo: 1.041719
+	Custo: 12600, Tempo: 1.014644
+	Custo: 12600, Tempo: 0.807103
+	Custo: 12600, Tempo: 0.795211
+	Custo: 12600, Tempo: 0.950327
+Melhor custo: 12600, média dos tempos: 0.901603
+Instancia: InstancesBRP/45RioDeJaneiro30.txt, Q: 30
+	Custo: 123888, Tempo: 113.960396
+	Custo: 124463, Tempo: 109.510414
+	Custo: 124920, Tempo: 109.226585
+	Custo: 124004, Tempo: 112.068512
+	Custo: 123795, Tempo: 118.076218
+	Custo: 124472, Tempo: 116.212784
+	Custo: 124652, Tempo: 107.974960
+	Custo: 124718, Tempo: 106.957985
+	Custo: 123791, Tempo: 109.909531
+	Custo: 124887, Tempo: 104.135391
+Melhor custo: 123791, média dos tempos: 110.803284
+Instancia: InstancesBRP/47RioDeJaneiro10.txt, Q: 10
+	Custo: 253892, Tempo: 140.373795
+	Custo: 253798, Tempo: 148.850677
+	Custo: 254766, Tempo: 163.589859
+	Custo: 253546, Tempo: 147.712265
+	Custo: 254519, Tempo: 151.116837
+	Custo: 253630, Tempo: 156.611771
+	Custo: 254431, Tempo: 157.188934
+	Custo: 254727, Tempo: 138.878677
+	Custo: 254057, Tempo: 145.013214
+	Custo: 253717, Tempo: 150.651810
+Melhor custo: 253546, média dos tempos: 149.998779
+Instancia: InstancesBRP/24SanAntonio30.txt, Q: 30
+	Custo: 23105, Tempo: 5.157353
+	Custo: 23042, Tempo: 6.145054
+	Custo: 23105, Tempo: 5.534226
+	Custo: 23105, Tempo: 5.897613
+	Custo: 22982, Tempo: 6.012186
+	Custo: 22982, Tempo: 6.059625
+	Custo: 23105, Tempo: 5.915250
+	Custo: 22982, Tempo: 5.923267
+	Custo: 23105, Tempo: 5.564662
+	Custo: 22982, Tempo: 5.212940
+Melhor custo: 22982, média dos tempos: 5.742218
+Instancia: InstancesBRP/44Denver10.txt, Q: 10
+	Custo: 68153, Tempo: 77.553650
+	Custo: 67699, Tempo: 79.620163
+	Custo: 68035, Tempo: 85.403107
+	Custo: 67731, Tempo: 79.740913
+	Custo: 67733, Tempo: 84.655251
+	Custo: 67800, Tempo: 83.757927
+	Custo: 67860, Tempo: 88.809662
+	Custo: 67720, Tempo: 84.083527
+	Custo: 67736, Tempo: 88.875832
+	Custo: 67808, Tempo: 86.187569
+Melhor custo: 67699, média dos tempos: 83.868756
+Instancia: InstancesBRP/6ReggioEmilia10.txt, Q: 10
+	Custo: 32500, Tempo: 1.125144
+	Custo: 32500, Tempo: 1.274202
+	Custo: 32500, Tempo: 1.414208
+	Custo: 32500, Tempo: 1.173941
+	Custo: 32500, Tempo: 1.284863
+	Custo: 32500, Tempo: 1.497288
+	Custo: 32500, Tempo: 1.083427
+	Custo: 32500, Tempo: 1.199466
+	Custo: 32500, Tempo: 1.433384
+	Custo: 32500, Tempo: 1.163348
+Melhor custo: 32500, média dos tempos: 1.264927
+Instancia: InstancesBRP/29Brescia11.txt, Q: 11
+	Custo: 34900, Tempo: 12.037116
+	Custo: 34900, Tempo: 11.794874
+	Custo: 35000, Tempo: 11.644252
+	Custo: 35000, Tempo: 11.123862
+	Custo: 34900, Tempo: 11.657460
+	Custo: 35000, Tempo: 11.227312
+	Custo: 34900, Tempo: 12.388129
+	Custo: 35000, Tempo: 10.673799
+	Custo: 34900, Tempo: 12.074582
+	Custo: 35100, Tempo: 11.984618
+Melhor custo: 34900, média dos tempos: 11.660601
+Instancia: InstancesBRP/17LaSpezia20.txt, Q: 20
+	Custo: 21255, Tempo: 2.071813
+	Custo: 21255, Tempo: 2.244880
+	Custo: 21255, Tempo: 2.220491
+	Custo: 21255, Tempo: 2.189057
+	Custo: 21255, Tempo: 2.412535
+	Custo: 21255, Tempo: 1.912260
+	Custo: 21255, Tempo: 2.381588
+	Custo: 21255, Tempo: 1.997292
+	Custo: 21255, Tempo: 2.380617
+	Custo: 21255, Tempo: 2.176240
+Melhor custo: 21255, média dos tempos: 2.198677
+Instancia: InstancesBRP/48Boston30.txt, Q: 30
+	Custo: 66534, Tempo: 125.514610
+	Custo: 66534, Tempo: 124.745865
+	Custo: 66486, Tempo: 117.166496
+	Custo: 66501, Tempo: 122.099136
+	Custo: 66486, Tempo: 121.136467
+	Custo: 66462, Tempo: 119.044319
+	Custo: 66462, Tempo: 127.853775
+	Custo: 66491, Tempo: 117.257446
+	Custo: 66491, Tempo: 127.894287
+	Custo: 66486, Tempo: 120.204041
+Melhor custo: 66462, média dos tempos: 122.291650
+Instancia: InstancesBRP/28Brescia20.txt, Q: 20
+	Custo: 31300, Tempo: 10.171699
+	Custo: 31300, Tempo: 10.242894
+	Custo: 31200, Tempo: 10.207342
+	Custo: 31300, Tempo: 9.723389
+	Custo: 31300, Tempo: 10.300636
+	Custo: 31300, Tempo: 10.081182
+	Custo: 31300, Tempo: 9.402629
+	Custo: 31300, Tempo: 9.651171
+	Custo: 31300, Tempo: 10.065811
+	Custo: 31200, Tempo: 9.894439
+Melhor custo: 31200, média dos tempos: 9.974119
+Instancia: InstancesBRP/38Guadalajara11.txt, Q: 11
+	Custo: 64981, Tempo: 40.049995
+	Custo: 64981, Tempo: 42.304344
+	Custo: 64981, Tempo: 41.425793
+	Custo: 64981, Tempo: 40.770172
+	Custo: 64981, Tempo: 41.734264
+	Custo: 64981, Tempo: 43.986000
+	Custo: 64981, Tempo: 42.710171
+	Custo: 64981, Tempo: 39.120354
+	Custo: 64981, Tempo: 41.592384
+	Custo: 64981, Tempo: 41.959332
+Melhor custo: 64981, média dos tempos: 41.565280
+Instancia: InstancesBRP/12Parma10.txt, Q: 10
+	Custo: 32500, Tempo: 1.131301
+	Custo: 32500, Tempo: 1.236590
+	Custo: 32500, Tempo: 1.500606
+	Custo: 32500, Tempo: 1.124593
+	Custo: 32500, Tempo: 1.179631
+	Custo: 32500, Tempo: 1.482422
+	Custo: 32500, Tempo: 1.195780
+	Custo: 32500, Tempo: 1.226592
+	Custo: 32500, Tempo: 1.486413
+	Custo: 32500, Tempo: 1.197318
+Melhor custo: 32500, média dos tempos: 1.276125
+Instancia: InstancesBRP/14Treviso20.txt, Q: 20
+	Custo: 29259, Tempo: 1.848519
+	Custo: 29259, Tempo: 1.882785
+	Custo: 29259, Tempo: 1.720847
+	Custo: 29259, Tempo: 1.989290
+	Custo: 29259, Tempo: 1.684836
+	Custo: 29259, Tempo: 2.050879
+	Custo: 29259, Tempo: 1.595959
+	Custo: 29259, Tempo: 2.098441
+	Custo: 29259, Tempo: 1.616506
+	Custo: 29259, Tempo: 1.984735
+Melhor custo: 29259, média dos tempos: 1.847280
+Instancia: InstancesBRP/26SanAntonio10.txt, Q: 10
+	Custo: 39722, Tempo: 6.873312
+	Custo: 39846, Tempo: 6.765862
+	Custo: 39722, Tempo: 6.620551
+	Custo: 39722, Tempo: 6.286664
+	Custo: 39722, Tempo: 6.372691
+	Custo: 39722, Tempo: 6.367451
+	Custo: 39722, Tempo: 6.386908
+	Custo: 39722, Tempo: 6.109156
+	Custo: 39722, Tempo: 6.329733
+	Custo: 39722, Tempo: 6.471051
+Melhor custo: 39722, média dos tempos: 6.458338
+Instancia: InstancesBRP/33Madison30.txt, Q: 30
+	Custo: 31961, Tempo: 9.166288
+	Custo: 31961, Tempo: 9.092622
+	Custo: 31961, Tempo: 8.782514
+	Custo: 31961, Tempo: 9.362109
+	Custo: 31961, Tempo: 9.624979
+	Custo: 31961, Tempo: 9.502249
+	Custo: 31961, Tempo: 9.617456
+	Custo: 31961, Tempo: 9.363181
+	Custo: 31961, Tempo: 9.380318
+	Custo: 31961, Tempo: 9.211937
+Melhor custo: 31961, média dos tempos: 9.310365
+Instancia: InstancesBRP/4ReggioEmilia30.txt, Q: 30
+	Custo: 16900, Tempo: 0.645808
+	Custo: 16900, Tempo: 0.649057
+	Custo: 16900, Tempo: 0.763673
+	Custo: 16900, Tempo: 0.845505
+	Custo: 16900, Tempo: 0.771588
+	Custo: 16900, Tempo: 0.645874
+	Custo: 16900, Tempo: 0.638245
+	Custo: 16900, Tempo: 0.655532
+	Custo: 16900, Tempo: 0.820487
+	Custo: 16900, Tempo: 0.814119
+Melhor custo: 16900, média dos tempos: 0.724989
+Instancia: InstancesBRP/42Denver30.txt, Q: 30
+	Custo: 51766, Tempo: 74.081566
+	Custo: 51920, Tempo: 73.183739
+	Custo: 51583, Tempo: 81.452248
+	Custo: 51922, Tempo: 78.895905
+	Custo: 51583, Tempo: 72.549133
+	Custo: 51583, Tempo: 79.103683
+	Custo: 51583, Tempo: 77.367737
+	Custo: 51766, Tempo: 79.613678
+	Custo: 51583, Tempo: 84.360283
+	Custo: 51583, Tempo: 84.140999
+Melhor custo: 51583, média dos tempos: 78.474896
+Instancia: InstancesBRP/41Dublin11.txt, Q: 11
+	Custo: 54252, Tempo: 64.883682
+	Custo: 54288, Tempo: 62.527988
+	Custo: 54260, Tempo: 60.256920
+	Custo: 54173, Tempo: 59.970295
+	Custo: 54432, Tempo: 61.870243
+	Custo: 54077, Tempo: 64.976746
+	Custo: 54291, Tempo: 64.354721
+	Custo: 54077, Tempo: 62.912903
+	Custo: 54113, Tempo: 60.120190
+	Custo: 54224, Tempo: 60.378353
+Melhor custo: 54077, média dos tempos: 62.225201
+Instancia: InstancesBRP/23Ottawa10.txt, Q: 10
+	Custo: 17997, Tempo: 3.498500
+	Custo: 17997, Tempo: 3.701273
+	Custo: 17997, Tempo: 3.746249
+	Custo: 17997, Tempo: 3.993280
+	Custo: 17997, Tempo: 3.584752
+	Custo: 17997, Tempo: 3.911127
+	Custo: 17997, Tempo: 3.551565
+	Custo: 17997, Tempo: 3.751879
+	Custo: 17997, Tempo: 3.991692
+	Custo: 17997, Tempo: 3.777879
+Melhor custo: 17997, média dos tempos: 3.750820
+Instancia: InstancesBRP/19BuenosAires30.txt, Q: 30
+	Custo: 78924, Tempo: 4.239949
+	Custo: 78924, Tempo: 4.062356
+	Custo: 78924, Tempo: 4.342487
+	Custo: 78924, Tempo: 4.142421
+	Custo: 78924, Tempo: 4.275595
+	Custo: 78924, Tempo: 3.973414
+	Custo: 78924, Tempo: 4.168496
+	Custo: 78292, Tempo: 4.258452
+	Custo: 78924, Tempo: 3.937777
+	Custo: 78924, Tempo: 4.333990
+Melhor custo: 78292, média dos tempos: 4.173494
+Instancia: InstancesBRP/20BuenosAires20.txt, Q: 20
+	Custo: 87373, Tempo: 5.506857
+	Custo: 87194, Tempo: 5.249607
+	Custo: 87205, Tempo: 5.686420
+	Custo: 87373, Tempo: 5.473761
+	Custo: 87373, Tempo: 5.793025
+	Custo: 87566, Tempo: 5.167289
+	Custo: 87194, Tempo: 5.516358
+	Custo: 87555, Tempo: 4.969158
+	Custo: 87194, Tempo: 5.430547
+	Custo: 87555, Tempo: 5.272792
+Melhor custo: 87194, média dos tempos: 5.406581
+Instancia: InstancesBRP/21Ottawa30.txt, Q: 30
+	Custo: 16478, Tempo: 2.276858
+	Custo: 16478, Tempo: 2.297506
+	Custo: 16478, Tempo: 2.255436
+	Custo: 16478, Tempo: 2.256617
+	Custo: 16478, Tempo: 2.273831
+	Custo: 16478, Tempo: 2.239202
+	Custo: 16478, Tempo: 2.720640
+	Custo: 16478, Tempo: 2.290889
+	Custo: 16478, Tempo: 2.283101
+	Custo: 16478, Tempo: 2.233552
+Melhor custo: 16478, média dos tempos: 2.312763
+Instancia: InstancesBRP/16LaSpezia30.txt, Q: 30
+	Custo: 21255, Tempo: 2.240753
+	Custo: 21255, Tempo: 1.999200
+	Custo: 21255, Tempo: 2.309574
+	Custo: 21255, Tempo: 2.034621
+	Custo: 21255, Tempo: 2.377333
+	Custo: 21255, Tempo: 1.890810
+	Custo: 21255, Tempo: 2.385224
+	Custo: 21255, Tempo: 2.141054
+	Custo: 21255, Tempo: 2.244508
+	Custo: 21255, Tempo: 2.200255
+Melhor custo: 21255, média dos tempos: 2.182333
+Instancia: InstancesBRP/5ReggioEmilia20.txt, Q: 20
+	Custo: 23200, Tempo: 1.000629
+	Custo: 23200, Tempo: 0.804211
+	Custo: 23200, Tempo: 0.793387
+	Custo: 23200, Tempo: 0.927887
+	Custo: 23200, Tempo: 1.048478
+	Custo: 23200, Tempo: 0.854979
+	Custo: 23200, Tempo: 0.785632
+	Custo: 23200, Tempo: 0.853277
+	Custo: 23200, Tempo: 1.046457
+	Custo: 23200, Tempo: 0.959766
+Melhor custo: 23200, média dos tempos: 0.907470
+Instancia: InstancesBRP/9Bergamo12.txt, Q: 12
+	Custo: 13500, Tempo: 1.135583
+	Custo: 13500, Tempo: 1.282250
+	Custo: 13500, Tempo: 1.455940
+	Custo: 13500, Tempo: 1.161022
+	Custo: 13500, Tempo: 1.358485
+	Custo: 13500, Tempo: 1.496603
+	Custo: 13500, Tempo: 1.193435
+	Custo: 13500, Tempo: 1.409799
+	Custo: 13500, Tempo: 1.380709
+	Custo: 13500, Tempo: 1.168094
+Melhor custo: 13500, média dos tempos: 1.304192
+Instancia: InstancesBRP/43Denver20.txt, Q: 20
+	Custo: 53449, Tempo: 74.334053
+	Custo: 53502, Tempo: 72.578346
+	Custo: 53502, Tempo: 75.068253
+	Custo: 53500, Tempo: 74.990433
+	Custo: 53500, Tempo: 74.660110
+	Custo: 53502, Tempo: 75.051819
+	Custo: 53465, Tempo: 69.156624
+	Custo: 53663, Tempo: 77.910316
+	Custo: 53508, Tempo: 84.515259
+	Custo: 53605, Tempo: 75.485435
+Melhor custo: 53449, média dos tempos: 75.375061
+Instancia: InstancesBRP/40Dublin20.txt, Q: 20
+	Custo: 40113, Tempo: 61.248825
+	Custo: 40160, Tempo: 59.376781
+	Custo: 39980, Tempo: 63.841751
+	Custo: 39838, Tempo: 60.579037
+	Custo: 40269, Tempo: 58.945290
+	Custo: 40028, Tempo: 58.824806
+	Custo: 40244, Tempo: 62.729954
+	Custo: 39954, Tempo: 57.586514
+	Custo: 40228, Tempo: 63.775192
+	Custo: 40136, Tempo: 63.483360
+Melhor custo: 39838, média dos tempos: 61.039148
+Instancia: InstancesBRP/27Brescia30.txt, Q: 30
+	Custo: 30400, Tempo: 8.763179
+	Custo: 30400, Tempo: 9.157503
+	Custo: 30400, Tempo: 9.351134
+	Custo: 30400, Tempo: 8.903941
+	Custo: 30400, Tempo: 9.263008
+	Custo: 30400, Tempo: 9.595086
+	Custo: 30400, Tempo: 8.717067
+	Custo: 30400, Tempo: 8.993921
+	Custo: 30400, Tempo: 9.515566
+	Custo: 30400, Tempo: 9.100962
+Melhor custo: 30400, média dos tempos: 9.136137
+Instancia: InstancesBRP/11Parma20.txt, Q: 20
+	Custo: 29000, Tempo: 0.837462
+	Custo: 29000, Tempo: 0.984032
+	Custo: 29000, Tempo: 1.067477
+	Custo: 29000, Tempo: 0.899512
+	Custo: 29000, Tempo: 0.837064
+	Custo: 29000, Tempo: 0.906567
+	Custo: 29000, Tempo: 1.077466
+	Custo: 29000, Tempo: 0.940896
+	Custo: 29000, Tempo: 0.806434
+	Custo: 29000, Tempo: 0.827757
+Melhor custo: 29000, média dos tempos: 0.918467
+Instancia: InstancesBRP/3Bari10.txt, Q: 10
+	Custo: 20600, Tempo: 0.806106
+	Custo: 20600, Tempo: 0.814784
+	Custo: 20600, Tempo: 0.679149
+	Custo: 20600, Tempo: 0.630205
+	Custo: 20600, Tempo: 0.614883
+	Custo: 20600, Tempo: 0.688726
+	Custo: 20600, Tempo: 0.768042
+	Custo: 20600, Tempo: 0.828011
+	Custo: 20600, Tempo: 0.622383
+	Custo: 20600, Tempo: 0.626416
+Melhor custo: 20600, média dos tempos: 0.707871
+Instancia: InstancesBRP/18LaSpezia10.txt, Q: 10
+	Custo: 23281, Tempo: 2.407278
+	Custo: 23281, Tempo: 2.882832
+	Custo: 23281, Tempo: 2.681059
+	Custo: 23281, Tempo: 2.433262
+	Custo: 23281, Tempo: 2.402604
+	Custo: 23281, Tempo: 2.606558
+	Custo: 23281, Tempo: 2.753048
+	Custo: 23281, Tempo: 2.352663
+	Custo: 23281, Tempo: 3.028774
+	Custo: 23281, Tempo: 2.846839
+Melhor custo: 23281, média dos tempos: 2.639492
+Instancia: InstancesBRP/34Madison20.txt, Q: 20
+	Custo: 31961, Tempo: 9.216446
+	Custo: 31961, Tempo: 9.266568
+	Custo: 31961, Tempo: 9.247715
+	Custo: 31961, Tempo: 9.346727
+	Custo: 31961, Tempo: 9.589418
+	Custo: 31961, Tempo: 9.612459
+	Custo: 31961, Tempo: 9.555000
+	Custo: 31961, Tempo: 9.506875
+	Custo: 31961, Tempo: 9.179797
+	Custo: 31961, Tempo: 8.647963
+Melhor custo: 31961, média dos tempos: 9.316896
+Instancia: InstancesBRP/46RioDeJaneiro20.txt, Q: 20
+	Custo: 158228, Tempo: 115.021629
+	Custo: 158953, Tempo: 121.153145
+	Custo: 158115, Tempo: 116.171013
+	Custo: 158993, Tempo: 118.989792
+	Custo: 158295, Tempo: 112.419861
+	Custo: 159127, Tempo: 122.819008
+	Custo: 159044, Tempo: 115.787308
+	Custo: 158230, Tempo: 122.446838
+	Custo: 158060, Tempo: 117.351738
+	Custo: 158557, Tempo: 113.972824
+Melhor custo: 158060, média dos tempos: 117.613306
