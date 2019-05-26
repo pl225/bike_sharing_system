@@ -338,7 +338,7 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 					short qSumAInvB = 0;
 					if (segViavelAInvB) qSumAInvB = s.ads[0][p3 - 1].qSum + adsB.qSum;
 
-					segViavelInvAInvB = segViavelInvAInvB && qSumInvAInvB >= adsB.lMin && qSumInvA <= adsB.lMax;
+					segViavelInvAInvB = segViavelInvAInvB && qSumInvAInvB >= adsB.lMin && qSumInvAInvB <= adsB.lMax;
 					if (segViavelInvAInvB) {
 						custoParcial = custo4Pontos(s, fs, p1, p2, p3, p4);
 						if (custoParcial < menorCusto) {
@@ -351,22 +351,24 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 
 					for (int p5 = p4 + 2; p5 < s.tamanhoCaminho - 2; p5++) {
 
-						segViavelAInvB = segViavelAInvB && qSumAInvB >= s.ads[p4 + 1][p5 - 1].lMin && qSumAInvB <= s.ads[p4 + 1][p5 - 1].lMax;
-						segViavelInvA = segViavelInvA && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMin && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMax;
+						int segViavelAInvBInvC = segViavelAInvB && qSumAInvB >= s.ads[p4 + 1][p5 - 1].lMin && qSumAInvB <= s.ads[p4 + 1][p5 - 1].lMax;
+						int segViavelInvABInvC = segViavelInvA && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMin && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMax;
 
-						if (!segViavelAInvB && !segViavelInvA) continue;
+						if (!segViavelAInvBInvC && !segViavelInvABInvC) continue;
 
-						if (segViavelAInvB) qSumAInvB = qSumAInvB + s.ads[p4 + 1][p5 - 1].qSum;
+						short qSumAInvBInvC = 0;
+						if (segViavelAInvBInvC) qSumAInvBInvC = qSumAInvB + s.ads[p4 + 1][p5 - 1].qSum;
 
-						if (segViavelInvA) qSumInvA = qSumInvA + s.ads[p2 + 1][p5 - 1].qSum;
+						short qSumInvABInvC = 0;
+						if (segViavelInvABInvC) qSumInvABInvC = qSumInvA + s.ads[p2 + 1][p5 - 1].qSum;
 						
 						for (int p6 = p5 + 1; p6 < s.tamanhoCaminho - 1; p6++) {
 
 							ads = s.ads[p5][p6];
 							adsC.qSum = ads.qSum, adsC.lMin = -ads.qSum + ads.qMax, adsC.lMax = fs.q - ads.qSum + ads.qMin;
 
-							segViavelAInvB = segViavelAInvB && qSumAInvB >= adsC.lMin && qSumAInvB <= adsC.lMax;
-							if (segViavelAInvB) {
+							int segViavelAInvBInvCFim = segViavelAInvBInvC && qSumAInvBInvC >= adsC.lMin && qSumAInvBInvC <= adsC.lMax;
+							if (segViavelAInvBInvCFim) {
 								custoParcial = custo4Pontos(s, fs, p3, p4, p5, p6);
 								if (custoParcial < menorCusto) {
 									menorCusto = custoParcial;
@@ -374,8 +376,8 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 								}
 							}
 
-							segViavelInvA = segViavelInvA && qSumInvA >= adsC.lMin && qSumInvA <= adsC.lMax;
-							if (segViavelInvA) {
+							int segViavelInvABInvCFim = segViavelInvABInvC && qSumInvABInvC >= adsC.lMin && qSumInvABInvC <= adsC.lMax;
+							if (segViavelInvABInvCFim) {
 								custoParcial = custo4Pontos(s, fs, p1, p2, p5, p6);
 								if (custoParcial < menorCusto) {
 									menorCusto = custoParcial;
