@@ -1,6 +1,6 @@
 CFLAGS = -O3
 CC = gcc
-SRC = bss.c vizinhanca.c solucao.c grafo.c tabu.c bitmap.c
+SRC = bss.c vizinhanca.c solucao.c grafo.c
 OBJ = $(SRC:.c = .o)
 
 bss: $(OBJ)
