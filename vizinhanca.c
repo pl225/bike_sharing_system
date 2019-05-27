@@ -316,87 +316,81 @@ float custo4Pontos (Solucao s, FabricaSolucao fs, int p1, int p2, int p3, int p4
 }
 
 Solucao _3OPT (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoParcial;
-	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceTrocaK = -1, indiceTrocaL = - 1;
+	float menorCusto = INFINITY, custoParcial, custoOriginal = s.custo;
+	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceTrocaK = -1, indiceTrocaL = - 1, p2, p4, p6;
 
-	ADS adsA, adsB, adsC, ads;
+	ADS adsA, ads;
 
-	for (int p1 = 1; p1 < s.tamanhoCaminho - 7; p1++) {
+	for (int p1 = 1; p1 < s.tamanhoCaminho - 5; p1++) {
 
-		for (int p2 = p1 + 1; p2 < s.tamanhoCaminho - 6; p2++) {
+		if (s.ads[0][p1].lMin > 0 || s.ads[0][p1].lMax < 0) continue;
 
-			ads = s.ads[p1][p2];
-			adsA.qSum = ads.qSum, adsA.lMin = -ads.qSum + ads.qMax, adsA.lMax = fs.q - ads.qSum + ads.qMin;
+		for (int p3 = p1 + 2; p3 < s.tamanhoCaminho - 3; p3++) {
 
-			int segViavelInvA = s.ads[0][p1 - 1].qSum >= adsA.lMin && s.ads[0][p1 - 1].qSum <= adsA.lMax;
-			short qSumInvA = 0;
-			if (segViavelInvA) qSumInvA = s.ads[0][p1 - 1].qSum + adsA.qSum;
-		
-			for (int p3 = p2 + 2; p3 < s.tamanhoCaminho - 4; p3++) {
+			for (int p5 = p3 + 2; p5 < s.tamanhoCaminho -1; p5++) {
 
-				int segViavelInvAInvB = segViavelInvA && qSumInvA >= s.ads[p2 + 1][p3 - 1].lMin && qSumInvA <= s.ads[p2 + 1][p3 - 1].lMax;
-				short qSumInvAInvB = 0;
-				if (segViavelInvAInvB) qSumInvAInvB = qSumInvA + s.ads[p2 + 1][p3 - 1].qSum;
+				p2 = p1 + 1, p4 = p3 + 1; p6 = p5 + 1;
 
-				for (int p4 = p3 + 1; p4 < s.tamanhoCaminho - 3; p4++) {
+				float custoRetirado = fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p2], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p4], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p5], s.caminho[p6], fs.n)];
+
+				if (s.ads[0][p1].qSum >= s.ads[p4][p5].lMin && s.ads[0][p1].qSum <= s.ads[p4][p5].lMax) {
+
+					short qSum = s.ads[0][p1].qSum + s.ads[p4][p5].qSum;
 					
-					ads = s.ads[p3][p4];
-					adsB.qSum = ads.qSum, adsB.lMin = -ads.qSum + ads.qMax, adsB.lMax = fs.q - ads.qSum + ads.qMin;
+					ads = s.ads[p2][p3];
+					adsA.qSum = ads.qSum, adsA.lMin = -ads.qSum + ads.qMax, adsA.lMax = fs.q - ads.qSum + ads.qMin;
 
-					int segViavelAInvB = s.ads[0][p3 - 1].qSum >= adsB.lMin && s.ads[0][p3 - 1].qSum <= adsB.lMax;
-					short qSumAInvB = 0;
-					if (segViavelAInvB) qSumAInvB = s.ads[0][p3 - 1].qSum + adsB.qSum;
+					if (qSum >= adsA.lMin && qSum <= adsA.lMax) {
+						custoParcial = custoOriginal + 
+									   (fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p4], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p5], s.caminho[p3], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p6], fs.n)]);
+						custoParcial -= custoRetirado;
 
-					segViavelInvAInvB = segViavelInvAInvB && qSumInvAInvB >= adsB.lMin && qSumInvAInvB <= adsB.lMax;
-					if (segViavelInvAInvB) {
-						custoParcial = custo4Pontos(s, fs, p1, p2, p3, p4);
-						if (custoParcial < menorCusto) {
+						if (custoParcial < menorCusto ) {
 							menorCusto = custoParcial;
-							indiceTrocaI = p1, indiceTrocaJ = p2, indiceTrocaK = p3, indiceTrocaL = p4;
+							indiceTrocaI = p4, indiceTrocaJ = p5, indiceTrocaK = p3, indiceTrocaL = p2;
 						}
 					}
 
-					if (!segViavelInvA && !segViavelAInvB) continue;
+					if (qSum >= ads.lMin && qSum <= ads.lMax) {
+						custoParcial = custoOriginal + 
+									   (fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p4], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p5], s.caminho[p2], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p6], fs.n)]);
+						custoParcial -= custoRetirado;
 
-					for (int p5 = p4 + 2; p5 < s.tamanhoCaminho - 2; p5++) {
+						if (custoParcial < menorCusto) {
+							menorCusto = custoParcial;
+							indiceTrocaI = p4, indiceTrocaJ = p5, indiceTrocaK = p2, indiceTrocaL = p3;
+						}
+					}
 
-						int segViavelAInvBInvC = segViavelAInvB && qSumAInvB >= s.ads[p4 + 1][p5 - 1].lMin && qSumAInvB <= s.ads[p4 + 1][p5 - 1].lMax;
-						int segViavelInvABInvC = segViavelInvA && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMin && qSumInvA >= s.ads[p2 + 1][p5 - 1].lMax;
+				}
 
-						if (!segViavelAInvBInvC && !segViavelInvABInvC) continue;
+				ads = s.ads[p4][p5];
+				adsA.qSum = ads.qSum, adsA.lMin = -ads.qSum + ads.qMax, adsA.lMax = fs.q - ads.qSum + ads.qMin;
 
-						short qSumAInvBInvC = 0;
-						if (segViavelAInvBInvC) qSumAInvBInvC = qSumAInvB + s.ads[p4 + 1][p5 - 1].qSum;
+				if (s.ads[0][p1].qSum >= adsA.lMin && s.ads[0][p1].qSum <= adsA.lMax) {
+					
+					short qSum = s.ads[0][p1].qSum + adsA.qSum;
 
-						short qSumInvABInvC = 0;
-						if (segViavelInvABInvC) qSumInvABInvC = qSumInvA + s.ads[p2 + 1][p5 - 1].qSum;
-						
-						for (int p6 = p5 + 1; p6 < s.tamanhoCaminho - 1; p6++) {
+					if (qSum >= s.ads[p2][p3].lMin && qSum <= s.ads[p2][p3].lMax) {
+						custoParcial = custoOriginal + 
+									   (fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p5], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p2], fs.n)]
+										+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p6], fs.n)]);
+						custoParcial -= custoRetirado;
 
-							ads = s.ads[p5][p6];
-							adsC.qSum = ads.qSum, adsC.lMin = -ads.qSum + ads.qMax, adsC.lMax = fs.q - ads.qSum + ads.qMin;
-
-							int segViavelAInvBInvCFim = segViavelAInvBInvC && qSumAInvBInvC >= adsC.lMin && qSumAInvBInvC <= adsC.lMax;
-							if (segViavelAInvBInvCFim) {
-								custoParcial = custo4Pontos(s, fs, p3, p4, p5, p6);
-								if (custoParcial < menorCusto) {
-									menorCusto = custoParcial;
-									indiceTrocaI = p3, indiceTrocaJ = p4, indiceTrocaK = p5, indiceTrocaL = p6;
-								}
-							}
-
-							int segViavelInvABInvCFim = segViavelInvABInvC && qSumInvABInvC >= adsC.lMin && qSumInvABInvC <= adsC.lMax;
-							if (segViavelInvABInvCFim) {
-								custoParcial = custo4Pontos(s, fs, p1, p2, p5, p6);
-								if (custoParcial < menorCusto) {
-									menorCusto = custoParcial;
-									indiceTrocaI = p1, indiceTrocaJ = p2, indiceTrocaK = p5, indiceTrocaL = p6;
-								}
-							}
-
+						if (custoParcial < menorCusto) {
+							menorCusto = custoParcial;
+							indiceTrocaI = p5, indiceTrocaJ = p4, indiceTrocaK = p2, indiceTrocaL = p3;
 						}
 					}
 				}
+
 			}
 		}
 	}
@@ -404,11 +398,36 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 	if (indiceTrocaI != - 1) {
 		Solucao copia = copiarSolucao(s);
 		copia.custo = menorCusto;
-		
-		inverterSubsequencia(s, copia, indiceTrocaI, indiceTrocaJ);
-		inverterSubsequencia(s, copia, indiceTrocaK, indiceTrocaL);
 
-		merge(&copia, fs.q, indiceTrocaI, indiceTrocaL);		
+		int menorIJ = indiceTrocaI < indiceTrocaJ, menorKL = indiceTrocaK < indiceTrocaL;
+
+		if (!menorIJ) inverterSubsequencia(s, copia, indiceTrocaJ, indiceTrocaI);
+		if (!menorKL) inverterSubsequencia(s, copia, indiceTrocaL, indiceTrocaK);
+
+		int tamSegIJ = abs(indiceTrocaJ - indiceTrocaI) + 1, tamSegKL = abs(indiceTrocaL - indiceTrocaK) + 1;
+		int capKL[tamSegKL], segKL[tamSegKL];
+
+		int menorNumeroKL = menorKL ? indiceTrocaK : indiceTrocaL, menorNumeroIJ = menorIJ ? indiceTrocaI : indiceTrocaJ;
+
+		memcpy(segKL, copia.caminho + menorNumeroKL, sizeof(int) * tamSegKL);
+
+		memcpy(copia.caminho + menorNumeroKL, copia.caminho + menorNumeroIJ, sizeof(int) * tamSegIJ);
+		memcpy(copia.caminho + menorNumeroKL + tamSegIJ, segKL, sizeof(int) * tamSegKL);
+
+		memcpy(capKL, copia.capacidades + menorNumeroKL, sizeof(int) * tamSegKL);
+
+		int capInicioKL = copia.capacidades[menorNumeroKL] - copia.capacidades[menorNumeroKL - 1];
+
+		for (int i = menorNumeroKL, j = menorNumeroIJ; i < menorNumeroKL + tamSegIJ; i++, j++)
+			copia.capacidades[i] = copia.capacidades[i - 1] + (copia.capacidades[j] - copia.capacidades[j - 1]);
+
+		int aux;
+		for (int i = menorNumeroKL + tamSegIJ, a = 0; a < tamSegKL; i++, a++) {
+			copia.capacidades[i] = copia.capacidades[i - 1] + capInicioKL;
+			capInicioKL = capKL[a + 1] - capKL[a];
+		}
+
+		merge(&copia, fs.q, menorNumeroKL, menorIJ ? indiceTrocaJ : indiceTrocaI);		
 		return copia;
 	} else {
 		return s;
