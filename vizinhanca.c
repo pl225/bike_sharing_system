@@ -352,6 +352,12 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 										+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p6], fs.n)]);
 						custoParcial -= custoRetirado;
 
+						for (int y = p2; y < p3; y++)
+							custoParcial -= fs.custoArestas[IndiceArestas(s.caminho[y], s.caminho[y + 1], fs.n)];
+
+						for (int y = p3; y > p2; y--)
+							custoParcial += fs.custoArestas[IndiceArestas(s.caminho[y], s.caminho[y - 1], fs.n)];
+
 						if (custoParcial < menorCusto ) {
 							menorCusto = custoParcial;
 							indiceTrocaI = p4, indiceTrocaJ = p5, indiceTrocaK = p3, indiceTrocaL = p2;
@@ -386,6 +392,12 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 										+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p2], fs.n)]
 										+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p6], fs.n)]);
 						custoParcial -= custoRetirado;
+
+						for (int y = p4; y < p5; y++)
+							custoParcial -= fs.custoArestas[IndiceArestas(s.caminho[y], s.caminho[y + 1], fs.n)];
+
+						for (int y = p5; y > p4; y--)
+							custoParcial += fs.custoArestas[IndiceArestas(s.caminho[y], s.caminho[y - 1], fs.n)];
 
 						if (custoParcial < menorCusto) {
 							menorCusto = custoParcial;
