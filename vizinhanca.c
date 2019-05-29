@@ -609,23 +609,11 @@ Solucao _3OPT_P (Solucao s, FabricaSolucao fs) {
 		p5 = rand_interval(p4 + 2, tamanho - 2),
 		p6 = rand_interval(p5 + 1, tamanho - 1);
 
-	copia.custo = s.custo - (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p1], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p2], s.caminho[p2 + 1], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p3], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p4], s.caminho[p4 + 1], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p5 - 1], s.caminho[p5], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p6], s.caminho[p6 + 1], fs.n)]) 
-					
-						  + (fs.custoArestas[IndiceArestas(s.caminho[p1 - 1], s.caminho[p2], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p1], s.caminho[p2 + 1], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p3 - 1], s.caminho[p4], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p3], s.caminho[p4 + 1], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p5 - 1], s.caminho[p6], fs.n)]
-		 						+ fs.custoArestas[IndiceArestas(s.caminho[p5], s.caminho[p6 + 1], fs.n)]);
-
 	inverterSubsequencia(s, copia, p1, p2);
 	inverterSubsequencia(s, copia, p3, p4);
 	inverterSubsequencia(s, copia, p5, p6);
+
+	copia.custo = custo(copia, fs);
 	
 	merge(&copia, fs.q, p1, p6);
 
