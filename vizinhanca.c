@@ -174,28 +174,33 @@ Solucao exchange_1_2(Solucao s, FabricaSolucao fs) {
 
 			if (i == j) continue;
 			if (i > j && i - j < 2) continue;
+			if (i < j && j - i < 2) continue;
 			if (s.ads[0][i - 1].lMin > 0 || s.ads[0][i - 1].lMax < 0) continue;
 
 			if (i < j) {
 				fimSeg1 = i - 1, iniSeg2 = j, fimSeg2 = j + 1, iniSeg3 = i + 1,
 					fimSeg3 = j - 1, iniSeg4 = i, fimSeg4 = i, iniSeg5 = j + 2;
 			} else {
-				fimSeg1 = j - 1, iniSeg2 = i, fimSeg2 = i, iniSeg3 = j + 2,
-					fimSeg3 = i - 1, iniSeg4 = j, fimSeg4 = j + 1, iniSeg5 = i + 1;
+				fimSeg1 = j - 1, iniSeg2 = i, fimSeg2 = i;
+				if (i - j > 2) {
+					iniSeg3 = j + 2, fimSeg3 = i - 1, iniSeg4 = j, 
+					fimSeg4 = j + 1, iniSeg5 = i + 1;
+				} else {
+					iniSeg3 = j, fimSeg3 = j + 1, iniSeg4 = i + 1, fimSeg4 = indiceFinal;
+					iniSeg5 = -1;
+				}
 			}
 
 			if (s.ads[0][fimSeg1].qSum >= s.ads[iniSeg2][fimSeg2].lMin && s.ads[0][fimSeg1].qSum <= s.ads[iniSeg2][fimSeg2].lMax) {
 			
 				qSumAuxiliar = s.ads[0][fimSeg1].qSum + s.ads[iniSeg2][fimSeg2].qSum;
-				
 				if (qSumAuxiliar >= s.ads[iniSeg3][fimSeg3].lMin && qSumAuxiliar <= s.ads[iniSeg3][fimSeg3].lMax) {
 				
 					qSumAuxiliar += s.ads[iniSeg3][fimSeg3].qSum;
-
 					if (qSumAuxiliar >= s.ads[iniSeg4][fimSeg4].lMin && qSumAuxiliar <= s.ads[iniSeg4][fimSeg4].lMax) {
 
 						qSumAuxiliar += s.ads[iniSeg4][fimSeg4].qSum;
-						if (qSumAuxiliar >= s.ads[iniSeg5][indiceFinal].lMin && qSumAuxiliar <= s.ads[iniSeg5][indiceFinal].lMax) {
+						if (iniSeg5 == -1 || (qSumAuxiliar >= s.ads[iniSeg5][indiceFinal].lMin && qSumAuxiliar <= s.ads[iniSeg5][indiceFinal].lMax)) {
 
 							
 							if (i + 1 != j && j + 2 != i) {
@@ -283,8 +288,6 @@ Solucao exchange_1_2(Solucao s, FabricaSolucao fs) {
 			memcpy(nova.caminho + indiceTrocaJ + 1, nova.caminho + indiceTrocaJ + 2, sizeof(int) * (indiceTrocaI - (indiceTrocaJ + 1) - 1));
 			nova.caminho[indiceTrocaI - 1] = auxJ;
 
-			int capsDpsJ = nova.capacidades[indiceTrocaJ + 2] - nova.capacidades[indiceTrocaJ];
-
 			nova.capacidades[indiceTrocaJ] = nova.capacidades[indiceTrocaJ - 1] + capsAntesI;
 
 			for (int a = indiceTrocaJ + 1; a < indiceTrocaI - 1; a++) {
@@ -296,7 +299,7 @@ Solucao exchange_1_2(Solucao s, FabricaSolucao fs) {
 
 			merge(&nova, fs.q, indiceTrocaJ, indiceTrocaI);
 		}		
-
+	
 		return nova;
 	} else {
 		return s;
@@ -421,7 +424,6 @@ Solucao _3OPT (Solucao s, FabricaSolucao fs) {
 		for (int i = menorNumeroKL, j = menorNumeroIJ; i < menorNumeroKL + tamSegIJ; i++, j++)
 			copia.capacidades[i] = copia.capacidades[i - 1] + (copia.capacidades[j] - copia.capacidades[j - 1]);
 
-		int aux;
 		for (int i = menorNumeroKL + tamSegIJ, a = 0; a < tamSegKL; i++, a++) {
 			copia.capacidades[i] = copia.capacidades[i - 1] + capInicioKL;
 			capInicioKL = capKL[a + 1] - capKL[a];
@@ -654,7 +656,7 @@ Solucao splitP (Solucao s, FabricaSolucao fs) {
 
 		short qSumNovaVisita, qSum = s.ads[indiceTrocaI][indiceTrocaI].qSum;;
 
-		if (fs.demandas[indiceTrocaI] < 0)
+		if (fs.demandas[s.caminho[indiceTrocaI]] < 0)
 			qSum = qSum % 2 == 0 ? qSum / 2 : qSum / 2 + 1;
 		else
 			qSum = qSum % 2 == 0 ? qSum / 2 : qSum / 2 - 1;
