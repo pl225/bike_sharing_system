@@ -36,11 +36,12 @@ void vns(Grafo g, FabricaSolucao fs, float results[])
 			xLinha = k == 0 ? _3OPT_P(x, fs) : splitP(x, fs);
 			xLinhaLinha = RVND(xLinha, fs);
 
-			if (xLinha.caminho != xLinhaLinha.caminho) liberarSolucao(xLinha);
+			if (xLinha.caminho != x.caminho) liberarSolucao(xLinha);
 			
 			if (xLinhaLinha.custo < x.custo && isViavel(xLinhaLinha)) {
 				liberarSolucao(x);
-				x = xLinhaLinha;
+				x = copiarSolucao(xLinhaLinha);
+				if (xLinha.caminho != xLinhaLinha.caminho) liberarSolucao(xLinhaLinha);
 				k = 1;
 			} else {
 				k += 1;
