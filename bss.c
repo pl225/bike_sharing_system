@@ -27,11 +27,11 @@ void vns(Grafo g, FabricaSolucao fs, float results[])
 	Solucao x = GRASP(fs), xLinha, xLinhaLinha;
 
 	const int kMax = 2;
-	int k, maxIteracoes = 100 * g.n, i = 0;
+	int k, maxIteracoes = 10 * g.n, i = 0;
 	float melhorCusto = INFINITY;
 	
 	do {
-		k = 1;
+		k = 0;
 
 		do {
 			xLinha = k == 0 ? _3OPT_P(x, fs) : splitP(x, fs);
@@ -39,11 +39,11 @@ void vns(Grafo g, FabricaSolucao fs, float results[])
 
 			if (xLinha.caminho != x.caminho) liberarSolucao(xLinha);
 			
-			if (xLinhaLinha.custo < x.custo && isViavel(xLinhaLinha)) {
+			if (xLinhaLinha.custo < x.custo && (xLinhaLinha.caminho != xLinha.caminho && isViavel(xLinhaLinha))) {
 				liberarSolucao(x);
 				x = copiarSolucao(xLinhaLinha);
 				if (xLinha.caminho != xLinhaLinha.caminho) liberarSolucao(xLinhaLinha);
-				k = 1;
+				k = 0;
 			} else {
 				k += 1;
 				if (xLinha.caminho != xLinhaLinha.caminho) liberarSolucao(xLinhaLinha);
