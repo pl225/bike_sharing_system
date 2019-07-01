@@ -32,6 +32,11 @@ void ILS_SBPRW (Grafo g, FabricaSolucao fs, FILE* arq, float results[]) {
 				liberarSolucao(sLinha);
 				sLinha = s;
 				iterILS = 0;
+				if (isViavel(sLinha) && sLinha.custo < fAsterisco) {
+					if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
+					fAsterisco = sLinha.custo;
+					sAsterisco = copiarSolucao(sLinha);		
+				}
 			} else {
 				x = ((double) rand() / (RAND_MAX));
 				if (T > 0 && x < exp(-(delta / T))) {
@@ -46,13 +51,7 @@ void ILS_SBPRW (Grafo g, FabricaSolucao fs, FILE* arq, float results[]) {
 			iterILS += 1;
 			T *= alpha;
 		}
-		if (sLinha.custo < fAsterisco && isViavel(sLinha)) {
-			if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
-			fAsterisco = sLinha.custo;
-			sAsterisco = sLinha;
-		} else {
-			liberarSolucao(sLinha);			
-		}
+		liberarSolucao(sLinha);			
 	}
 
 	if (fAsterisco != INFINITY) liberarSolucao(sAsterisco);
