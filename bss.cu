@@ -6,7 +6,7 @@
 
 #define GPU 0
 
-__global__ void gpu(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu){
+__global__ void gpu(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu) {
 	printf("%hi %hi %hi %hi %hi\n", ads_gpu[0].qSum, ads_gpu[0].qMin, ads_gpu[0].qMax, ads_gpu[0].lMin, ads_gpu[0].lMax);   
 	printf("%f\n", custos_gpu[0]);
 	printf("%d\n", caminho_gpu[0]);
@@ -30,8 +30,9 @@ int main(int argc, char *argv[])
 
 	alocarCustosGPU(fs, &custos_gpu);
 	alocarSolucaoGPU (s, &caminho_gpu, &ads_gpu);
-
-	gpu<<<1, 1>>>(caminho_gpu, ads_gpu, custos_gpu);
+	printf("%d %.f\n", s.tamanhoCaminho, s.custo);
+	//gpu<<<1, 1>>>(caminho_gpu, ads_gpu, custos_gpu);
+	runTest(s.tamanhoCaminho, g.n, s.custo, caminho_gpu, ads_gpu, custos_gpu);
    	CHECK_ERROR(cudaDeviceSynchronize());
 
 	liberarCustosGPU(custos_gpu);
