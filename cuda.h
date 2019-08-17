@@ -78,7 +78,7 @@ __device__ Reduzido _2OPTCuda (int posicao1D, int tamanhoCaminho, int tamanhoGra
 	ADS ads = ads_gpu[getPosition1D(auxI, auxJ, tamanhoCaminho)];
 	short qSomaI = ads.qSum;
 	short lMinI = -ads.qSum + ads.qMax;
-	short lMaxI = ads_gpu[0].lMax - ads.qSum + ads.qMin; // ads_gpu[0].lMax == fs.q
+	short lMaxI = ads_gpu[0].lMax - ads.qSum + ads.qMin; // ads_gpu[0].lMax é igual a fs.q
 
 	if (ads_gpu[i].qSum >= lMinI && ads_gpu[i].qSum <= lMaxI) {
 		
@@ -132,9 +132,8 @@ void getNumBlocksAndThreads(int n, int maxBlocks, int maxThreads, int* blocks, i
 
 __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduzido* g_idata, Reduzido* g_odata, 
 						int tamanhoCaminho, int tamanhoGrafo, float custoOriginal) {
-    // Handle to thread block group
+    
     extern __shared__ Reduzido sdata[];
-    // load shared mem
     unsigned int tid = threadIdx.x;
     unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
 
@@ -142,8 +141,7 @@ __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduz
 
     __syncthreads();
 
-    // do reduction in shared mem
-    for (unsigned int s=blockDim.x/2; s>0; s>>=1) {
+    for (unsigned int s = blockDim.x/2; s>0; s >>= 1) {
         if (tid < s) {
             if (sdata[tid].custo > sdata[tid + s].custo)
                 sdata[tid] = sdata[tid + s];
@@ -152,7 +150,6 @@ __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduz
         __syncthreads();
     }
 
-    // write result for this block to global mem
     if (tid == 0) g_odata[blockIdx.x] = sdata[0];
 }
 
@@ -166,7 +163,6 @@ void preparadorReducao(int size, int tamanhoCaminho, int tamanhoGrafo, float cus
     // worth of shared memory so that we don't index shared memory out of bounds
     int smemSize = (threads <= 32) ? 2 * threads * sizeof(Reduzido) : threads * sizeof(Reduzido);
 
-    // choose which of the optimized versions of reduction to launch
 	reduzir<<< dimGrid, dimBlock, smemSize >>>(caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, tamanhoCaminho, tamanhoGrafo, custoOriginal);
 }
 
@@ -178,7 +174,6 @@ Reduzido reducaoAuxiliar(int  n,
                   int  numBlocks,
                   int  maxThreads,
                   int  maxBlocks,
-                  //StopWatchInterface *timer,
                   int *caminho_gpu, 
                   ADS *ads_gpu, 
                   float *custos_gpu, 
@@ -192,12 +187,9 @@ Reduzido reducaoAuxiliar(int  n,
     int  cpuFinalThreshold = 1;
 
     cudaDeviceSynchronize();
-    //sdkStartTimer(&timer);
 
-    // execute the kernel
     preparadorReducao(n, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata);
-    //getLastCudaError("Kernel execution failed");
-    // sum partial block sums on GPU
+    
     int s = numBlocks;
 
     /*while (s > cpuFinalThreshold) {
@@ -222,10 +214,8 @@ Reduzido reducaoAuxiliar(int  n,
     }
 
     cudaDeviceSynchronize();
-    //sdkStopTimer(&timer);
 
     if (needReadBack) {
-        // copy final sum from device to host
         CHECK_ERROR(cudaMemcpy(&gpu_result, d_odata, sizeof(Reduzido), cudaMemcpyDeviceToHost));
     }
 
@@ -255,15 +245,9 @@ void runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *cam
 
     printf("%d blocks\n\n", numBlocks);
 
-    //StopWatchInterface *timer = 0;
-    //sdkCreateTimer(&timer);
 
     Reduzido gpu_result = reducaoAuxiliar(size, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, maxThreads, maxBlocks,
-                                    /*timer,*/ caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, h_odata);
-
-    /*double reduceTime = sdkGetAverageTimerValue(&timer) * 1e-3;
-    printf("Reduction, Throughput = %.4f GB/s, Time = %.5f s, Size = %u Elements, NumDevsUsed = %d, Workgroup = %u\n",
-           1.0e-9 * ((double)bytes)/reduceTime, reduceTime, size, 1, numThreads);*/
+                                    caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, h_odata);
 
     printf("%d %d %.f\n", gpu_result.i, gpu_result.j, gpu_result.custo);
 
