@@ -66,12 +66,11 @@ void liberarSolucaoGPU (int* caminho_gpu, ADS* ads_gpu) {
 
 __device__ Reduzido _2OPTCuda (int posicao1D, int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *caminho_gpu, ADS *ads_gpu, float *custos_gpu) {
 
-	Reduzido naoViavel;
-	naoViavel.i = 0, naoViavel.i = 0, naoViavel.custo = INFINITY;
+	Reduzido naoViavel = {-1, -1, INFINITY};
 
 	int i = linha(posicao1D, tamanhoCaminho), j = coluna(posicao1D, tamanhoCaminho), indiceFinal = tamanhoCaminho - 1;
 
-	if (j - i < 3 || i >= tamanhoCaminho) return naoViavel;
+	if (j - i < 3 || i >= tamanhoCaminho || j >= tamanhoCaminho) return naoViavel;
 	if (ads_gpu[i].lMin > 0 || ads_gpu[i].lMax < 0) return naoViavel;
 
 	int auxI = i + 1, auxJ = j - 1;
@@ -131,14 +130,19 @@ void getNumBlocksAndThreads(int n, int maxBlocks, int maxThreads, int* blocks, i
 }
 
 __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduzido* g_idata, Reduzido* g_odata, 
-						int tamanhoCaminho, int tamanhoGrafo, float custoOriginal) {
+						int size, int tamanhoCaminho, int tamanhoGrafo, float custoOriginal) {
     
     extern __shared__ Reduzido sdata[];
     unsigned int tid = threadIdx.x;
     unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
 
-    sdata[tid] = _2OPTCuda(i, tamanhoCaminho, tamanhoGrafo, custoOriginal, caminho_gpu, ads_gpu, custos_gpu);
-
+    if (g_idata == NULL)
+        sdata[tid] = _2OPTCuda(i, tamanhoCaminho, tamanhoGrafo, custoOriginal, caminho_gpu, ads_gpu, custos_gpu);
+    else if (i < size) 
+        sdata[tid] = g_idata[i];
+    else
+        sdata[tid] = {-1, -1, INFINITY};
+    
     __syncthreads();
 
     for (unsigned int s = blockDim.x/2; s>0; s >>= 1) {
@@ -163,7 +167,7 @@ void preparadorReducao(int size, int tamanhoCaminho, int tamanhoGrafo, float cus
     // worth of shared memory so that we don't index shared memory out of bounds
     int smemSize = (threads <= 32) ? 2 * threads * sizeof(Reduzido) : threads * sizeof(Reduzido);
 
-	reduzir<<< dimGrid, dimBlock, smemSize >>>(caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, tamanhoCaminho, tamanhoGrafo, custoOriginal);
+	reduzir<<< dimGrid, dimBlock, smemSize >>>(caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, size, tamanhoCaminho, tamanhoGrafo, custoOriginal);
 }
 
 Reduzido reducaoAuxiliar(int  n,
@@ -181,31 +185,29 @@ Reduzido reducaoAuxiliar(int  n,
                   Reduzido *d_odata,
                   Reduzido *h_odata) {
 
-    Reduzido gpu_result;
-    gpu_result.i = - 1, gpu_result.j = -1, gpu_result.custo = INFINITY;
+    Reduzido gpu_result = {-1, -1, INFINITY};
     bool needReadBack = true;
     int  cpuFinalThreshold = 1;
 
     cudaDeviceSynchronize();
 
-    preparadorReducao(n, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata);
+    preparadorReducao(n, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, caminho_gpu, ads_gpu, custos_gpu, NULL, d_odata);
     
     int s = numBlocks;
 
-    /*while (s > cpuFinalThreshold) {
+    while (s > cpuFinalThreshold) {
         
         int threads = 0, blocks = 0;
-        getNumBlocksAndThreads(kernel, s, maxBlocks, maxThreads, &blocks, &threads);
+        getNumBlocksAndThreads(s, maxBlocks, maxThreads, &blocks, &threads);
         cudaMemcpy(d_idata, d_odata, s * sizeof(Reduzido), cudaMemcpyDeviceToDevice);
-        reduzir(s, threads, blocks, kernel, caminho_gpu, ads_gpu, custos_gpu, d_odata);
+        preparadorReducao(s, tamanhoCaminho, tamanhoGrafo, custoOriginal, threads, blocks, caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata);
 
         s = (s + threads - 1) / threads;
-    }*/
+    }
 
-    if (/*s > 1*/1) {
-        // copy result from device to host
+    if (s > 1) {
         CHECK_ERROR(cudaMemcpy(h_odata, d_odata, s * sizeof(Reduzido), cudaMemcpyDeviceToHost));
-        for (int i=0; i < s; i++) {
+        for (int i = 0; i < s; i++) {
             if (gpu_result.custo > h_odata[i].custo)
                 gpu_result = h_odata[i];
         }
