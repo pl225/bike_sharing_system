@@ -90,13 +90,70 @@ __device__ Reduzido _2OPTCuda (int posicao1D, int tamanhoCaminho, int tamanhoGra
 				+ (custos_gpu[getPosition1D(caminho_gpu[i], caminho_gpu[auxJ], tamanhoGrafo)]
 					+ custos_gpu[getPosition1D(caminho_gpu[auxI], caminho_gpu[j], tamanhoGrafo)]);
 
-			Reduzido r;
-			r.i = i, r.j = j, r.custo = custoParcial;
-			return r;
+			return {i, j, custoParcial};
 		}
 	}
 
 	return naoViavel;
+}
+
+__device__ Reduzido _swapCuda (int posicao1D, int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *caminho_gpu, ADS *ads_gpu, float *custos_gpu) {
+
+    Reduzido naoViavel = {-1, -1, INFINITY};
+
+    int i = linha(posicao1D, tamanhoCaminho), j = coluna(posicao1D, tamanhoCaminho), indiceFinal = tamanhoCaminho - 1;
+
+    if (i == 0 || j - i < 1 || i >= tamanhoCaminho - 1 || j >= tamanhoCaminho - 1) return naoViavel;
+    if (ads_gpu[i - 1].lMin > 0 || ads_gpu[i - 1].lMax < 0) return naoViavel;
+
+    int p = getPosition1D(j, j, tamanhoCaminho);
+
+    if (ads_gpu[i - 1].qSum >= ads_gpu[p].lMin && ads_gpu[i - 1].qSum <= ads_gpu[p].lMax) {
+        
+        short qSumAuxiliar = ads_gpu[i - 1].qSum + ads_gpu[p].qSum;
+        if ((j - 1) - (i + 1) >= 0) {
+            int a = i + 1, b = j - 1;
+            p = getPosition1D(a, b, tamanhoCaminho);
+            if (qSumAuxiliar >= ads_gpu[p].lMin && qSumAuxiliar <= ads_gpu[p].lMax)
+                qSumAuxiliar += ads_gpu[p].qSum;
+            else 
+                return naoViavel;
+        }
+
+        p = getPosition1D(i, i, tamanhoCaminho);
+        if (qSumAuxiliar >= ads_gpu[p].lMin && qSumAuxiliar <= ads_gpu[p].lMax) {
+            
+            qSumAuxiliar += ads_gpu[p].qSum;
+            p = getPosition1D(j + 1, indiceFinal, tamanhoCaminho);
+            
+            if (qSumAuxiliar >= ads_gpu[p].lMin && qSumAuxiliar <= ads_gpu[p].lMax) {
+
+                float custoAux = 0, custoAuxAntigo = 0, menorCustoParcial = 0;
+
+                if (j - i > 1) {
+                    custoAux = custos_gpu[getPosition1D(caminho_gpu[i - 1], caminho_gpu[j], tamanhoGrafo)] 
+                        + custos_gpu[getPosition1D(caminho_gpu[j], caminho_gpu[i + 1], tamanhoGrafo)];
+                    custoAux += custos_gpu[getPosition1D(caminho_gpu[j - 1], caminho_gpu[i], tamanhoGrafo)] 
+                        + custos_gpu[getPosition1D(caminho_gpu[i], caminho_gpu[j + 1], tamanhoGrafo)];
+
+                    custoAuxAntigo = custos_gpu[getPosition1D(caminho_gpu[i - 1], caminho_gpu[i], tamanhoGrafo)] 
+                        + custos_gpu[getPosition1D(caminho_gpu[i], caminho_gpu[i + 1], tamanhoGrafo)];
+                    custoAuxAntigo += custos_gpu[getPosition1D(caminho_gpu[j - 1], caminho_gpu[j], tamanhoGrafo)] 
+                        + custos_gpu[getPosition1D(caminho_gpu[j], caminho_gpu[j + 1], tamanhoGrafo)];
+                } else {
+                    custoAux = custos_gpu[getPosition1D(caminho_gpu[i - 1], caminho_gpu[j], tamanhoGrafo)] 
+                        + custos_gpu[getPosition1D(caminho_gpu[i], caminho_gpu[j + 1], tamanhoGrafo)];
+                    custoAuxAntigo = custos_gpu[getPosition1D(caminho_gpu[i - 1], caminho_gpu[i], tamanhoGrafo)] 
+                        + custos_gpu[getPosition1D(caminho_gpu[j], caminho_gpu[j + 1], tamanhoGrafo)];
+                }
+
+                menorCustoParcial = custoOriginal + custoAux - custoAuxAntigo;
+                return {i, j, menorCustoParcial};
+            }
+        }
+    }
+
+    return naoViavel;
 }
 
 unsigned int nextPow2(unsigned int x) {
@@ -111,7 +168,7 @@ unsigned int nextPow2(unsigned int x) {
 
 void getNumBlocksAndThreads(int n, int maxBlocks, int maxThreads, int* blocks, int* threads) {
 
-	cudaDeviceProp prop;
+    cudaDeviceProp prop;
     int device;
     CHECK_ERROR(cudaGetDevice(&device));
     CHECK_ERROR(cudaGetDeviceProperties(&prop, device));
@@ -137,7 +194,7 @@ __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduz
     unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
 
     if (g_idata == NULL)
-        sdata[tid] = _2OPTCuda(i, tamanhoCaminho, tamanhoGrafo, custoOriginal, caminho_gpu, ads_gpu, custos_gpu);
+        sdata[tid] = _swapCuda(i, tamanhoCaminho, tamanhoGrafo, custoOriginal, caminho_gpu, ads_gpu, custos_gpu);
     else if (i < size) 
         sdata[tid] = g_idata[i];
     else
