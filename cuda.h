@@ -16,6 +16,11 @@
 
 #include <stdio.h>
 
+typedef enum
+{
+	_2OPT_GPU, SWAP_GPU, SPLIT_GPU, OROPT1_GPU, OROPT2_GPU, OROPT3_GPU, OROPT4_GPU	
+} Vizinhanca;
+
 typedef struct Reduzido
 {
 	int i, j;
@@ -28,6 +33,6 @@ void liberarCustosGPU (float* custos_gpu);
 
 void alocarSolucaoGPU (Solucao s, int** caminho_gpu, ADS** ads_gpu, int** capacidade_gpu);
 
-void liberarSolucaoGPU (int* caminho_gpu, ADS* ads_gpu);
+void liberarSolucaoGPU (int* caminho_gpu, ADS* ads_gpu, int* capacidade_gpu);
 
-void runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, int* capacidade_gpu);
+Reduzido obterVizinho (Solucao s, FabricaSolucao fs, Vizinhanca v);

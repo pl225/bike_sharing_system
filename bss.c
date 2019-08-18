@@ -34,8 +34,10 @@ int main(int argc, char *argv[])
 	FabricaSolucao fs = instanciarFabrica(g);
 	Solucao s = instanciarSolucao(fs);
 	
-	
-	float *custos_gpu = NULL;
+	Solucao ss = _2OPT(s, fs);
+
+	imprimirSolucao(ss, fs);
+	/*float *custos_gpu = NULL;
 	int *caminho_gpu = NULL;
 	int *capacidade_gpu = NULL;
 	ADS *ads_gpu = NULL;
@@ -47,7 +49,7 @@ int main(int argc, char *argv[])
    	CHECK_ERROR(cudaDeviceSynchronize());
 
 	liberarCustosGPU(custos_gpu);
-	liberarSolucaoGPU(caminho_gpu, ads_gpu);
+	liberarSolucaoGPU(caminho_gpu, ads_gpu);*/
 
 	
 	/*clock_t start, end;

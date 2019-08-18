@@ -270,42 +270,11 @@ Solucao orOPT4(Solucao s, FabricaSolucao fs) {
 }
 
 Solucao _2OPT (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
-	int aux, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1, auxI, auxJ;
 
-	short qSomaI, lMinI, lMaxI, qSomaAuxiliar;
-	ADS ads;
+	Reduzido r = obterVizinho(s, fs, _2OPT_GPU);
 
-	for (int i = 0; i < s.tamanhoCaminho; i++) {
-		for (int j = i + 3; j < s.tamanhoCaminho; j++) {
-
-			if (s.ads[0][i].lMin > 0 || s.ads[0][i].lMax < 0) continue;
-
-			auxI = i + 1, auxJ = j - 1;
-			ads = s.ads[auxI][auxJ];
-			qSomaI = ads.qSum;
-			lMinI = -ads.qSum + ads.qMax;
-			lMaxI = fs.q - ads.qSum + ads.qMin;
-
-			if (s.ads[0][i].qSum >= lMinI && s.ads[0][i].qSum <= lMaxI) {
-				qSomaAuxiliar = s.ads[0][i].qSum + qSomaI;
-				if (qSomaAuxiliar >= s.ads[j][indiceFinal].lMin && qSomaAuxiliar <= s.ads[j][indiceFinal].lMax) {
-
-					custoParcial = custoOriginal - (
-						fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxI], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[auxJ], s.caminho[j], fs.n)])
-						+ (fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[auxJ], fs.n)]
-							+ fs.custoArestas[IndiceArestas(s.caminho[auxI], s.caminho[j], fs.n)]);
-
-					if (custoParcial < menorCusto) {
-						menorCusto = custoParcial;
-						indiceTrocaI = i;
-						indiceTrocaJ = j;
-					}
-				}
-			}
-		}
-	}
+	int indiceTrocaI = r.i, indiceTrocaJ = r.j, aux;
+	float menorCusto = r.custo;
 
 	if (indiceTrocaI != - 1) {
 		Solucao copia = copiarSolucao(s);
