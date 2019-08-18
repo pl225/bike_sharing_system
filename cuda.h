@@ -35,12 +35,17 @@ void liberarCustosGPU (float* custos_gpu) {
 	CHECK_ERROR(cudaFree(custos_gpu));
 }
 
-void alocarSolucaoGPU (Solucao s, int** caminho_gpu, ADS** ads_gpu) {
+void alocarSolucaoGPU (Solucao s, int** caminho_gpu, ADS** ads_gpu, int** capacidade_gpu) {
 	
 	int *caminho_gpu_aux;
 	CHECK_ERROR(cudaMalloc(&caminho_gpu_aux, s.tamanhoCaminho * sizeof(int)));
 	CHECK_ERROR(cudaMemcpy(caminho_gpu_aux, s.caminho, s.tamanhoCaminho * sizeof(int),  cudaMemcpyHostToDevice));
 	*caminho_gpu = caminho_gpu_aux;
+
+    int *capacidade_gpu_aux;
+    CHECK_ERROR(cudaMalloc(&capacidade_gpu_aux, s.tamanhoCaminho * sizeof(int)));
+    CHECK_ERROR(cudaMemcpy(capacidade_gpu_aux, s.capacidades, s.tamanhoCaminho * sizeof(int),  cudaMemcpyHostToDevice));
+    *capacidade_gpu = capacidade_gpu_aux;
 
 	size_t tamanhoTotalADS = s.tamanhoCaminho * s.tamanhoCaminho * sizeof(ADS);
 	ADS *ads_gpu_aux;
@@ -224,6 +229,76 @@ __device__ Reduzido _orOPTCuda(int posicao1D, int tamanhoCaminho, int tamanhoGra
     return naoViavel;
 }
 
+__device__ Reduzido _splitCuda(int posicao1D, int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, int *capacidade_gpu) {
+
+    Reduzido naoViavel = {-1, -1, INFINITY};
+
+    int i = linha(posicao1D, tamanhoCaminho), j = coluna(posicao1D, tamanhoCaminho), indiceFinal = tamanhoCaminho - 1;
+
+    if (i == 0 || i == j || i >= tamanhoCaminho - 1 || j >= tamanhoCaminho - 1) return naoViavel;
+    if (abs(capacidade_gpu[i] - capacidade_gpu[i - 1]) <= 1) return naoViavel;
+
+    short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
+    int fimSeg1, iniSeg3, fimSeg3, iniSeg5, p;
+
+    if (capacidade_gpu[i] - capacidade_gpu[i - 1] < - 1) { // coleta
+        p = getPosition1D(i, i, tamanhoCaminho);
+        qSum = ads_gpu[p].qSum - 1;
+        if (i < j) {
+            lMin4 = 0, lMax4 = ads_gpu[0].lMax - 1, qSum4 = 1,
+                qSum2 = qSum, lMin2 = 0, lMax2 = ads_gpu[0].lMax - qSum;
+        } else {
+            lMin2 = 0, lMax2 = ads_gpu[0].lMax - 1, qSum2 = 1,
+                qSum4 = qSum, lMin4 = 0, lMax4 = ads_gpu[0].lMax - qSum;
+        }
+    } else { // entrega
+        p = getPosition1D(i, i, tamanhoCaminho);
+        qSum = ads_gpu[p].qSum + 1;
+        if (i < j) {
+            lMin4 = 1, lMax4 = ads_gpu[0].lMax, qSum4 = -1,
+                qSum2 = qSum, lMin2 = -qSum, lMax2 = ads_gpu[0].lMax;
+        } else {
+            lMin2 = 1, lMax2 = ads_gpu[0].lMax, qSum2 = -1,
+                qSum4 = qSum, lMin4 = -qSum, lMax4 = ads_gpu[0].lMax;
+        }
+    }
+
+    if (i < j) {
+        fimSeg1 = i - 1, iniSeg3 = i + 1, fimSeg3 = j - 1, iniSeg5 = j;
+    } else {
+        fimSeg1 = j - 1, iniSeg3 = j, fimSeg3 = i - 1, iniSeg5 = i + 1;
+    }
+
+    if (ads_gpu[fimSeg1].lMin > 0 || ads_gpu[fimSeg1].lMax < 0) return naoViavel;
+
+    if (ads_gpu[fimSeg1].qSum >= lMin2 && ads_gpu[fimSeg1].qSum <= lMax2) {
+        
+        qSum = ads_gpu[fimSeg1].qSum + qSum2;
+        p = getPosition1D(iniSeg3, fimSeg3, tamanhoCaminho);
+
+        if (qSum >= ads_gpu[p].lMin && qSum <= ads_gpu[p].lMax) {
+            qSum += ads_gpu[p].qSum;
+            
+            if (qSum >= lMin4 && qSum <= lMax4) {
+                
+                qSum += qSum4;
+                p = getPosition1D(iniSeg5, indiceFinal, tamanhoCaminho);
+
+                if (qSum >= ads_gpu[p].lMin && qSum <= ads_gpu[p].lMax) {
+
+                    float custoParcial = custoOriginal - custos_gpu[getPosition1D(caminho_gpu[j - 1], caminho_gpu[j], tamanhoGrafo)]
+                        + (custos_gpu[getPosition1D(caminho_gpu[j - 1], caminho_gpu[i], tamanhoGrafo)]
+                        + custos_gpu[getPosition1D(caminho_gpu[i], caminho_gpu[j], tamanhoGrafo)]);
+
+                    return {i, j, custoParcial};
+                }
+            }
+        }
+    }
+    
+    return naoViavel;
+}
+
 unsigned int nextPow2(unsigned int x) {
     --x;
     x |= x >> 1;
@@ -254,7 +329,7 @@ void getNumBlocksAndThreads(int n, int maxBlocks, int maxThreads, int* blocks, i
 
 }
 
-__global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduzido* g_idata, Reduzido* g_odata, 
+__global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, int *capacidade_gpu, Reduzido* g_idata, Reduzido* g_odata, 
 						int size, int tamanhoCaminho, int tamanhoGrafo, float custoOriginal) {
     
     extern __shared__ Reduzido sdata[];
@@ -262,7 +337,7 @@ __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduz
     unsigned int i = blockIdx.x*blockDim.x + threadIdx.x;
 
     if (g_idata == NULL)
-        sdata[tid] = _orOPTCuda(i, tamanhoCaminho, tamanhoGrafo, custoOriginal, caminho_gpu, ads_gpu, custos_gpu, 3);
+        sdata[tid] = _splitCuda(i, tamanhoCaminho, tamanhoGrafo, custoOriginal, caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu);
     else if (i < size) 
         sdata[tid] = g_idata[i];
     else
@@ -283,7 +358,7 @@ __global__ void reduzir(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduz
 }
 
 void preparadorReducao(int size, int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int threads, int blocks, 
-						int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, Reduzido *d_idata, Reduzido *d_odata) {
+						int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, int *capacidade_gpu, Reduzido *d_idata, Reduzido *d_odata) {
     
     dim3 dimBlock(threads, 1, 1);
     dim3 dimGrid(blocks, 1, 1);
@@ -292,7 +367,7 @@ void preparadorReducao(int size, int tamanhoCaminho, int tamanhoGrafo, float cus
     // worth of shared memory so that we don't index shared memory out of bounds
     int smemSize = (threads <= 32) ? 2 * threads * sizeof(Reduzido) : threads * sizeof(Reduzido);
 
-	reduzir<<< dimGrid, dimBlock, smemSize >>>(caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, size, tamanhoCaminho, tamanhoGrafo, custoOriginal);
+	reduzir<<< dimGrid, dimBlock, smemSize >>>(caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu, d_idata, d_odata, size, tamanhoCaminho, tamanhoGrafo, custoOriginal);
 }
 
 Reduzido reducaoAuxiliar(int  n,
@@ -305,7 +380,8 @@ Reduzido reducaoAuxiliar(int  n,
                   int  maxBlocks,
                   int *caminho_gpu, 
                   ADS *ads_gpu, 
-                  float *custos_gpu, 
+                  float *custos_gpu,
+                  int *capacidade_gpu, 
                   Reduzido *d_idata, 
                   Reduzido *d_odata,
                   Reduzido *h_odata) {
@@ -316,7 +392,7 @@ Reduzido reducaoAuxiliar(int  n,
 
     cudaDeviceSynchronize();
 
-    preparadorReducao(n, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, caminho_gpu, ads_gpu, custos_gpu, NULL, d_odata);
+    preparadorReducao(n, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu, NULL, d_odata);
     
     int s = numBlocks;
 
@@ -325,7 +401,7 @@ Reduzido reducaoAuxiliar(int  n,
         int threads = 0, blocks = 0;
         getNumBlocksAndThreads(s, maxBlocks, maxThreads, &blocks, &threads);
         cudaMemcpy(d_idata, d_odata, s * sizeof(Reduzido), cudaMemcpyDeviceToDevice);
-        preparadorReducao(s, tamanhoCaminho, tamanhoGrafo, custoOriginal, threads, blocks, caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata);
+        preparadorReducao(s, tamanhoCaminho, tamanhoGrafo, custoOriginal, threads, blocks, caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu, d_idata, d_odata);
 
         s = (s + threads - 1) / threads;
     }
@@ -349,7 +425,7 @@ Reduzido reducaoAuxiliar(int  n,
     return gpu_result;
 }
 
-void runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *caminho_gpu, ADS *ads_gpu, float *custos_gpu) {
+void runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *caminho_gpu, ADS *ads_gpu, float *custos_gpu, int* capacidade_gpu) {
     
     int size = tamanhoCaminho * tamanhoCaminho;    // number of elements to reduce
     int maxThreads = 256;  // number of threads per block
@@ -374,7 +450,7 @@ void runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int *cam
 
 
     Reduzido gpu_result = reducaoAuxiliar(size, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, maxThreads, maxBlocks,
-                                    caminho_gpu, ads_gpu, custos_gpu, d_idata, d_odata, h_odata);
+                                    caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu, d_idata, d_odata, h_odata);
 
     printf("%d %d %.f\n", gpu_result.i, gpu_result.j, gpu_result.custo);
 
