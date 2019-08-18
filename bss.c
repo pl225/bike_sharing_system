@@ -28,18 +28,22 @@ int main(int argc, char *argv[])
 	CHECK_ERROR(cudaSetDevice(GPU));
 	CHECK_ERROR(cudaDeviceReset());
 
-	//srand(time(NULL));
+	srand(time(NULL));
 
 	Grafo g = carregarInstancia("instancias/n500q1000A.tsp");
 	FabricaSolucao fs = instanciarFabrica(g);
+
+	float *custos_gpu = NULL;
+    alocarCustosGPU(fs, &custos_gpu);
+
 	Solucao s = instanciarSolucao(fs);
 
-	swap(s, fs);
+	RVND(s, fs, custos_gpu);
 	
 	clock_t start, end;
 
 	start = clock();
-	Solucao ss = swap(s, fs);
+	Solucao ss = RVND(s, fs, custos_gpu);
 	end = clock();
 
 	double t = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -48,6 +52,7 @@ int main(int argc, char *argv[])
 	liberarGrafo(g);
 	liberarFabrica(fs);
 	liberarSolucao(s);
+	liberarCustosGPU(custos_gpu);
 
 	return 0;
 }

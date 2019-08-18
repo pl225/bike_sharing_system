@@ -49,9 +49,9 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 	atualizarADS(*s, Q, i, j);
 }
 
-Solucao swap(Solucao s, FabricaSolucao fs) {
+Solucao swap(Solucao s, FabricaSolucao fs, float* custos_gpu) {
 
-	Reduzido r = obterVizinho(s, fs, SWAP_GPU);
+	Reduzido r = obterVizinho(s, fs, custos_gpu, SWAP_GPU);
 
 	int indiceTrocaI = r.i, indiceTrocaJ = r.j;
 	float menorCusto = r.custo;
@@ -83,23 +83,23 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 	}
 }
 
-Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
+Solucao orOPT(Solucao s, FabricaSolucao fs, float* custos_gpu, int tipo) {
 
 	Reduzido r;
 	int passo;
 
 	if (tipo == 0) { // reinsercao
 		passo = 0;
-		r = obterVizinho(s, fs, OROPT1_GPU);
+		r = obterVizinho(s, fs, custos_gpu, OROPT1_GPU);
 	} else if (tipo == 1) { // orOPT2
 		passo = 1;
-	 	r = obterVizinho(s, fs, OROPT2_GPU);
+	 	r = obterVizinho(s, fs, custos_gpu, OROPT2_GPU);
 	} else if (tipo == 2) { // orOPT3
 		passo = 2;
-	 	r = obterVizinho(s, fs, OROPT3_GPU);
+	 	r = obterVizinho(s, fs, custos_gpu, OROPT3_GPU);
 	} else { // orOPT4
 		passo = 3;
-		r = obterVizinho(s, fs, OROPT4_GPU);
+		r = obterVizinho(s, fs, custos_gpu, OROPT4_GPU);
 	}
 
 	int indiceTrocaI = r.i, indiceTrocaJ = r.j;
@@ -162,25 +162,25 @@ Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 	}
 }
 
-Solucao reinsercao(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 0);
+Solucao reinsercao(Solucao s, FabricaSolucao fs, float* custos_gpu) {
+	return orOPT(s, fs, custos_gpu, 0);
 }
 
-Solucao orOPT2(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 1);
+Solucao orOPT2(Solucao s, FabricaSolucao fs, float* custos_gpu) {
+	return orOPT(s, fs, custos_gpu, 1);
 }
 
-Solucao orOPT3(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 2);
+Solucao orOPT3(Solucao s, FabricaSolucao fs, float* custos_gpu) {
+	return orOPT(s, fs, custos_gpu, 2);
 }
 
-Solucao orOPT4(Solucao s, FabricaSolucao fs) {
-	return orOPT(s, fs, 3);
+Solucao orOPT4(Solucao s, FabricaSolucao fs, float* custos_gpu) {
+	return orOPT(s, fs, custos_gpu, 3);
 }
 
-Solucao _2OPT (Solucao s, FabricaSolucao fs) {
+Solucao _2OPT (Solucao s, FabricaSolucao fs, float* custos_gpu) {
 
-	Reduzido r = obterVizinho(s, fs, _2OPT_GPU);
+	Reduzido r = obterVizinho(s, fs, custos_gpu, _2OPT_GPU);
 
 	int indiceTrocaI = r.i, indiceTrocaJ = r.j, aux;
 	float menorCusto = r.custo;
@@ -253,9 +253,9 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 	return copia;
 }
 
-Solucao split (Solucao s, FabricaSolucao fs) {
+Solucao split (Solucao s, FabricaSolucao fs, float* custos_gpu) {
 
-	Reduzido r = obterVizinho(s, fs, SPLIT_GPU);
+	Reduzido r = obterVizinho(s, fs, custos_gpu, SPLIT_GPU);
 
 	int indiceTrocaI = r.i, indiceTrocaJ = r.j;
 	float menorCusto = r.custo;
@@ -267,14 +267,14 @@ Solucao split (Solucao s, FabricaSolucao fs) {
 	}
 }
 
-Solucao RVND (Solucao s, FabricaSolucao fs) {
+Solucao RVND (Solucao s, FabricaSolucao fs, float* custos_gpu) {
 	Solucao melhorSolucao = copiarSolucao(s), sLinha;
 	int indices[] = {0, 1, 2, 3, 4, 5, 6};
-	Solucao (*vizinhancas[])(Solucao, FabricaSolucao) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
+	Solucao (*vizinhancas[])(Solucao, FabricaSolucao, float*) = {split, reinsercao, _2OPT, orOPT2, orOPT3, orOPT4, swap};
 	int LN = 7, N, aux;
 	while (LN > 0) {
 		N = rand() % LN;
-		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs);
+		sLinha = (*vizinhancas[indices[N]])(melhorSolucao, fs, custos_gpu);
 		if (sLinha.custo < melhorSolucao.custo) {
 			liberarSolucao(melhorSolucao);
 			melhorSolucao = sLinha;

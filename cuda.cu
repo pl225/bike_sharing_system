@@ -317,8 +317,8 @@ void getNumBlocksAndThreads(int n, int maxBlocks, int maxThreads, int* blocks, i
     *blocks = (n + *threads - 1) / *threads;
 
     if (*blocks > prop.maxGridSize[0]) {
-        printf("Grid size <%d> exceeds the device capability <%d>, set block size as %d (original %d)\n",
-               blocks, prop.maxGridSize[0], *threads * 2, *threads);
+        //printf("Grid size <%d> exceeds the device capability <%d>, set block size as %d (original %d)\n",
+          //     blocks, prop.maxGridSize[0], *threads * 2, *threads);
 
         *blocks /= 2;
         *threads *= 2;
@@ -460,8 +460,8 @@ Reduzido runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int 
     int numBlocks = 0;
     int numThreads = 0;
 
-    printf("%d elements\n", size);
-    printf("%d threads (max)\n", maxThreads);
+    //printf("%d elements\n", size);
+    //printf("%d threads (max)\n", maxThreads);
 
     getNumBlocksAndThreads(size, maxBlocks, maxThreads, &numBlocks, &numThreads);
 
@@ -473,7 +473,7 @@ Reduzido runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int 
 	CHECK_ERROR(cudaMalloc((void **) &d_odata, numBlocks * sizeof(Reduzido))); // saída tem o tamanho do número de blocos
 	CHECK_ERROR(cudaMalloc((void **) &d_idata, bytes));
 
-    printf("%d blocks\n\n", numBlocks);
+    //printf("%d blocks\n\n", numBlocks);
 
 
     Reduzido gpu_result = reducaoAuxiliar(size, tamanhoCaminho, tamanhoGrafo, custoOriginal, numThreads, numBlocks, maxThreads, maxBlocks,
@@ -486,20 +486,20 @@ Reduzido runTest(int tamanhoCaminho, int tamanhoGrafo, float custoOriginal, int 
     return gpu_result;
 }
 
-Reduzido obterVizinho (Solucao s, FabricaSolucao fs, Vizinhanca v) {
+Reduzido obterVizinho (Solucao s, FabricaSolucao fs, float* custos_gpu, Vizinhanca v) {
 
-    float *custos_gpu = NULL;
+    //float *custos_gpu = NULL;
     int *caminho_gpu = NULL;
     int *capacidade_gpu = NULL;
     ADS *ads_gpu = NULL;
 
-    alocarCustosGPU(fs, &custos_gpu);
+    //alocarCustosGPU(fs, &custos_gpu);
     alocarSolucaoGPU (s, &caminho_gpu, &ads_gpu, &capacidade_gpu);
     
     Reduzido r = runTest(s.tamanhoCaminho, fs.n, s.custo, caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu, v);
     CHECK_ERROR(cudaDeviceSynchronize());
 
-    liberarCustosGPU(custos_gpu);
+    //liberarCustosGPU(custos_gpu);
     liberarSolucaoGPU(caminho_gpu, ads_gpu, capacidade_gpu);
 
     return r;

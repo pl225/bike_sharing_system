@@ -35,4 +35,4 @@ void alocarSolucaoGPU (Solucao s, int** caminho_gpu, ADS** ads_gpu, int** capaci
 
 void liberarSolucaoGPU (int* caminho_gpu, ADS* ads_gpu, int* capacidade_gpu);
 
-Reduzido obterVizinho (Solucao s, FabricaSolucao fs, Vizinhanca v);
+Reduzido obterVizinho (Solucao s, FabricaSolucao fs, float* custos_gpu, Vizinhanca v);
