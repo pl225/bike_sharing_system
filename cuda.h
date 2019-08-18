@@ -8,13 +8,13 @@
 #include "vizinhanca.h"
 #endif
 
-#include <stdio.h>
-
 #define CHECK_ERROR(call) do {                                                    \
-	if(cudaSuccess != call) {                                                     \
-		fprintf(stderr,"CUDA ERROR:%s in file: %s in line: ", cudaGetErrorString(call),  __FILE__, __LINE__); \
-		exit(0);                                                                                 \
+    if(cudaSuccess != call) {                                                     \
+        fprintf(stderr,"CUDA ERROR:%s in file: %s in line: ", cudaGetErrorString(call),  __FILE__, __LINE__); \
+        exit(0);                                                                                 \
     } } while (0)
+
+#include <stdio.h>
 
 typedef struct Reduzido
 {
