@@ -50,57 +50,11 @@ void merge(Solucao *s, int Q, int indiceTrocaI, int indiceTrocaJ) {
 }
 
 Solucao swap(Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, custoAux = 0,	custoAuxAntigo = 0;
-	int indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
-	short qSumAuxiliar;
 
-	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
-		for (int j = i + 1; j < s.tamanhoCaminho - 1; j++) {
+	Reduzido r = obterVizinho(s, fs, SWAP_GPU);
 
-			if (s.ads[0][i - 1].lMin > 0 || s.ads[0][i - 1].lMax < 0) continue;
-
-			if (s.ads[0][i - 1].qSum >= s.ads[j][j].lMin && s.ads[0][i - 1].qSum <= s.ads[j][j].lMax) {
-				qSumAuxiliar = s.ads[0][i - 1].qSum + s.ads[j][j].qSum;
-				if ((j - 1) - (i + 1) >= 0) {
-					int a = i + 1, b = j - 1;
-					if (qSumAuxiliar >= s.ads[a][b].lMin && qSumAuxiliar <= s.ads[a][b].lMax)
-						qSumAuxiliar += s.ads[a][b].qSum;
-					else 
-						continue;
-				}
-				if (qSumAuxiliar >= s.ads[i][i].lMin && qSumAuxiliar <= s.ads[i][i].lMax) {
-					qSumAuxiliar += s.ads[i][i].qSum;
-					if (qSumAuxiliar >= s.ads[j + 1][indiceFinal].lMin 
-						&& qSumAuxiliar <= s.ads[j + 1][indiceFinal].lMax) {
-
-						if (j - i > 1) {
-							custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i + 1], fs.n)];
-							custoAux += fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 1], fs.n)];
-
-							custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[i + 1], fs.n)];
-							custoAuxAntigo += fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
-						} else {
-							custoAux = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[j], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j + 1], fs.n)];
-							custoAuxAntigo = fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)] 
-								+ fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
-						}
-
-						menorCustoParcial = custoOriginal + custoAux - custoAuxAntigo;
-						if (menorCustoParcial < menorCusto) {
-							indiceTrocaI = i;
-							indiceTrocaJ = j;
-							menorCusto = menorCustoParcial;
-						} 
-					}
-				}
-			}
-		}
-	}
+	int indiceTrocaI = r.i, indiceTrocaJ = r.j;
+	float menorCusto = r.custo;
 
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
@@ -131,71 +85,26 @@ Solucao swap(Solucao s, FabricaSolucao fs) {
 
 Solucao orOPT(Solucao s, FabricaSolucao fs, int tipo) {
 
-	float menorCusto = INFINITY, custoOriginal = s.custo, menorCustoParcial, menorCustoFinal;
-	int indiceTrocaI = -1, indiceTrocaJ = -1, passo, condicaoParada, fimSeg4 = s.tamanhoCaminho - 1,
-		fimSeg1, iniSeg2, fimSeg2, iniSeg3, fimSeg3, iniSeg4;
-	short qSumAuxiliar;
+	Reduzido r;
+	int passo;
 
 	if (tipo == 0) { // reinsercao
 		passo = 0;
-		condicaoParada = s.tamanhoCaminho - 2;
+		r = obterVizinho(s, fs, OROPT1_GPU);
 	} else if (tipo == 1) { // orOPT2
-	 	passo = 1;
-	 	condicaoParada = s.tamanhoCaminho - 3;
+		passo = 1;
+	 	r = obterVizinho(s, fs, OROPT2_GPU);
 	} else if (tipo == 2) { // orOPT3
-	 	passo = 2;
-	 	condicaoParada = s.tamanhoCaminho - 4;
+		passo = 2;
+	 	r = obterVizinho(s, fs, OROPT3_GPU);
 	} else { // orOPT4
 		passo = 3;
-		condicaoParada = s.tamanhoCaminho - 5;
+		r = obterVizinho(s, fs, OROPT4_GPU);
 	}
 
-	for (int i = 1; i < condicaoParada; i++) {
+	int indiceTrocaI = r.i, indiceTrocaJ = r.j;
+	float menorCusto = r.custo;
 
-		menorCustoParcial = custoOriginal - (fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i], fs.n)]
-					+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[i + passo + 1], fs.n)]);
-
-		menorCustoParcial += fs.custoArestas[IndiceArestas(s.caminho[i - 1], s.caminho[i + passo + 1], fs.n)];
-
-		for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
-			if (i == j) continue;
-			if (i < j && j - i < passo + 1) continue; // deve haver uma subsequência de tamanho >= passo + 1 // i == j : j += passo + 1
-			if (i > j && i - j < 2) continue; // para os casos em q i está na frente de j
-
-			if (i < j) {
-				fimSeg1 = i - 1, iniSeg2 = i + passo + 1, fimSeg2 = j, iniSeg3 = i,
-					fimSeg3 = i + passo, iniSeg4 = j + 1;
-			} else {
-				fimSeg1 = j, iniSeg2 = i, fimSeg2 = i + passo, iniSeg3 = j + 1,
-					fimSeg3 = i - 1, iniSeg4 = i + passo + 1;
-			}
-
-			if (s.ads[0][fimSeg1].lMin > 0 || s.ads[0][fimSeg1].lMax < 0) continue;
-
-			if (s.ads[0][fimSeg1].qSum >= s.ads[iniSeg2][fimSeg2].lMin && s.ads[0][fimSeg1].qSum <= s.ads[iniSeg2][fimSeg2].lMax) {
-			
-				qSumAuxiliar = s.ads[0][fimSeg1].qSum + s.ads[iniSeg2][fimSeg2].qSum;
-				
-				if (qSumAuxiliar >= s.ads[iniSeg3][fimSeg3].lMin && qSumAuxiliar <= s.ads[iniSeg3][fimSeg3].lMax) {
-				
-					qSumAuxiliar += s.ads[iniSeg3][fimSeg3].qSum;
-
-					if (qSumAuxiliar >= s.ads[iniSeg4][fimSeg4].lMin && qSumAuxiliar <= s.ads[iniSeg4][fimSeg4].lMax) {
-						menorCustoFinal = menorCustoParcial + fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[i], fs.n)]
-						+ fs.custoArestas[IndiceArestas(s.caminho[i + passo], s.caminho[j + 1], fs.n)];
-
-						menorCustoFinal -= fs.custoArestas[IndiceArestas(s.caminho[j], s.caminho[j + 1], fs.n)];
-						if (menorCustoFinal < menorCusto) {
-							menorCusto = menorCustoFinal;
-							indiceTrocaI = i;
-							indiceTrocaJ = j;
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	if (indiceTrocaI != -1) {
 		Solucao nova = copiarSolucao(s);
 		nova.custo = menorCusto;
@@ -345,72 +254,12 @@ Solucao autalizacaoParaSplit (Solucao s, FabricaSolucao fs, int indiceTrocaI, in
 }
 
 Solucao split (Solucao s, FabricaSolucao fs) {
-	float menorCusto = INFINITY, custoOriginal = s.custo, custoParcial;
-	short qSum, lMin2, lMax2, qSum2, lMin4, lMax4, qSum4;
-	int fimSeg1, iniSeg3, fimSeg3, iniSeg5, indiceTrocaI = -1, indiceTrocaJ = -1, indiceFinal = s.tamanhoCaminho - 1;
 
-	for (int i = 1; i < s.tamanhoCaminho - 1; i++) {
-		if (fs.demandas[s.caminho[i]] < - 1 || fs.demandas[s.caminho[i]] > 1) {
-			for (int j = 1; j < s.tamanhoCaminho - 1; j++) {
+	Reduzido r = obterVizinho(s, fs, SPLIT_GPU);
 
-				if (i == j) continue;
-				if (s.caminho[i] == s.caminho[j] || s.caminho[i] == s.caminho[j - 1] || s.caminho[j] == s.caminho[i - 1]) continue;
-				if (abs(s.capacidades[i] - s.capacidades[i - 1]) <= 1) continue;
+	int indiceTrocaI = r.i, indiceTrocaJ = r.j;
+	float menorCusto = r.custo;
 
-				if (fs.demandas[s.caminho[i]] < - 1) { // coleta
-					qSum = s.ads[i][i].qSum - 1;
-					if (i < j) {
-						lMin4 = 0, lMax4 = fs.q - 1, qSum4 = 1,
-							qSum2 = qSum, lMin2 = 0, lMax2 = fs.q - qSum;
-					} else {
-						lMin2 = 0, lMax2 = fs.q - 1, qSum2 = 1,
-							qSum4 = qSum, lMin4 = 0, lMax4 = fs.q - qSum;
-					}
-				} else { // entrega
-					qSum = s.ads[i][i].qSum + 1;
-					if (i < j) {
-						lMin4 = 1, lMax4 = fs.q, qSum4 = -1,
-							qSum2 = qSum, lMin2 = -qSum, lMax2 = fs.q;
-					} else {
-						lMin2 = 1, lMax2 = fs.q, qSum2 = -1,
-							qSum4 = qSum, lMin4 = -qSum, lMax4 = fs.q;
-					}
-				}
-
-				if (i < j) {
-					fimSeg1 = i - 1, iniSeg3 = i + 1, fimSeg3 = j - 1, iniSeg5 = j;
-				} else {
-					fimSeg1 = j - 1, iniSeg3 = j, fimSeg3 = i - 1, iniSeg5 = i + 1;
-				}
-
-				if (s.ads[0][fimSeg1].lMin > 0 || s.ads[0][fimSeg1].lMax < 0) continue;
-
-				if (s.ads[0][fimSeg1].qSum >= lMin2 && s.ads[0][fimSeg1].qSum <= lMax2) {
-					qSum = s.ads[0][fimSeg1].qSum + qSum2;
-					
-					if (qSum >= s.ads[iniSeg3][fimSeg3].lMin && qSum <= s.ads[iniSeg3][fimSeg3].lMax) {
-						qSum += s.ads[iniSeg3][fimSeg3].qSum;
-						
-						if (qSum >= lMin4 && qSum <= lMax4) {
-							qSum += qSum4;
-							if (qSum >= s.ads[iniSeg5][indiceFinal].lMin && qSum <= s.ads[iniSeg5][indiceFinal].lMax) {
-
-								custoParcial = custoOriginal - fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[j], fs.n)]
-									+ (fs.custoArestas[IndiceArestas(s.caminho[j - 1], s.caminho[i], fs.n)]
-									+ fs.custoArestas[IndiceArestas(s.caminho[i], s.caminho[j], fs.n)]);
-
-								if (custoParcial < menorCusto) {
-									indiceTrocaI = i;
-									indiceTrocaJ = j;
-									menorCusto = custoParcial;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 	if (indiceTrocaI != -1) {
 		return autalizacaoParaSplit(s, fs, indiceTrocaI, indiceTrocaJ, menorCusto);
 	} else {
