@@ -1,16 +1,26 @@
+#ifndef GRAFO_H
+#define GRAFO_H
 #include "grafo.h"
+#endif
+
+#ifndef SOLUCAO_H
+#define SOLUCAO_H
 #include "solucao.h"
+#endif
+
+#ifndef VIZINHANCA_H
+#define VIZINHANCA_H
 #include "vizinhanca.h"
-#include <time.h>
+#endif
+
+#ifndef CUDA_H
+#define CUDA_H
 #include "cuda.h"
+#endif
+
+#include <time.h>
 
 #define GPU 0
-
-__global__ void gpu(int *caminho_gpu, ADS *ads_gpu, float *custos_gpu) {
-	printf("%hi %hi %hi %hi %hi\n", ads_gpu[0].qSum, ads_gpu[0].qMin, ads_gpu[0].qMax, ads_gpu[0].lMin, ads_gpu[0].lMax);   
-	printf("%f\n", custos_gpu[0]);
-	printf("%d\n", caminho_gpu[0]);
-}
 
 int main(int argc, char *argv[])
 {
@@ -23,16 +33,17 @@ int main(int argc, char *argv[])
 	Grafo g = carregarInstancia("instancias/n500q1000A.tsp");
 	FabricaSolucao fs = instanciarFabrica(g);
 	Solucao s = instanciarSolucao(fs);
-
+	
+	
 	float *custos_gpu = NULL;
 	int *caminho_gpu = NULL;
+	int *capacidade_gpu = NULL;
 	ADS *ads_gpu = NULL;
 
 	alocarCustosGPU(fs, &custos_gpu);
-	alocarSolucaoGPU (s, &caminho_gpu, &ads_gpu);
+	alocarSolucaoGPU (s, &caminho_gpu, &ads_gpu, &capacidade_gpu);
 	printf("%d %.f\n", s.tamanhoCaminho, s.custo);
-	//gpu<<<1, 1>>>(caminho_gpu, ads_gpu, custos_gpu);
-	runTest(s.tamanhoCaminho, g.n, s.custo, caminho_gpu, ads_gpu, custos_gpu);
+	runTest(s.tamanhoCaminho, g.n, s.custo, caminho_gpu, ads_gpu, custos_gpu, capacidade_gpu);
    	CHECK_ERROR(cudaDeviceSynchronize());
 
 	liberarCustosGPU(custos_gpu);
